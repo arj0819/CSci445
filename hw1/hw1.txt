@@ -1,7 +1,7 @@
 CSci 445
 Fall, 2018
 Programming Assignment #1
-Due: Tuesday, Sept 6, 2018
+Due: Thursday, Sept 6, 2018
 
 PART 1
 
@@ -39,3 +39,18 @@ hw1/
 Upload your submission to Blackboard as a zipped file: lastname-firstname.hw1.zip. 
 A description for PART II of the assignment will be posted next week. PART II will be due on 
 Sept 18.
+
+
+INFORMATION FROM IN CLASS DISCUSSION
+
+Info on exponential distribution can be found on Page 28 in textbook.
+
+Most of the logic needed can be found in Example 1.4 in textbook.
+Also, check the flowcharts in the textbook for arrival, departure,
+and other events for proper modeling.
+
+T = -B*ln(u(0,1)) where -B is -lambda
+
+Max Queue size should be 100 patients. If we get beyond that, 
+terminate program and print why. Perhaps make Queue size a 
+command line parameter.
