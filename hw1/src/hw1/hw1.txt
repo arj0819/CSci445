@@ -1,0 +1,41 @@
+CSci 445
+Fall, 2018
+Programming Assignment #1
+Due: Tuesday, Sept 6, 2018
+
+PART 1
+
+Write a program to simulate the operation of the triage area of an emergency department in a 
+small, rural hospital. 
+
+The emergency department has four areas to handle patients. The areas are Triage, Trauma 
+Care, Acute Care, and Prompt Care. All patients initially visit the triage area so that their cases 
+can be prioritized based on clinical need. 
+
+The program shall implement a discrete-event simulation with an M/M/1 FIFO queue. Inter-
+arrival times and service times shall be based on exponential distributions. The means for the 
+inter-arrival and service times shall be input to the program as command line parameters. 
+The simulation clock shall use the next-event time advance method. The simulation shall end 
+when 100 patients have been discharged from the triage area.
+
+At the end of the simulation your program should report the following metrics.
+• Mean inter-arrival time in minutes
+• Mean service time in minutes
+• Length of the simulation in minutes
+• Average wait time for patients in minutes.
+• Average number of patients in the queue.
+• Number of patients still in the queue at the end of the simulation
+
+You can implement your assignment using Java, C++, or Python. The program shall create at 
+least two object types: a server object type and a patient object type. These object types shall 
+be defined in separate files. 
+Submit your source code files and any required build script using the directory structure below. 
+
+hw1/
+    [build script]
+    src/
+        [source files] 
+
+Upload your submission to Blackboard as a zipped file: lastname-firstname.hw1.zip. 
+A description for PART II of the assignment will be posted next week. PART II will be due on 
+Sept 18.
