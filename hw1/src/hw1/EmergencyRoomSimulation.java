@@ -2,7 +2,7 @@ package hw1;
 
 import java.util.List;
 
-public class Simulation {
+public class EmergencyRoomSimulation {
 
     public static void main(String[] args) {
 
