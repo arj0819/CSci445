@@ -7,9 +7,9 @@ public class Patient {
     private int waitTime;
     private int serviceTime;
 
-    public Patient() {
-        
-        
+    public Patient(int waitTime, int serviceTime) {
+        this.waitTime = waitTime;
+        this.serviceTime = serviceTime;
     }
 
     public int getWaitTime() {
