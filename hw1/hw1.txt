@@ -54,3 +54,22 @@ T = -B*ln(u(0,1)) where -B is -lambda
 Max Queue size should be 100 patients. If we get beyond that, 
 terminate program and print why. Perhaps make Queue size a 
 command line parameter.
+
+Mr. Apostal's Class structure for PART I:
+
+Customer/Patient
+    ArrivalTime
+    DelayInQueue
+    DepartureTime ?
+
+Server
+    BusyStatus
+    QueueOfPatients
+
+SysClock
+    SimTime
+    NextArrivalTime
+    NextDepartTime
+
+Driver
+    (Drives the program)
