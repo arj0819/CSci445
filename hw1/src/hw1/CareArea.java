@@ -10,8 +10,8 @@ public abstract class CareArea implements Hospitable {
     private Queue patientQueue = new PriorityQueue<Patient>();
     private List availableServers = new ArrayList<Server>();
 
-    private int maxInterArrivalTime;
-    private int maxServiceTime;
+    private int avgInterArrivalTimePerPatient;
+    private int avgServiceTimePerPatient;
 
     private int patientsServiced;
 
@@ -20,12 +20,12 @@ public abstract class CareArea implements Hospitable {
     private int averagePatientsInQueue;
 
 
-    public CareArea(int maxInterArrivalTime, int maxServiceTime, int numberOfServers) {
-        this.maxInterArrivalTime = maxInterArrivalTime;
-        this.maxServiceTime = maxServiceTime;
+    public CareArea(int avgInterArrivalTimePerPatient, int avgServiceTimePerPatient, int numberOfServers) {
+        this.avgInterArrivalTimePerPatient = avgInterArrivalTimePerPatient;
+        this.avgServiceTimePerPatient = avgServiceTimePerPatient;
 
         for (int i = 0; i < numberOfServers; i++) {
-            availableServers.add(new Server());
+            availableServers.add(new Server(avgServiceTimePerPatient));
         }
     }
 

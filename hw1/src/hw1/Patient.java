@@ -4,19 +4,22 @@ import java.util.Random;
 
 public class Patient {
 
-    private int waitTime;
-    private int serviceTime;
+    private double waitTime;
+    private double serviceTime;
 
-    public Patient(int waitTime, int serviceTime) {
+    public Patient(double waitTime) {
         this.waitTime = waitTime;
+    }
+
+    public void receiveService(double serviceTime) {
         this.serviceTime = serviceTime;
     }
 
-    public int getWaitTime() {
+    public double getWaitTime() {
         return waitTime;
     }
 
-    public int getServiceTime() {
+    public double getServiceTime() {
         return serviceTime;
     }
 
