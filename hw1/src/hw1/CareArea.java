@@ -5,7 +5,7 @@ import java.util.PriorityQueue;
 import java.util.List;
 import java.util.ArrayList;
 
-public abstract class CareArea implements Hospitable {
+public class CareArea {
 
     private Queue patientQueue = new PriorityQueue<Patient>();
     private List availableServers = new ArrayList<Server>();
@@ -29,16 +29,11 @@ public abstract class CareArea implements Hospitable {
         }
     }
 
-    public boolean recievePatient() {
-        return true;
+    public boolean patientArrival(Patient newPatient) {
+        if (patientQueue.offer(newPatient)) {
+            return true;
+        } else {
+            return false;
+        }
     }
-
-    public boolean servicePatient() {
-        return true;
-    }
-
-    public boolean dischargePatient() {
-        return true;
-    }
-
 }
