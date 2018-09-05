@@ -15,7 +15,7 @@ public class Server {
         this.avgServiceTimePerPatient = avgServiceTimePerPatient;
     }
 
-    public void servicePatient(Patient patient) {
+    public void service(Patient patient) {
         this.patientBeingServed = patient;
 
         double serviceTimeRequired = Math.log(1-rand.nextDouble())/(-avgServiceTimePerPatient);
@@ -24,13 +24,17 @@ public class Server {
         occupied = true;
     }
 
-    public Patient dischargePatient() {
+    public Patient discharge() {
         occupied = false;
         return patientBeingServed;
     }
 
     public boolean isOccupied() {
         return occupied;
+    }
+
+    public Patient getPatientBeingServed() {
+        return patientBeingServed;
     }
 
 }

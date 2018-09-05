@@ -7,17 +7,17 @@ import java.util.ArrayList;
 
 public class CareArea {
 
-    private Queue patientQueue = new PriorityQueue<Patient>();
-    private List availableServers = new ArrayList<Server>();
+    protected Queue patientQueue = new PriorityQueue<Patient>();
+    protected List availableServers = new ArrayList<Server>();
 
-    private int avgInterArrivalTimePerPatient;
-    private int avgServiceTimePerPatient;
+    protected int avgInterArrivalTimePerPatient;
+    protected int avgServiceTimePerPatient;
 
-    private int patientsServiced;
+    protected int patientsServiced;
 
-    private int minutesInOperation;
+    protected int minutesInOperation;
 
-    private int averagePatientsInQueue;
+    protected int averagePatientsInQueue;
 
 
     public CareArea(int avgInterArrivalTimePerPatient, int avgServiceTimePerPatient, int numberOfServers) {

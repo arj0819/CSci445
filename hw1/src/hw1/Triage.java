@@ -7,19 +7,27 @@ public class Triage extends CareArea implements Hospitable {
 
     public static final int NUM_OF_SERVERS = 1;
 
-    public Triage(int maxInterArrivalTime, int maxServiceTime, int numberOfServers) {
-        super(maxInterArrivalTime, maxServiceTime, NUM_OF_SERVERS);
+    public Triage(int avgInterArrivalTimePerPatient, int avgServiceTimePerPatient, int numberOfServers) {
+        super(avgInterArrivalTimePerPatient, avgServiceTimePerPatient, NUM_OF_SERVERS);
     }
 
-    public boolean recievePatient() {
-        return true;
+    public Patient recievePatient() {
+        Patient nextPatient = (Patient)patientQueue.element();
+        return nextPatient;
     }
 
-    public boolean servicePatient() {
-        return true;
+    public boolean servicePatient(Server server, Patient nextPatient) {
+        if (!server.isOccupied()) {
+            server.service(nextPatient);
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public boolean dischargePatient() {
+    public boolean dischargePatient(Server server) {
+        Patient happyPatient = server.discharge();
+
         return true;
     }
 
