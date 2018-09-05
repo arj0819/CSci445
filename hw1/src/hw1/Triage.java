@@ -25,10 +25,11 @@ public class Triage extends CareArea implements Hospitable {
         }
     }
 
-    public boolean dischargePatient(Server server) {
+    public void dischargePatient(Server server) {
         Patient happyPatient = server.discharge();
 
-        return true;
+        serviceTimeLog.add(happyPatient.getServiceTime());
+        waitTimeLog.add(happyPatient.getWaitTime());
     }
 
 }

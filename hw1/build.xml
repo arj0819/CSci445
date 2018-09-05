@@ -24,8 +24,8 @@
 
     <target name="run" description="run the simuilation" depends="compile">
         <java fork="true" failonerror="yes" classpath="${build.dir}" classname="hw1.Simulation">
-            <arg description="the max inter-arrival time in minutes" line="100"/>
-            <arg description="the max service time in minutes" line="100"/>
+            <arg description="the mean inter-arrival time in minutes" line="100"/>
+            <arg description="the mean service time in minutes" line="100"/>
         </java>
     </target>
 

@@ -4,6 +4,6 @@ public interface Hospitable {
 
     public Patient recievePatient();
     public boolean servicePatient(Server server, Patient nextPatient);
-    public boolean dischargePatient(Server server);
+    public void dischargePatient(Server server);
 
 }

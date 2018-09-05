@@ -9,11 +9,16 @@ public class CareArea {
 
     protected Queue patientQueue = new PriorityQueue<Patient>();
     protected List availableServers = new ArrayList<Server>();
+    protected List serviceTimeLog = new ArrayList<Integer>();
+    protected List waitTimeLog = new ArrayList<Integer>();
 
     protected int avgInterArrivalTimePerPatient;
     protected int avgServiceTimePerPatient;
 
-    protected int patientsServiced;
+    private int actualAvgServiceTime;
+    private int actualAvgWaitTime;
+
+    protected int totalPatientsServiced;
 
     protected int minutesInOperation;
 
@@ -35,5 +40,25 @@ public class CareArea {
         } else {
             return false;
         }
+    }
+
+    public void calculateLogStats() {
+
+        int numOfServiceTimeLogs = (Integer)serviceTimeLog.size();
+        int serviceTimeRunningTotal = 0;
+
+        int numOfWaitTimeLogs = (Integer)waitTimeLog.size();
+        int waitTimeRunningTotal = 0; 
+
+        for (int i = 0; i < numOfServiceTimeLogs; i++) {
+            serviceTimeRunningTotal += (Integer)serviceTimeLog.get(i);
+        }
+        for (int i = 0; i < numOfWaitTimeLogs; i++) {
+            waitTimeRunningTotal += (Integer)waitTimeLog.get(i);
+        }
+
+        actualAvgServiceTime = serviceTimeRunningTotal / numOfServiceTimeLogs;
+        actualAvgWaitTime = waitTimeRunningTotal / numOfWaitTimeLogs;
+
     }
 }
