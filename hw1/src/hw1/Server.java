@@ -8,7 +8,7 @@ public class Server {
     private int avgServiceTimePerPatient;
     private boolean occupied = false;
     private Patient patientBeingServed;
-    private int patientsServiced = 0;
+    private int patientsServed = 0;
 
     private Random rand = new Random();
 
@@ -27,7 +27,7 @@ public class Server {
 
     public Patient discharge() {
         occupied = false;
-        patientsServiced++;
+        patientsServed++;
         return patientBeingServed;
     }
 
@@ -37,6 +37,10 @@ public class Server {
 
     public Patient getPatientBeingServed() {
         return patientBeingServed;
+    }
+
+    public int getNumOfPatientsServed() {
+        return patientsServed;
     }
 
 }

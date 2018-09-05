@@ -7,11 +7,11 @@ public class Triage extends CareArea implements Hospitable {
 
     public static final int NUM_OF_SERVERS = 1;
 
-    public Triage(int avgInterArrivalTimePerPatient, int avgServiceTimePerPatient, int numberOfServers) {
+    public Triage(int avgInterArrivalTimePerPatient, int avgServiceTimePerPatient) {
         super(avgInterArrivalTimePerPatient, avgServiceTimePerPatient, NUM_OF_SERVERS);
     }
 
-    public Patient recievePatient() {
+    public Patient receivePatient() {
         Patient nextPatient = (Patient)patientQueue.element();
         return nextPatient;
     }
