@@ -19,17 +19,16 @@ public class CareArea {
     private double actualAvgWaitTime;
 
     protected int totalPatientsServed;
-
     protected int minutesInOperation;
-
     protected int averagePatientsInQueue;
-
+    protected int maxQueueLength;
     protected int numOfServers;
 
 
-    public CareArea(int avgInterArrivalTimePerPatient, int avgServiceTimePerPatient, int numOfServers) {
+    public CareArea(int avgInterArrivalTimePerPatient, int avgServiceTimePerPatient, int maxQueueLength, int numOfServers) {
         this.avgInterArrivalTimePerPatient = avgInterArrivalTimePerPatient;
         this.avgServiceTimePerPatient = avgServiceTimePerPatient;
+        this.maxQueueLength = maxQueueLength;
         this.numOfServers = numOfServers;
 
         for (int i = 0; i < numOfServers; i++) {
@@ -43,6 +42,27 @@ public class CareArea {
         } else {
             return false;
         }
+    }
+
+    public Patient receivePatient() {
+        Patient nextPatient = (Patient)patientQueue.element();
+        return nextPatient;
+    }
+
+    public boolean servicePatient(Server server, Patient nextPatient) {
+        if (!server.isOccupied()) {
+            server.service(nextPatient);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void dischargePatient(Server server) {
+        Patient happyPatient = server.discharge();
+
+        serviceTimeLog.add(happyPatient.getServiceTime());
+        waitTimeLog.add(happyPatient.getWaitTime());
     }
 
     public void calculateLogStats() {
