@@ -1,6 +1,7 @@
 package hw1;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class EmergencyRoomSimulation {
 
@@ -20,10 +21,23 @@ public class EmergencyRoomSimulation {
             System.out.println("Patient queue is full. Ending Simulation.");
         }
 
-        Patient nextInLine = triageRoom.receivePatient();
+        try {
+            triageRoom.servicePatient(triageRoom.receivePatient());
+        } catch (NoSuchElementException e) {
+            System.out.println("The queue is empty at the moment.");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
-        triageRoom.servicePatient((Server)triageRoom.availableServers.get(0), nextInLine);
-        triageRoom.dischargePatient((Server)triageRoom.availableServers.get(0));
+        Server testServer = triageRoom.availableServers.get(0);
+        testServer.clearPatientForDischarge();
+
+        try {
+            triageRoom.dischargePatient();
+        } catch (NoSuchElementException e) {
+            System.out.println(e.getMessage());
+        }
+
         System.out.println(triageRoom.report());
 
     }

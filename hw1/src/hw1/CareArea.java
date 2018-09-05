@@ -3,6 +3,7 @@ package hw1;
 import java.util.Queue;
 import java.util.PriorityQueue;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.ArrayList;
 
 public class CareArea {
@@ -37,32 +38,56 @@ public class CareArea {
     }
 
     public boolean patientArrival(Patient newPatient) {
-        if (patientQueue.offer(newPatient)) {
+        if (patientQueue.offer(newPatient) || patientQueue.size() <= maxQueueLength) {
             return true;
         } else {
             return false;
         }
     }
 
-    public Patient receivePatient() {
+    public Patient receivePatient() throws NoSuchElementException {
         Patient nextPatient = (Patient)patientQueue.element();
         return nextPatient;
     }
 
-    public boolean servicePatient(Server server, Patient nextPatient) {
-        if (!server.isOccupied()) {
-            server.service(nextPatient);
-            return true;
-        } else {
-            return false;
+    public boolean servicePatient(Patient nextPatient) {
+        
+        for (Server possibleServer : availableServers) {
+            if (!possibleServer.isOccupied()) {
+                possibleServer.service(nextPatient);
+                return true;
+            } else {
+                return false;
+            }
         }
+        
+        // for (int i = 0; i < availableServers.size(); i++) {
+        //     Server possibleServer = availableServers.get(i);
+        //     if (!possibleServer.isOccupied()) {
+        //         possibleServer.service(nextPatient);
+        //         return true;
+        //     } else {
+        //         return false;
+        //     }
+        // }
     }
 
-    public void dischargePatient(Server server) {
-        Patient happyPatient = server.discharge();
+    public Patient dischargePatient() throws NoSuchElementException {
+        Patient happyPatient;
+        for (int i = 0; i < availableServers.size(); i++) {
+            Server currentServer = availableServers.get(i);
+            if (!currentServer.getPatientBeingServed().isInService()) {
+                happyPatient = currentServer.discharge();
 
-        serviceTimeLog.add(happyPatient.getServiceTime());
-        waitTimeLog.add(happyPatient.getWaitTime());
+                serviceTimeLog.add(happyPatient.getServiceTime());
+                waitTimeLog.add(happyPatient.getWaitTime());
+
+                return happyPatient;
+            } else {
+                throw new NoSuchElementException("There are no patients to discharge at the moment.");
+            }
+        }
+
     }
 
     public void calculateLogStats() {

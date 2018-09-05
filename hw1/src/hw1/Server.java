@@ -25,6 +25,10 @@ public class Server {
         occupied = true;
     }
 
+    public void clearPatientForDischarge() {
+        patientBeingServed.receiveDischarge();
+    }
+
     public Patient discharge() {
         occupied = false;
         patientsServed++;
