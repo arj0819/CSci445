@@ -7,9 +7,9 @@ public class Triage extends CareArea {
 
     public static final int NUM_OF_SERVERS = 1;
 
-    public Triage(int avgInterArrivalTimePerPatient, int avgServiceTimePerPatient, int maxQueueLength) {
-        super(avgInterArrivalTimePerPatient, 
-              avgServiceTimePerPatient, 
+    public Triage(int expectedAvgInterArrivalTimePerPatient, int expectedAvgServiceTimePerPatient, int maxQueueLength) {
+        super(expectedAvgInterArrivalTimePerPatient, 
+              expectedAvgServiceTimePerPatient, 
               maxQueueLength, 
               NUM_OF_SERVERS);
     }
