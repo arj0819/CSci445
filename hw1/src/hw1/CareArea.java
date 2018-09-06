@@ -8,14 +8,17 @@ import java.util.ArrayList;
 
 public class CareArea {
 
-    protected Queue patientQueue = new PriorityQueue<Patient>();
-    protected List availableServers = new ArrayList<Server>();
-    protected List serviceTimeLog = new ArrayList<Double>();
-    protected List waitTimeLog = new ArrayList<Double>();
+    protected Queue<Patient> patientQueue = new PriorityQueue<Patient>();
+    protected List<Server> availableServers = new ArrayList<Server>();
 
-    protected int avgInterArrivalTimePerPatient;
-    protected int avgServiceTimePerPatient;
+    protected List<Double> interArrivalTimeLog = new ArrayList<Double>();
+    protected List<Double> serviceTimeLog = new ArrayList<Double>();
+    protected List<Double> waitTimeLog = new ArrayList<Double>();
 
+    protected double expectedAvgInterArrivalTimePerPatient;
+    protected double expectedAvgServiceTimePerPatient;
+
+    private double actualAvgInterArrivalTime;
     private double actualAvgServiceTime;
     private double actualAvgWaitTime;
 
@@ -26,14 +29,14 @@ public class CareArea {
     protected int numOfServers;
 
 
-    public CareArea(int avgInterArrivalTimePerPatient, int avgServiceTimePerPatient, int maxQueueLength, int numOfServers) {
-        this.avgInterArrivalTimePerPatient = avgInterArrivalTimePerPatient;
-        this.avgServiceTimePerPatient = avgServiceTimePerPatient;
+    public CareArea(double expectedAvgInterArrivalTimePerPatient, double expectedAvgServiceTimePerPatient, int maxQueueLength, int numOfServers) {
+        this.expectedAvgInterArrivalTimePerPatient = expectedAvgInterArrivalTimePerPatient;
+        this.expectedAvgServiceTimePerPatient = expectedAvgServiceTimePerPatient;
         this.maxQueueLength = maxQueueLength;
         this.numOfServers = numOfServers;
 
         for (int i = 0; i < numOfServers; i++) {
-            availableServers.add(new Server(avgServiceTimePerPatient));
+            availableServers.add(new Server(expectedAvgServiceTimePerPatient));
         }
     }
 
@@ -46,20 +49,22 @@ public class CareArea {
     }
 
     public Patient receivePatient() throws NoSuchElementException {
-        Patient nextPatient = (Patient)patientQueue.element();
+        Patient nextPatient = patientQueue.element();
         return nextPatient;
     }
 
-    public boolean servicePatient(Patient nextPatient) {
+    public boolean servicePatient(Patient nextPatient, int currentMinute) {
         
+        boolean serviceAvailable = false;
+
         for (Server possibleServer : availableServers) {
             if (!possibleServer.isOccupied()) {
-                possibleServer.service(nextPatient);
-                return true;
-            } else {
-                return false;
+                possibleServer.service(nextPatient, currentMinute);
+                serviceAvailable = true;
+                break;
             }
         }
+        return serviceAvailable;
         
         // for (int i = 0; i < availableServers.size(); i++) {
         //     Server possibleServer = availableServers.get(i);
@@ -73,7 +78,7 @@ public class CareArea {
     }
 
     public Patient dischargePatient() throws NoSuchElementException {
-        Patient happyPatient;
+        Patient happyPatient = null;
         for (int i = 0; i < availableServers.size(); i++) {
             Server currentServer = availableServers.get(i);
             if (!currentServer.getPatientBeingServed().isInService()) {
@@ -82,12 +87,11 @@ public class CareArea {
                 serviceTimeLog.add(happyPatient.getServiceTime());
                 waitTimeLog.add(happyPatient.getWaitTime());
 
-                return happyPatient;
             } else {
                 throw new NoSuchElementException("There are no patients to discharge at the moment.");
             }
         }
-
+        return happyPatient;
     }
 
     public void calculateLogStats() {
@@ -119,6 +123,20 @@ public class CareArea {
 
     public int getNumOfServers() {
         return numOfServers;
+    }
+
+    public double getShortestWaitTime(int currentMinute) {
+
+        double shortestWaitTime = -1;
+
+        for (Server server : availableServers) {
+            if (shortestWaitTime == -1) {
+                shortestWaitTime = server.getServiceCompletionTime() - currentMinute;
+            } else if (shortestWaitTime >= server.getServiceCompletionTime() - currentMinute) {
+                shortestWaitTime = server.getServiceCompletionTime() - currentMinute;
+            }
+        }
+        return shortestWaitTime;
     }
 
     public String report() {
