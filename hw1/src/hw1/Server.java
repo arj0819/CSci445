@@ -5,23 +5,29 @@ import java.lang.Math;
 
 public class Server {
 
-    private int avgServiceTimePerPatient;
     private boolean occupied = false;
     private Patient patientBeingServed;
+
     private int patientsServed = 0;
+
+    private double expectedAvgServiceTimePerPatient;
+    private double actualAvgServiceTimePerPatient;
+    private double serviceCompletionTime;
 
     private Random rand = new Random();
 
-    public Server(int avgServiceTimePerPatient) {
-        this.avgServiceTimePerPatient = avgServiceTimePerPatient;
+    public Server(double expectedAvgServiceTimePerPatient) {
+        this.expectedAvgServiceTimePerPatient = expectedAvgServiceTimePerPatient;
     }
 
-    public void service(Patient patient) {
+    public void service(Patient patient, int currentMinute) {
         this.patientBeingServed = patient;
 
-        double serviceTimeRequired = Math.log(1-rand.nextDouble())/(-avgServiceTimePerPatient);
+        double serviceTimeRequired = Math.log(1-rand.nextDouble())/(-1/expectedAvgServiceTimePerPatient);
 
         patient.receiveService(serviceTimeRequired);
+        this.serviceCompletionTime = currentMinute + serviceTimeRequired;
+
         occupied = true;
     }
 
@@ -39,12 +45,20 @@ public class Server {
         return occupied;
     }
 
+    public double getActualAvgServiceTime() {
+        return actualAvgServiceTimePerPatient;
+    }
+
     public Patient getPatientBeingServed() {
         return patientBeingServed;
     }
 
     public int getNumOfPatientsServed() {
         return patientsServed;
+    }
+
+    public double getServiceCompletionTime() {
+        return serviceCompletionTime;
     }
 
 }
