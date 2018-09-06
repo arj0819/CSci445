@@ -53,18 +53,17 @@ public class CareArea {
         return nextPatient;
     }
 
-    public boolean servicePatient(Patient nextPatient, int currentMinute) {
+    public double servicePatient(Patient nextPatient, double currentMinute) {
         
-        boolean serviceAvailable = false;
+        double nextDischargeTime = 0.0;
 
         for (Server possibleServer : availableServers) {
             if (!possibleServer.isOccupied()) {
-                possibleServer.service(nextPatient, currentMinute);
-                serviceAvailable = true;
+                nextDischargeTime = possibleServer.service(nextPatient, currentMinute);
                 break;
             }
         }
-        return serviceAvailable;
+        return nextDischargeTime;
         
         // for (int i = 0; i < availableServers.size(); i++) {
         //     Server possibleServer = availableServers.get(i);
@@ -102,31 +101,35 @@ public class CareArea {
         double waitTimeRunningTotal = 0; 
 
         for (int i = 0; i < numOfServiceTimeLogs; i++) {
-            serviceTimeRunningTotal += (Double)serviceTimeLog.get(i);
+            serviceTimeRunningTotal += serviceTimeLog.get(i);
         }
         for (int i = 0; i < numOfWaitTimeLogs; i++) {
-            waitTimeRunningTotal += (Double)waitTimeLog.get(i);
+            waitTimeRunningTotal += waitTimeLog.get(i);
         }
 
         actualAvgServiceTime = serviceTimeRunningTotal / numOfServiceTimeLogs;
         actualAvgWaitTime = waitTimeRunningTotal / numOfWaitTimeLogs;
     }
 
-    public void calculateTotalPatientsServed() {
+    public int calculateTotalPatientsServed() {
         int numOfServers = availableServers.size();
 
         for (int i = 0; i < numOfServers; i++) {
-            Server currentServer = (Server)availableServers.get(i);
+            Server currentServer = availableServers.get(i);
             totalPatientsServed += currentServer.getNumOfPatientsServed();
         }
+        return totalPatientsServed;
     }
 
     public int getNumOfServers() {
         return numOfServers;
     }
 
-    public double getShortestWaitTime(int currentMinute) {
-
+    public double getShortestWaitTime(double currentMinute) {
+        if (currentMinute == 0) {
+            return 0.0;
+        }
+        
         double shortestWaitTime = -1;
 
         for (Server server : availableServers) {
@@ -137,6 +140,16 @@ public class CareArea {
             }
         }
         return shortestWaitTime;
+    }
+
+    public Server getServerReadyToDischarge(double nextDischargeTime) {
+        Server serverReadyToDischarge = null;
+        for (Server server : availableServers) {
+            if (server.getServiceCompletionTime() == nextDischargeTime) {
+                serverReadyToDischarge = server;
+            }
+        }
+        return serverReadyToDischarge;
     }
 
     public String report() {

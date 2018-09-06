@@ -20,7 +20,7 @@ public class Server {
         this.expectedAvgServiceTimePerPatient = expectedAvgServiceTimePerPatient;
     }
 
-    public void service(Patient patient, int currentMinute) {
+    public double service(Patient patient, double currentMinute) {
         this.patientBeingServed = patient;
 
         double serviceTimeRequired = Math.log(1-rand.nextDouble())/(-1/expectedAvgServiceTimePerPatient);
@@ -29,6 +29,7 @@ public class Server {
         this.serviceCompletionTime = currentMinute + serviceTimeRequired;
 
         occupied = true;
+        return serviceCompletionTime;
     }
 
     public void clearPatientForDischarge() {

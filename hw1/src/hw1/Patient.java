@@ -2,8 +2,11 @@ package hw1;
 
 import java.util.Random;
 
-public class Patient {
+public class Patient implements Comparable<Patient>{
 
+    private static int ID = 0;
+
+    private int uniqueID;
     private double waitTime;
     private double serviceTime;
 
@@ -11,6 +14,8 @@ public class Patient {
 
     public Patient(double waitTime) {
         this.waitTime = waitTime;
+        this.uniqueID = ID;
+        ID++;
     }
 
     public void receiveService(double serviceTime) {
@@ -32,6 +37,11 @@ public class Patient {
 
     public boolean isInService() {
         return inService;
+    }
+
+    @Override
+    public int compareTo(Patient other){
+        return 0;
     }
 }
         
