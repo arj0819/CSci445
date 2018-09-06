@@ -17,12 +17,12 @@ public class EmergencyRoomSimulation {
         CareArea triageRoom = new Triage(Integer.parseInt(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[2]));
         System.out.println(triageRoom.getNumOfServers());
 
-        if (!triageRoom.patientArrival(new Patient(20))) {
+        if (!triageRoom.patientArrival(new Patient(triageRoom.getShortestWaitTime(currentMinute)))) {
             System.out.println("Patient queue is full. Ending Simulation.");
         }
 
         try {
-            triageRoom.servicePatient(triageRoom.receivePatient());
+            triageRoom.servicePatient(triageRoom.receivePatient(), currentMinute);
         } catch (NoSuchElementException e) {
             System.out.println("The queue is empty at the moment.");
         } catch (Exception e) {
