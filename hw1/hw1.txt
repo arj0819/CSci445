@@ -73,3 +73,28 @@ SysClock
 
 Driver
     (Drives the program)
+
+INFORMATION FROM BLACKBOARD ANNOUNCEMENTS
+
+Program #1 Note:
+
+The generated random numbers for inter-arrival and service times should 
+be floats or doubles (32- or 64-bit--this may depend on the language you use). 
+Report metrics at the end of the program should be rounded to 3 decimal positions.
+
+Program #1, Additional Note:
+
+If the number of patients in the triage area (queue) is greater than or equal to 100, 
+your simulation should stop. Your program should then print a message stating why the
+simulation was stopped (ex "number of patients in queue exceeded pre-defined threshold"). 
+In this case the program should not print any report metrics. Also, the threshold value 
+should be a command-line argument.
+
+Program #1, Generating Exponential Random Numbers:
+
+To generate random variates (random variables) from an exponential distribution, 
+see the 5th edition of the text, section 1.4.3, bottom half of p. 28. You can also 
+read in the Wikipedia article, Exponential distribution, the section on Generating 
+Exponential Variates. The symbol beta (β) is sometimes used to refer to the mean 
+time of an exponential distribution. The symbol lambda (λ) = 1 / β
+
