@@ -64,14 +64,23 @@ public class EmergencyRoomSimulation {
             } else {
 
                 System.out.println("4");
-                Server serverReadyToDischarge = triageRoom.getServerReadyToDischarge(nextDischargeTime);
-                serverReadyToDischarge.clearPatientForDischarge();
+                try {
+                    Server serverReadyToDischarge = triageRoom.getServerReadyToDischarge(nextDischargeTime);
+                    serverReadyToDischarge.clearPatientForDischarge();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    e.printStackTrace();
+                }
         
                 try {
                     triageRoom.dischargePatient();
                 } catch (NoSuchElementException e) {
                     System.out.println(e.getMessage());
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    e.printStackTrace();
                 }
+                System.out.println("5");
     
                 if (triageRoom.calculateTotalPatientsServed() >= 100) {
                     endSimulation = true;
