@@ -1,0 +1,35 @@
+<!--
+     Aaron Johnnson - Program 2
+     CSci445
+
+     - build.xml -
+     This is a build script for use with Ant.
+-->
+<project name="Emergency Room Simulation - Triage Area" default="compile" basedir=".">
+
+    <property name="src.dir" location="src"/>
+    <property name="build.dir" location="build"/>
+
+    <target name="clean" description="delete the build directory and contents">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="init">
+        <mkdir dir="${build.dir}"/>
+    </target>
+
+    <target name="compile" description="compile source" depends="clean, init">
+        <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false"/>
+    </target>
+
+    <target name="run" description="run the simuilation" depends="compile">
+        <java fork="true" failonerror="yes" classpath="${build.dir}" classname="hw2.EmergencyRoomSimulation">
+            <arg description="the mean inter-arrival time in minutes" line="10"/>
+            <arg description="the mean service time in minutes" line="10"/>
+            <arg description="the max num of patients allowed in any queue" line="100"/>
+            <arg description="the max num of discharges before the simulation ends" line="100"/>
+        </java>
+    </target>
+
+</project>
+

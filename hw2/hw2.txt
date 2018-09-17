@@ -1,0 +1,145 @@
+CSci 445
+Fall, 2018
+Programming Assignment #2
+Due: Thursday, Sept 20, 2018
+
+PART II
+
+Write an object-oriented program to simulate the operation of an emergency department at a 
+small, rural hospital. 
+
+The emergency department has four areas to handle patients. All patients initially visit the 
+Triage area so that their cases can be prioritized based on clinical need. Some patients may be 
+discharged from the Triage area (and the emergency department) if they can be treated very 
+quickly. Patients who cannot be treated quickly will move from the Triage area to one of the 
+other areas in the emergency department before being discharged. The Trauma area handles 
+the most seriously ill or injured patients. The Acute Care area handles patients who are 
+seriously ill but not in immediate danger. Patients with conditions that are not life-threatening 
+are seen in the Prompt Care area. 
+
+The program shall implement a discrete-event simulation with a simulation clock using the 
+next-event time advance method. Each service area shall have a FIFO queue with one or more 
+servers (medical specialists). Configuration data for the simulation stop time and each service 
+area shall be read from a text file. The path to the input file shall be a command line parameter.
+
+Input file format:
+
+[simulation stop time]
+[number of servers] [triage inter-arrival mean] [triage service mean] [triage discharge probability]
+[number of servers] [trauma care service mean] [trauma care probability]
+[number of servers] [acute care service mean] [acute care probability]
+[number of servers] [prompt care service mean] [prompt care probability]
+
+Example input file data:
+
+10080
+1  6.0  7.0  0.10
+1  180.0  0.10
+1  85.0  0.30
+3  15.0  0.50
+
+An explanation of the example input file data follows. 
+The simulation shall end after 10,080 minutes (7 days).
+
+Triage area
+1 triage specialist
+Inter-arrival time from exponential distribution with mean of 6 minutes. 
+Service time from exponential distribution with mean of 7 minutes.
+Patients will be discharged from the emergency department with probability of 0.10.
+
+Trauma Care area
+1 trauma care specialist
+Service time: mean of 180 minutes
+Patients will move from Triage to Trauma Care with probability of 0.10.
+
+Acute Care area
+1 acute care specialist
+Service time: mean of 85 minutes
+Patients will move from Triage to Acute Care with probability of 0.30.
+
+Prompt Care area
+3 prompt care specialists
+Service time: mean of 15 minutes
+Patients will move from Triage to Prompt Care with probability of 0.50.
+
+
+Output
+The output printed to the console shall include: 
+• The total number of patients discharged from the Triage area who do not require additional care.
+• The total number of patients discharged from Trauma Care, Acute Care, and Prompt Care areas. 
+• Report the average delay in queue(s) for patients. 
+• The average number of patients in queue over time for each queue
+• Server utilization over time for each server in each care area.
+
+You can implement your assignment using Java, C++, or Python. The program shall create at 
+least two object types: a server object type and a patient object type. These object types shall 
+be defined in separate files. 
+
+Submit your source code files and any required build script using the directory structure below. 
+
+hw2/
+    [build script]
+    [input file: ed.txt]
+    src/
+        [source files] 
+        
+Upload your submission to Blackboard as a zipped file: lastname-firstname.hw2.zip. 
+
+
+INFORMATION FROM IN CLASS DISCUSSION
+
+Info on exponential distribution can be found on Page 28 in textbook.
+
+Most of the logic needed can be found in Example 1.4 in textbook.
+Also, check the flowcharts in the textbook for arrival, departure,
+and other events for proper modeling.
+
+T = -B*ln(u(0,1)) where -B is -lambda
+
+Max Queue size should be 100 patients. If we get beyond that, 
+terminate program and print why. Perhaps make Queue size a 
+command line parameter.
+
+Mr. Apostal's Class structure for PART I:
+
+Customer/Patient
+    ArrivalTime
+    DelayInQueue
+    DepartureTime ?
+
+Server
+    BusyStatus
+    QueueOfPatients
+
+SysClock
+    SimTime
+    NextArrivalTime
+    NextDepartTime
+
+Driver
+    (Drives the program)
+
+INFORMATION FROM BLACKBOARD ANNOUNCEMENTS
+
+Program #1 Note:
+
+The generated random numbers for inter-arrival and service times should 
+be floats or doubles (32- or 64-bit--this may depend on the language you use). 
+Report metrics at the end of the program should be rounded to 3 decimal positions.
+
+Program #1, Additional Note:
+
+If the number of patients in the triage area (queue) is greater than or equal to 100, 
+your simulation should stop. Your program should then print a message stating why the
+simulation was stopped (ex "number of patients in queue exceeded pre-defined threshold"). 
+In this case the program should not print any report metrics. Also, the threshold value 
+should be a command-line argument.
+
+Program #1, Generating Exponential Random Numbers:
+
+To generate random variates (random variables) from an exponential distribution, 
+see the 5th edition of the text, section 1.4.3, bottom half of p. 28. You can also 
+read in the Wikipedia article, Exponential distribution, the section on Generating 
+Exponential Variates. The symbol beta (β) is sometimes used to refer to the mean 
+time of an exponential distribution. The symbol lambda (λ) = 1 / β
+
