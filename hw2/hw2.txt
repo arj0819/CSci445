@@ -33,10 +33,10 @@ Input file format:
 Example input file data:
 
 10080
-1  6.0  7.0  0.10
-1  180.0  0.10
-1  85.0  0.30
-3  15.0  0.50
+1 6.0 7.0 0.10
+1 180.0 0.10
+1 85.0 0.30
+3 15.0 0.50
 
 An explanation of the example input file data follows. 
 The simulation shall end after 10,080 minutes (7 days).
