@@ -5,6 +5,8 @@ import java.io.FileReader;
 import java.io.File;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Queue;
+import java.util.PriorityQueue;
 
 public class EmergencyRoomSimulation {
 
@@ -12,6 +14,7 @@ public class EmergencyRoomSimulation {
     static int totalSimTime = 0;
 
     static List<CareArea> careAreas = new ArrayList<CareArea>();
+    static List<Event> events = new ArrayList<Event>();
 
     public static void main(String[] args) {
 
@@ -60,6 +63,7 @@ public class EmergencyRoomSimulation {
         } catch (Exception e) {
             System.err.println("Invalid file format provided.");
             System.err.println(e.getMessage());
+            System.exit(1);
         }
 
         for (CareArea area : careAreas) {

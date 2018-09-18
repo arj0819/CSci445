@@ -3,19 +3,20 @@ package hw2;
 public class CareArea {
 
     private int numOfServers = 0;
+    private int availableServers = 0;
 
     private double probabilityOfTransfer = 0.0;
     private double meanServiceTime = 0.0;
     private double meanInterArrivalTime = 0.0;
 
     public CareArea(int numOfServers, double probabilityOfTransfer, double meanServiceTime) {
-        this.numOfServers = numOfServers;
+        this.numOfServers = numOfServers = availableServers;
         this.probabilityOfTransfer = probabilityOfTransfer;
         this.meanServiceTime = meanServiceTime;
     }
 
     public CareArea(int numOfServers, double probabilityOfTransfer, double meanServiceTime, double meanInterArrivalTime) {
-        this.numOfServers = numOfServers;
+        this.numOfServers = numOfServers = availableServers;
         this.probabilityOfTransfer = probabilityOfTransfer;
         this.meanServiceTime = meanServiceTime;
         this.meanInterArrivalTime = meanInterArrivalTime;
