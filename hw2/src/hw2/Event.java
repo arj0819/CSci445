@@ -1,6 +1,6 @@
 package hw2;
 
-public class Event {
+public class Event implements Comparable<Event> {
 
     //Event Precedence constants used in the
     //event PriorityQueue during a compare
@@ -27,8 +27,8 @@ public class Event {
         
         if (this.timeOccurred < otherEvent.getTimeOccurred()) {
             result = -1;
-        } else if (this.eventTime == otherEvent.getEventTime()) {
-            result = (this.precedence == Event.EVENT_ARRIVE ? -1 : 1);
+        } else if (this.timeOccurred == otherEvent.getTimeOccurred()) {
+            result = this.precedence == Event.EVENT_ARRIVE ? -1 : 1;
         } else {
             result = 1;
         }
