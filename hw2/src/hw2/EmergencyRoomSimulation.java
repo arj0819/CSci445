@@ -7,13 +7,14 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Queue;
 import java.util.PriorityQueue;
+import java.util.Hashtable;
 
 public class EmergencyRoomSimulation {
 
     static double currentTime = 0.0;
     static int totalSimTime = 0;
 
-    static List<CareArea> careAreas = new ArrayList<CareArea>();
+    static Hashtable<String,CareArea> emergencyDept = new Hashtable<String,CareArea>();
     static Queue<Event> events = new PriorityQueue<Event>();
 
     public static void main(String[] args) {
@@ -32,7 +33,7 @@ public class EmergencyRoomSimulation {
                 Double.parseDouble(tokens[2]),
                 Double.parseDouble(tokens[1])
             );
-            careAreas.add(triage);
+            emergencyDept.put("Triage", triage);
 
             tokens = rdr.readLine().split(" ");
             CareArea trauma = new Trauma (
@@ -40,7 +41,7 @@ public class EmergencyRoomSimulation {
                 Double.parseDouble(tokens[2]),
                 Double.parseDouble(tokens[1])
             );
-            careAreas.add(trauma);
+            emergencyDept.put("Trauma", trauma);
 
             tokens = rdr.readLine().split(" ");
             CareArea acute = new Acute (
@@ -48,7 +49,7 @@ public class EmergencyRoomSimulation {
                 Double.parseDouble(tokens[2]),
                 Double.parseDouble(tokens[1])
             );
-            careAreas.add(acute);
+            emergencyDept.put("Acute", acute);
 
             tokens = rdr.readLine().split(" ");
             CareArea prompt = new Prompt (
@@ -56,7 +57,7 @@ public class EmergencyRoomSimulation {
                 Double.parseDouble(tokens[2]),
                 Double.parseDouble(tokens[1])
             );
-            careAreas.add(prompt);
+            emergencyDept.put("Prompt", prompt);
 
             rdr.close();
 
@@ -66,8 +67,8 @@ public class EmergencyRoomSimulation {
             System.exit(1);
         }
 
-        for (CareArea area : careAreas) {
-            System.out.println(area);
+        for (String area : emergencyDept.keySet()) {
+            System.out.println(emergencyDept.get(area));
         }
 
         //EventScheduler es = new EventScheduler(simTime);
