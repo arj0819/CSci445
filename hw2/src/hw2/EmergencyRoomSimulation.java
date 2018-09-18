@@ -14,7 +14,7 @@ public class EmergencyRoomSimulation {
     static int totalSimTime = 0;
 
     static List<CareArea> careAreas = new ArrayList<CareArea>();
-    static List<Event> events = new ArrayList<Event>();
+    static Queue<Event> events = new PriorityQueue<Event>();
 
     public static void main(String[] args) {
 
