@@ -1,0 +1,16 @@
+10080
+1 6.0 7.0 0.10
+1 180.0 0.10
+1 85.0 0.30
+3 15.0 0.50
+
+#
+Everything below the hashtag will be ignored by the program.
+
+Everything above the hashtag must be in this exact format:
+
+[sim stop time <int>]
+[num of servers <int>] [triage inter-arrival mean <double>] [triage service mean <double>] [triage discharge probability <double>]
+[num of servers <int>] [trauma care service mean <double>] [trauma care probability <double>]
+[num of servers <int>] [acute care service mean <double>] [acute care probability <double>]
+[num of servers <int>] [prompt care service mean <double>] [prompt care probability <double>]

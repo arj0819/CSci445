@@ -1,161 +1,43 @@
-package hw1;
-
-import java.util.Queue;
-import java.util.PriorityQueue;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.ArrayList;
+package hw2;
 
 public class CareArea {
 
-    protected Queue<Patient> patientQueue = new PriorityQueue<Patient>();
-    protected List<Server> availableServers = new ArrayList<Server>();
+    private int numOfServers = 0;
 
-    protected List<Double> interArrivalTimeLog = new ArrayList<Double>();
-    protected List<Double> serviceTimeLog = new ArrayList<Double>();
-    protected List<Double> waitTimeLog = new ArrayList<Double>();
+    private double probabilityOfTransfer = 0.0;
+    private double meanServiceTime = 0.0;
+    private double meanInterArrivalTime = 0.0;
 
-    protected double expectedAvgInterArrivalTimePerPatient;
-    protected double expectedAvgServiceTimePerPatient;
-
-    private double actualAvgInterArrivalTime;
-    private double actualAvgServiceTime;
-    private double actualAvgWaitTime;
-
-    protected int totalPatientsServed;
-    protected int minutesInOperation;
-    protected int averagePatientsInQueue;
-    protected int maxQueueLength;
-    protected int numOfServers;
-
-
-    public CareArea(double expectedAvgInterArrivalTimePerPatient, double expectedAvgServiceTimePerPatient, int maxQueueLength, int numOfServers) {
-        this.expectedAvgInterArrivalTimePerPatient = expectedAvgInterArrivalTimePerPatient;
-        this.expectedAvgServiceTimePerPatient = expectedAvgServiceTimePerPatient;
-        this.maxQueueLength = maxQueueLength;
+    public CareArea(int numOfServers, double probabilityOfTransfer, double meanServiceTime) {
         this.numOfServers = numOfServers;
+        this.probabilityOfTransfer = probabilityOfTransfer;
+        this.meanServiceTime = meanServiceTime;
+    }
 
-        for (int i = 0; i < numOfServers; i++) {
-            availableServers.add(new Server(expectedAvgServiceTimePerPatient));
+    public CareArea(int numOfServers, double probabilityOfTransfer, double meanServiceTime, double meanInterArrivalTime) {
+        this.numOfServers = numOfServers;
+        this.probabilityOfTransfer = probabilityOfTransfer;
+        this.meanServiceTime = meanServiceTime;
+        this.meanInterArrivalTime = meanInterArrivalTime;
+    }
+
+
+    @Override
+    public String toString() {
+        String str = String.format (
+            "\n----\\/---- "+this.getClass().getName().replace("hw2.","")+" Area ----\\/----"+
+            "\n\nServers -----------------> "+numOfServers+
+            "\nMean Service Time -------> "+meanServiceTime+
+            "\nProbability of Transfer -> "+probabilityOfTransfer+
+            "\n"
+        );
+        if (this instanceof Triage) {
+            str=str+
+            "Mean Inter-Arrival Time -> "+meanInterArrivalTime+"\n";
         }
+        str=str+"\n----/\\---- "+this.getClass().getName().replace("hw2.","")+" Area ----/\\----\n";
+        return str;
     }
 
-    public boolean patientArrival(Patient newPatient) {
-        if (patientQueue.offer(newPatient) || patientQueue.size() <= maxQueueLength) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public Patient receivePatient() throws NoSuchElementException {
-        Patient nextPatient = patientQueue.element();
-        return nextPatient;
-    }
-
-    public double servicePatient(Patient nextPatient, double currentMinute) {
-        
-        double nextDischargeTime = 0.0;
-
-        for (Server possibleServer : availableServers) {
-            if (!possibleServer.isOccupied()) {
-                nextDischargeTime = possibleServer.service(nextPatient, currentMinute);
-                break;
-            }
-        }
-        return nextDischargeTime;
-        
-        // for (int i = 0; i < availableServers.size(); i++) {
-        //     Server possibleServer = availableServers.get(i);
-        //     if (!possibleServer.isOccupied()) {
-        //         possibleServer.service(nextPatient);
-        //         return true;
-        //     } else {
-        //         return false;
-        //     }
-        // }
-    }
-
-    public Patient dischargePatient() throws NoSuchElementException {
-        Patient happyPatient = null;
-        for (int i = 0; i < availableServers.size(); i++) {
-            Server currentServer = availableServers.get(i);
-            if (!currentServer.getPatientBeingServed().isInService()) {
-                happyPatient = currentServer.discharge();
-
-                serviceTimeLog.add(happyPatient.getServiceTime());
-                waitTimeLog.add(happyPatient.getWaitTime());
-
-            } else {
-                throw new NoSuchElementException("There are no patients to discharge at the moment.");
-            }
-        }
-        return happyPatient;
-    }
-
-    public void calculateLogStats() {
-        int numOfServiceTimeLogs = serviceTimeLog.size();
-        double serviceTimeRunningTotal = 0;
-
-        int numOfWaitTimeLogs = waitTimeLog.size();
-        double waitTimeRunningTotal = 0; 
-
-        for (int i = 0; i < numOfServiceTimeLogs; i++) {
-            serviceTimeRunningTotal += serviceTimeLog.get(i);
-        }
-        for (int i = 0; i < numOfWaitTimeLogs; i++) {
-            waitTimeRunningTotal += waitTimeLog.get(i);
-        }
-
-        actualAvgServiceTime = serviceTimeRunningTotal / numOfServiceTimeLogs;
-        actualAvgWaitTime = waitTimeRunningTotal / numOfWaitTimeLogs;
-    }
-
-    public int calculateTotalPatientsServed() {
-        int numOfServers = availableServers.size();
-
-        for (int i = 0; i < numOfServers; i++) {
-            Server currentServer = availableServers.get(i);
-            totalPatientsServed += currentServer.getNumOfPatientsServed();
-        }
-        return totalPatientsServed;
-    }
-
-    public int getNumOfServers() {
-        return numOfServers;
-    }
-
-    public double getShortestWaitTime(double currentMinute) {
-        if (currentMinute == 0) {
-            return 0.0;
-        }
-        
-        double shortestWaitTime = -1;
-
-        for (Server server : availableServers) {
-            if (shortestWaitTime == -1) {
-                shortestWaitTime = server.getServiceCompletionTime() - currentMinute;
-            } else if (shortestWaitTime >= server.getServiceCompletionTime() - currentMinute) {
-                shortestWaitTime = server.getServiceCompletionTime() - currentMinute;
-            }
-        }
-        return shortestWaitTime;
-    }
-
-    public Server getServerReadyToDischarge(double nextDischargeTime) {
-        Server serverReadyToDischarge = null;
-        for (Server server : availableServers) {
-            if (server.getServiceCompletionTime() == nextDischargeTime) {
-                serverReadyToDischarge = server;
-            }
-        }
-        return serverReadyToDischarge;
-    }
-
-    public String report() {
-        calculateLogStats();
-        calculateTotalPatientsServed();
-        return "Total Patients Served: " + totalPatientsServed + "\nAverage Wait Time: " + actualAvgWaitTime + "\nAverage Service Time: " + actualAvgServiceTime;
-    }
 
 }
