@@ -14,7 +14,7 @@ public class Arrival extends Event {
         return totalArrivals;
     }
 
-    public int getArrivalID() {
+    public int getID() {
         return arrivalID;
     }
 }
