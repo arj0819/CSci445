@@ -14,8 +14,8 @@ public class EmergencyRoomSimulation {
     static double currentTime = 0.0;
     static int totalSimTime = 0;
 
-    static Hashtable<String,CareArea> emergencyDept = new Hashtable<String,CareArea>();
-    static Queue<Event> events = new PriorityQueue<Event>();
+    private static Hashtable<String,CareArea> emergencyDept = new Hashtable<String,CareArea>();
+    private static Queue<Event> events = new PriorityQueue<Event>();
 
     public static void main(String[] args) {
 
