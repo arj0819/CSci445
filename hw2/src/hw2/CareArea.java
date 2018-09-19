@@ -9,6 +9,7 @@ public class CareArea {
 
     private int numOfServers = 0;
     private int availableServers = 0;
+    private int patientsServiced = 0;
 
     private double probabilityOfTransfer = 0.0;
     private double expectedMeanServiceTime = 0.0;
@@ -36,6 +37,7 @@ public class CareArea {
     public boolean servicePatient() {
         if (availableServers > 0) {
             availableServers--;
+            patientsServiced++;
             return true;
         } else {
             return false;
