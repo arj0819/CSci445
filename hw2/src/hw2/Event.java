@@ -2,51 +2,61 @@ package hw2;
 
 public class Event implements Comparable<Event> {
 
-    private int precedence = 0;
-    private double timeOccurred = 0.0;
-    private double timeEndured = 0.0;
-    private double timeWaited = 0.0;
-    private double timeFinished = 0.0;
+    private double timeArrived = 0.0;
+    private double timeDeparted = 0.0;
+    
+    private double serviceTime = 0.0;
+    private double interArrivalTime = 0.0;
+    private double waitTime = 0.0;
 
-    public Event(double timeOccurred, double timeEndured) {
-        this.timeOccurred = timeOccurred;
-        this.timeEndured = timeEndured;
-        this.timeFinished = timeOccurred + timeEndured;
+    public Event(double timeDeparted) {
+        this.timeDeparted = timeDeparted;
     }
 
-    public Event(double timeOccurred, double timeEndured, double timeWaited) {
-        this.timeOccurred = timeOccurred;
-        this.timeEndured = timeEndured;
-        this.timeWaited = timeWaited;
-        this.timeFinished = timeOccurred + timeEndured + timeWaited;
+    public Event(double timeArrived, double interArrivalTime, double serviceTime, double waitTime) {
+        this.timeArrived = timeArrived;
+        this.interArrivalTime = interArrivalTime;
+        this.waitTime = waitTime;
+        this.timeDeparted = timeArrived + waitTime;
     }
 
+
+    public double getTimeArrived() {
+        return timeArrived;
+    }
+
+    public double getTimeDeparted() {
+        return timeDeparted;
+    }
+
+    public double getServiceTime() {
+        return serviceTime;
+    }
+
+    public double getInterArrivalTime() {
+        return interArrivalTime;
+    }
+
+    public double getWaitTime() {
+        return waitTime;
+    }
 
     public double getTimeOccurred() {
-        return timeOccurred;
+        if (this instanceof Arrival) {
+            return timeArrived;
+        } else {
+            return timeDeparted;
+        }
     }
-
-    public double getTimeEndured() {
-        return timeEndured;
-    }
-
-    public double getTimeWaited() {
-        return timeWaited;
-    }
-
-    public double getTimeFinished() {
-        return timeFinished;
-    }
-
 
 
     @Override
     public int compareTo(Event otherEvent){
         int result = 0;
         
-        if (this.timeOccurred < otherEvent.getTimeOccurred()) {
+        if (this.getTimeOccurred() < otherEvent.getTimeOccurred()) {
             result = -1;
-        } else if (this.timeOccurred == otherEvent.getTimeOccurred()) {
+        } else if (this.getTimeOccurred() == otherEvent.getTimeOccurred()) {
             result = this instanceof Arrival ? -1 : 1;
         } else {
             result = 1;
