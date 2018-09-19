@@ -82,17 +82,23 @@ public class EmergencyRoomSimulation {
         }
 
         // Schedule ALL of the Events!
+        double nextInterArrivalTime = 0.0;
+        double nextServiceTime = 0.0;
+        double actualAvgIntArrTime = 0.0;
+        double actualAvgSrvcTime = 0.0;
         while (currentTime <= totalSimTime) {
-            double prevArrivalTime = currentTime;
+
+            nextInterArrivalTime = scheduleInterArrivalTime(emergencyDept.get(CareArea.TRIAGE));
+            nextServiceTime = scheduleServiceTime(emergencyDept.get(CareArea.TRIAGE));
+
+            actualAvgIntArrTime+=nextInterArrivalTime;
+            actualAvgSrvcTime+=nextServiceTime;
+
             currentTime++;
         }
 
-
-
-        //EventScheduler es = new EventScheduler(simTime);
-
-        //currentTime = es.getNextEvent();
-
+        System.out.println("Actual Avg Int-Arr Time: "+ actualAvgIntArrTime/currentTime);
+        System.out.println("Actual Avg service Time: "+ actualAvgSrvcTime/currentTime);
 
     }
 
