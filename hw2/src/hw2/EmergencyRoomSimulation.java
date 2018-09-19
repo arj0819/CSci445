@@ -104,4 +104,24 @@ public class EmergencyRoomSimulation {
         return Math.log(1-rand.nextDouble())/(-1/area.getExpMeanServiceTime());
     }
 
+    public static String schedulePatientServiceArea(Hashtable<String,Double> transferProbabilities) {
+        double transferValue = rand.nextDouble();
+
+        double probLeaveTriage = transferProbabilities.get(CareArea.TRIAGE);
+        double probTransTrauma = transferProbabilities.get(CareArea.TRAUMA);
+        double probTransAcute  = transferProbabilities.get(CareArea.ACUTE);
+        double probTransPrompt = transferProbabilities.get(CareArea.PROMPT);
+
+        if (transferValue < probLeaveTriage) {
+            return CareArea.TRIAGE;
+        } else if (transferValue < probLeaveTriage + probTransTrauma) {
+            return CareArea.TRAUMA;
+        } else if (transferValue < probLeaveTriage + probTransTrauma + probTransAcute) {
+            return CareArea.ACUTE;
+        } else {
+            return CareArea.PROMPT;
+        }
+
+    }
+
 }
