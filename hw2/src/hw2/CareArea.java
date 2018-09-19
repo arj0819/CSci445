@@ -67,15 +67,29 @@ public class CareArea {
 
     @Override
     public String toString() {
+
+        String areaType = "";
+        boolean isTriage = false;
+        if (this instanceof Triage) {
+            areaType = CareArea.TRIAGE;
+            isTriage = true;
+        } else if (this instanceof Trauma) {
+            areaType = CareArea.TRAUMA;
+        } else if (this instanceof Acute) {
+            areaType = CareArea.ACUTE;
+        } else {
+            areaType = CareArea.PROMPT;
+        }
+
         String str = String.format (
-            "\n--------\\/-------- "+this.getClass().getName().replace("hw2.","")+" Area --------\\/--------"+
+            "\n--------\\/-------- "+areaType+" Area --------\\/--------"+
             "\n\nServers ---------------------------------> "+numOfServers+
             "\nPatients Served -------------------------> "+patientsServed+
             "\nExpected Mean Service Time --------------> "+expectedMeanServiceTime+
             "\nActual Mean Service Time ----------------> "+actualMeanServiceTime+
             "\n"
         );
-        if (this instanceof Triage) {
+        if (isTriage) {
             str=str+
             "Expected Mean Inter-Arrival Time --------> "+expectedMeanInterArrivalTime+
             "\nActual Mean Inter-Arrival Time ----------> "+actualMeanInterArrivalTime+
@@ -84,7 +98,7 @@ public class CareArea {
             str=str+
             "Prob. of Transfer from Triage Area ------> "+probabilityOfTransfer+"\n";
         }
-        str=str+"\n--------/\\-------- "+this.getClass().getName().replace("hw2.","")+" Area --------/\\--------\n";
+        str=str+"\n--------/\\-------- "+areaType+" Area --------/\\--------\n";
         return str;
     }
 
