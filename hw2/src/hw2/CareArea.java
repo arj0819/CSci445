@@ -82,7 +82,7 @@ public class CareArea {
             "\nProb. of Discharge from Emergency Dept. -> "+probabilityOfTransfer+"\n";
         } else {
             str=str+
-            "Prob. of Transfer From Triage Area ------> "+probabilityOfTransfer+"\n";
+            "Prob. of Transfer from Triage Area ------> "+probabilityOfTransfer+"\n";
         }
         str=str+"\n--------/\\-------- "+this.getClass().getName().replace("hw2.","")+" Area --------/\\--------\n";
         return str;
