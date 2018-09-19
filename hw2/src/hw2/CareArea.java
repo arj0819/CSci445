@@ -61,17 +61,20 @@ public class CareArea {
     public String toString() {
         String str = String.format (
             "\n--------\\/-------- "+this.getClass().getName().replace("hw2.","")+" Area --------\\/--------"+
-            "\n\nServers ---------------------------> "+numOfServers+
-            "\nPatients Served -------------------> "+patientsServed+
-            "\nProb. of Transfer From Prev. Area -> "+probabilityOfTransfer+
-            "\nExpected Mean Service Time --------> "+expectedMeanServiceTime+
-            "\nActual Mean Service Time ----------> "+actualMeanServiceTime+
+            "\n\nServers ---------------------------------> "+numOfServers+
+            "\nPatients Served -------------------------> "+patientsServed+
+            "\nExpected Mean Service Time --------------> "+expectedMeanServiceTime+
+            "\nActual Mean Service Time ----------------> "+actualMeanServiceTime+
             "\n"
         );
         if (this instanceof Triage) {
             str=str+
-            "Expected Mean Inter-Arrival Time --> "+expectedMeanInterArrivalTime+
-            "Actual Mean Inter-Arrival Time ----> "+actualMeanInterArrivalTime+"\n";
+            "Expected Mean Inter-Arrival Time --------> "+expectedMeanInterArrivalTime+
+            "\nActual Mean Inter-Arrival Time ----------> "+actualMeanInterArrivalTime+
+            "\nProb. of Discharge from Emergency Dept. -> "+probabilityOfTransfer+"\n";
+        } else {
+            str=str+
+            "Prob. of Transfer From Triage Area ------> "+probabilityOfTransfer+"\n";
         }
         str=str+"\n--------/\\-------- "+this.getClass().getName().replace("hw2.","")+" Area --------/\\--------\n";
         return str;
