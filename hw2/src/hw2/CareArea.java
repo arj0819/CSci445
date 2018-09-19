@@ -1,5 +1,10 @@
 package hw2;
 
+// import java.util.List;
+// import java.util.ArrayList;
+// import java.util.Queue;
+// import java.util.PriorityQueue;
+
 public class CareArea {
 
     private int numOfServers = 0;
@@ -12,6 +17,9 @@ public class CareArea {
     private double actualMeanServiceTime = 0.0;
     private double actualMeanInterArrivalTime = 0.0;
 
+    // private Queue<Event> arrivals = new PriorityQueue<Event>();
+    // private List<Event> departures = new ArrayList<Departure>();
+
     public CareArea(int numOfServers, double probabilityOfTransfer, double expectedMeanServiceTime) {
         this.numOfServers = numOfServers = availableServers;
         this.probabilityOfTransfer = probabilityOfTransfer;
@@ -23,6 +31,21 @@ public class CareArea {
         this.probabilityOfTransfer = probabilityOfTransfer;
         this.expectedMeanServiceTime = expectedMeanServiceTime;
         this.expectedMeanInterArrivalTime = expectedMeanInterArrivalTime;
+    }
+
+    public boolean servicePatient() {
+        if (availableServers > 0) {
+            availableServers--;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void releasePatient() {
+        if(availableServers < numOfServers) {
+            availableServers++;
+        }
     }
 
 
@@ -42,6 +65,5 @@ public class CareArea {
         str=str+"\n--------/\\-------- "+this.getClass().getName().replace("hw2.","")+" Area --------/\\--------\n";
         return str;
     }
-
 
 }
