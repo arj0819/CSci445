@@ -15,6 +15,7 @@ public class EmergencyRoomSimulation {
     static int totalSimTime = 0;
 
     private static Hashtable<String,CareArea> emergencyDept = new Hashtable<String,CareArea>();
+    private static Hashtable<String,Double> transferProbabilities = new Hashtable<String,Double>();
     private static Queue<Event> events = new PriorityQueue<Event>();
 
     public static void main(String[] args) {
@@ -27,37 +28,41 @@ public class EmergencyRoomSimulation {
             totalSimTime = Integer.parseInt(currentLine);
 
             String[] tokens = rdr.readLine().split(" ");
-            CareArea triage = new Triage (
-                Integer.parseInt(tokens[0]),
-                Double.parseDouble(tokens[3]),
-                Double.parseDouble(tokens[2]),
-                Double.parseDouble(tokens[1])
-            );
-            emergencyDept.put("Triage", triage);
+            int numServers = Integer.parseInt(tokens[0]);
+            double probOfTransfer = Double.parseDouble(tokens[3]);
+            double serviceMean = Double.parseDouble(tokens[2]);
+            double interArrivalMean = Double.parseDouble(tokens[1]);
+            CareArea triage = new Triage (numServers,probOfTransfer,serviceMean,interArrivalMean);
+
+            emergencyDept.put(CareArea.TRIAGE, triage);
+            transferProbabilities.put(CareArea.TRIAGE, probOfTransfer);
 
             tokens = rdr.readLine().split(" ");
-            CareArea trauma = new Trauma (
-                Integer.parseInt(tokens[0]),
-                Double.parseDouble(tokens[2]),
-                Double.parseDouble(tokens[1])
-            );
-            emergencyDept.put("Trauma", trauma);
+            numServers = Integer.parseInt(tokens[0]);
+            probOfTransfer = Double.parseDouble(tokens[2]);
+            serviceMean = Double.parseDouble(tokens[1]);
+            CareArea trauma = new Trauma (numServers,probOfTransfer,serviceMean);
+
+            emergencyDept.put(CareArea.TRAUMA, trauma);
+            transferProbabilities.put(CareArea.TRAUMA, probOfTransfer);
 
             tokens = rdr.readLine().split(" ");
-            CareArea acute = new Acute (
-                Integer.parseInt(tokens[0]),
-                Double.parseDouble(tokens[2]),
-                Double.parseDouble(tokens[1])
-            );
-            emergencyDept.put("Acute", acute);
+            numServers = Integer.parseInt(tokens[0]);
+            probOfTransfer = Double.parseDouble(tokens[2]);
+            serviceMean = Double.parseDouble(tokens[1]);
+            CareArea acute = new Acute (numServers,probOfTransfer,serviceMean);
+
+            emergencyDept.put(CareArea.ACUTE, acute);
+            transferProbabilities.put(CareArea.ACUTE, probOfTransfer);
 
             tokens = rdr.readLine().split(" ");
-            CareArea prompt = new Prompt (
-                Integer.parseInt(tokens[0]),
-                Double.parseDouble(tokens[2]),
-                Double.parseDouble(tokens[1])
-            );
-            emergencyDept.put("Prompt", prompt);
+            numServers = Integer.parseInt(tokens[0]);
+            probOfTransfer = Double.parseDouble(tokens[2]);
+            serviceMean = Double.parseDouble(tokens[1]);
+            CareArea prompt = new Prompt (numServers,probOfTransfer,serviceMean);
+            
+            emergencyDept.put(CareArea.PROMPT, prompt);
+            transferProbabilities.put(CareArea.PROMPT, probOfTransfer);
 
             rdr.close();
 
