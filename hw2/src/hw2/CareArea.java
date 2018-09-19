@@ -56,6 +56,14 @@ public class CareArea {
         }
     }
 
+    public double getExpMeanInterArrivalTime() {
+        return expectedMeanInterArrivalTime;
+    }
+
+    public double getExpMeanServiceTime() {
+        return expectedMeanServiceTime;
+    }
+
 
     @Override
     public String toString() {
