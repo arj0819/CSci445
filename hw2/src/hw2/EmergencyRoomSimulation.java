@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Queue;
 import java.util.PriorityQueue;
 import java.util.Hashtable;
+import java.util.Random;
 
 public class EmergencyRoomSimulation {
 
@@ -20,6 +21,7 @@ public class EmergencyRoomSimulation {
 
     public static void main(String[] args) {
 
+        // Set up the Care Areas!
         try {
             File simInput = new File("src/hw2/simInput.txt");
             BufferedReader rdr = new BufferedReader(new FileReader(simInput));
@@ -60,7 +62,7 @@ public class EmergencyRoomSimulation {
             probOfTransfer = Double.parseDouble(tokens[2]);
             serviceMean = Double.parseDouble(tokens[1]);
             CareArea prompt = new Prompt (numServers,probOfTransfer,serviceMean);
-            
+
             emergencyDept.put(CareArea.PROMPT, prompt);
             transferProbabilities.put(CareArea.PROMPT, probOfTransfer);
 
@@ -72,15 +74,31 @@ public class EmergencyRoomSimulation {
             System.exit(1);
         }
 
+        // Iterate through the Care Areas to test if things worked!
         for (String area : emergencyDept.keySet()) {
             System.out.println(emergencyDept.get(area));
         }
+
+        // Schedule ALL of the Events!
+        while (currentTime <= totalSimTime) {
+            int prevArrivalTime = currentTime;
+        }
+
+
 
         //EventScheduler es = new EventScheduler(simTime);
 
         //currentTime = es.getNextEvent();
 
 
+    }
+
+    public static double scheduleInterArrivalTime(CareArea triage) {
+        return Math.log(1-rand.nextDouble())/(-1/triage.getExpMeanInterArrivalTime());
+    }
+
+    public static double scheduleServiceTime(CareArea area) {
+        return Math.log(1-rand.nextDouble())/(-1/area.getExpMeanServiceTime());
     }
 
 }
