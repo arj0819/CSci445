@@ -19,6 +19,8 @@ public class EmergencyRoomSimulation {
     private static Hashtable<String,Double> transferProbabilities = new Hashtable<String,Double>();
     private static Queue<Event> events = new PriorityQueue<Event>();
 
+    private static Random rand = new Random();
+
     public static void main(String[] args) {
 
         // Set up the Care Areas!
@@ -81,7 +83,8 @@ public class EmergencyRoomSimulation {
 
         // Schedule ALL of the Events!
         while (currentTime <= totalSimTime) {
-            int prevArrivalTime = currentTime;
+            double prevArrivalTime = currentTime;
+            currentTime++;
         }
 
 
