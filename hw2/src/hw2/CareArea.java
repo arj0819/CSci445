@@ -50,7 +50,7 @@ public class CareArea {
         }
     }
 
-    public void releasePatient() {
+    public void dischargePatient() {
         if(availableServers < numOfServers) {
             availableServers++;
         }
