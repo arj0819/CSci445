@@ -6,8 +6,8 @@ public class Arrival extends Event {
     private int arrivalID = 0;
     private boolean transferRequired = false;
     
-    public Arrival(double timeOccurred, double timeEndured, double timeWaited, boolean transferRequired) {
-        super(timeOccurred, timeEndured, timeWaited);
+    public Arrival(double timeArrived, double interArrivalTime, double serviceTime, double waitTime, boolean transferRequired) {
+        super(timeArrived, interArrivalTime, serviceTime, waitTime);
         this.transferRequired = transferRequired;
         this.arrivalID = ++totalArrivals;
     }
