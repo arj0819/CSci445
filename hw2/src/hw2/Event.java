@@ -2,6 +2,9 @@ package hw2;
 
 public class Event implements Comparable<Event> {
 
+    public static final String ARRIVAL = "Arrival";
+    public static final String DEPARTURE = "Departure";
+
     private double timeArrived = 0.0;
     private double timeDeparted = 0.0;
     
