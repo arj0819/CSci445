@@ -173,7 +173,6 @@ public class EmergencyRoomSimulation {
         System.out.println("Patients Still In Triage Queue: "+ 0);
         System.out.println("      Number of Waits Occurred: "+ Event.getNumOfWaits());
         System.out.println("             Average Wait Time: "+ Event.getAverageWaitTime());
-        System.out.println("Patients Still In Triage Queue: "+ 0);
 
     }
 
