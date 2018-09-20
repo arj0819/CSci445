@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.File;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.ArrayList;
 import java.util.Queue;
 import java.util.PriorityQueue;
@@ -18,6 +19,8 @@ public class EmergencyRoomSimulation {
     private static Hashtable<String,CareArea> emergencyDept = new Hashtable<String,CareArea>();
     private static Hashtable<String,Double> transferProbabilities = new Hashtable<String,Double>();
     private static Queue<Event> events = new PriorityQueue<Event>();
+    private static List<Event> arrivals = new ArrayList<Event>();
+    private static List<Event> departures = new ArrayList<Event>();
 
     private static Random rand = new Random();
 
@@ -81,24 +84,73 @@ public class EmergencyRoomSimulation {
             System.out.println(emergencyDept.get(area));
         }
 
-        // Schedule ALL of the Events!
+        // Schedule and run through all of the Events!
         double nextInterArrivalTime = 0.0;
         double nextServiceTime = 0.0;
+        double nextArrivalTime = 0.0;
+        double prevDepartureTime = 0.0;
+        double nextDepartureTime = 0.0;
+        double nextWaitTime = 0.0;
         double actualAvgIntArrTime = 0.0;
         double actualAvgSrvcTime = 0.0;
-        while (currentTime <= totalSimTime) {
 
-            nextInterArrivalTime = scheduleInterArrivalTime(emergencyDept.get(CareArea.TRIAGE));
-            nextServiceTime = scheduleServiceTime(emergencyDept.get(CareArea.TRIAGE));
+        Event currentEvent = null;
 
-            actualAvgIntArrTime+=nextInterArrivalTime;
-            actualAvgSrvcTime+=nextServiceTime;
+        int iterations=0;
 
-            currentTime++;
+        while (iterations < 10) {
+
+            if (currentEvent instanceof Arrival || currentTime == 0.0) {
+                arrivals.add(currentEvent);
+
+                for (int i = 0; i < departures.size(); i++) {
+                    if (i == departures.size() - 1) {
+                        prevDepartureTime = departures.get(i).getTimeDeparted();
+                    }
+                }
+
+                nextInterArrivalTime = scheduleInterArrivalTime(emergencyDept.get(CareArea.TRIAGE));
+                nextServiceTime = scheduleServiceTime(emergencyDept.get(CareArea.TRIAGE));
+                nextArrivalTime = currentTime + nextInterArrivalTime;
+                nextWaitTime = emergencyDept.get(CareArea.TRIAGE).servicePatient() ?
+                            0.0 : prevDepartureTime - nextArrivalTime;
+                nextDepartureTime = nextArrivalTime + nextServiceTime + nextWaitTime;
+
+                Event nextArrival = new Arrival(nextArrivalTime, nextInterArrivalTime, nextServiceTime, nextWaitTime, false);
+                Event nextDeparture = new Departure(nextDepartureTime);
+
+                System.out.println("Current Time: "+currentTime);
+                System.out.println("Next Int-Arr Time: "+nextInterArrivalTime);
+                System.out.println("Next Arrival Time: "+nextArrivalTime);
+                System.out.println("Next Service Time: "+nextServiceTime);
+                System.out.println("Prev Departure Time: "+prevDepartureTime);
+                System.out.println("Next Departure Time: "+nextDepartureTime);
+                System.out.println("Next Wait Time: "+nextWaitTime);
+
+                events.add(nextArrival);
+                events.add(nextDeparture);
+
+                currentEvent = events.remove();
+                currentTime = currentEvent.getTimeOccurred();
+
+                System.out.println("Current Time: "+currentTime+"\n\n");
+
+                actualAvgIntArrTime+=nextInterArrivalTime;
+                actualAvgSrvcTime+=nextServiceTime;
+            } else {
+                emergencyDept.get(CareArea.TRIAGE).dischargePatient();
+                departures.add(currentEvent);
+                System.out.println("Current Time: "+currentTime+"\n\n");
+                currentEvent = events.remove();
+                currentTime = currentEvent.getTimeOccurred();
+                
+            }
+            //break;
+            iterations++;
         }
 
-        System.out.println("Actual Avg Int-Arr Time: "+ actualAvgIntArrTime/currentTime);
-        System.out.println("Actual Avg service Time: "+ actualAvgSrvcTime/currentTime);
+        System.out.println("Actual Avg Int-Arr Time: "+ actualAvgIntArrTime/Arrival.getTotalArrivals());
+        System.out.println("Actual Avg service Time: "+ actualAvgSrvcTime/Departure.getTotalDepartures());
 
     }
 
