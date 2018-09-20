@@ -118,8 +118,8 @@ public class EmergencyRoomSimulation {
                 //events should be given a CareArea name as occurrance location
                 //so we can tell where each event should take place in
                 
-                Event nextArrival = new Arrival(nextArrivalTime, nextInterArrivalTime, nextServiceTime, nextWaitTime, false);
-                Event nextDeparture = new Departure(nextDepartureTime);
+                Event nextArrival = new Arrival(nextArrivalTime, nextInterArrivalTime, nextServiceTime, nextWaitTime, false, CareArea.TRIAGE);
+                Event nextDeparture = new Departure(nextDepartureTime, CareArea.TRIAGE);
 
                 System.out.println("       Current Time: "+currentTime);
                 System.out.println("  Next Int-Arr Time: "+nextInterArrivalTime);
@@ -154,19 +154,22 @@ public class EmergencyRoomSimulation {
                 break;
             }
             if (currentEvent instanceof Arrival) {
-                System.out.println("\nARRIVAL "+((Arrival)currentEvent).getID()+" Occurred");
+                System.out.println("\nARRIVAL "+((Arrival)currentEvent).getID()+" occurred in "+currentEvent.getLocation());
                 System.out.println("Current Time: "+currentTime+"\n");
             } else {
-                System.out.println("\nDEPARTURE "+((Departure)currentEvent).getID()+" Occurred");
+                System.out.println("\nDEPARTURE "+((Departure)currentEvent).getID()+" occurred in "+currentEvent.getLocation());
                 System.out.println("Current Time: "+currentTime+"\n");
             }
             //break;
             //iterations++;
         }
 
-        System.out.println("Simulation ended at:     "+currentTime);
-        System.out.println("Actual Avg Int-Arr Time: "+ actualAvgIntArrTime/Arrival.getTotalArrivals());
-        System.out.println("Actual Avg service Time: "+ actualAvgSrvcTime/Departure.getTotalDepartures());
+        System.out.println("           Simulation ended at: "+currentTime);
+        System.out.println("       Actual Avg Int-Arr Time: "+ actualAvgIntArrTime/Arrival.getTotalArrivals());
+        System.out.println("       Actual Avg service Time: "+ actualAvgSrvcTime/Departure.getTotalDepartures());
+        System.out.println("             Arrivals Occurred: "+ arrivals.size());
+        System.out.println("           Departures Occurred: "+ departures.size());
+        System.out.println("Patients Still In Triage Queue: "+ 0);
 
     }
 
