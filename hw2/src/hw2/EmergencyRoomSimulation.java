@@ -101,21 +101,24 @@ public class EmergencyRoomSimulation {
         while (iterations < 10) {
 
             if (currentEvent instanceof Arrival || currentTime == 0.0) {
-                arrivals.add(currentEvent);
+                arrivals.add(currentEvent); //move to after instantiation
 
                 for (int i = 0; i < departures.size(); i++) {
                     if (i == departures.size() - 1) {
                         prevDepartureTime = departures.get(i).getTimeDeparted();
                     }
                 }
-
+                
                 nextInterArrivalTime = scheduleInterArrivalTime(emergencyDept.get(CareArea.TRIAGE));
                 nextServiceTime = scheduleServiceTime(emergencyDept.get(CareArea.TRIAGE));
                 nextArrivalTime = currentTime + nextInterArrivalTime;
                 nextWaitTime = emergencyDept.get(CareArea.TRIAGE).servicePatient() ?
                             0.0 : prevDepartureTime - nextArrivalTime;
                 nextDepartureTime = nextArrivalTime + nextServiceTime + nextWaitTime;
-
+                
+                //events should be given a CareArea name as occurrance location
+                //so we can tell where each event should take place in
+                
                 Event nextArrival = new Arrival(nextArrivalTime, nextInterArrivalTime, nextServiceTime, nextWaitTime, false);
                 Event nextDeparture = new Departure(nextDepartureTime);
 
