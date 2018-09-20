@@ -8,9 +8,9 @@ public class Arrival extends Event {
     
     public Arrival(double timeArrived, double interArrivalTime, double serviceTime, double waitTime, boolean transferRequired) {
         super(timeArrived, interArrivalTime, serviceTime, waitTime);
-        System.out.println("ARRIVAL CONSTRUCTED");
         this.transferRequired = transferRequired;
         this.arrivalID = ++totalArrivals;
+        System.out.println("ARRIVAL "+this.arrivalID+" CONSTRUCTED");
     }
 
     public static int getTotalArrivals() {
