@@ -1,7 +1,7 @@
 CSci 445
 Fall, 2018
 Programming Assignment #2
-Due: Thursday, Sept 20, 2018
+Due: Saturday, Sept 22, 2018
 
 PART II
 
@@ -118,6 +118,11 @@ SysClock
 
 Driver
     (Drives the program)
+
+For Part II:
+
+Look for the average number of patients in all queues over time.
+
 
 INFORMATION FROM BLACKBOARD ANNOUNCEMENTS
 
