@@ -5,7 +5,7 @@ public class Departure extends Event {
     private static int totalDepartures = 0;
     private int departureID = 0;
 
-    private String departedTo = "";
+    private String destination = "";
 
     public Departure(double timeDeparted, String location) {
         super(timeDeparted, location);
@@ -21,7 +21,7 @@ public class Departure extends Event {
         return departureID;
     }
 
-    public String getEndDestination() {
-        return departedTo;
+    public String getDestination() {
+        return destination;
     }
 }
