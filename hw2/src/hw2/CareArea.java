@@ -40,14 +40,19 @@ public class CareArea {
         this.expectedMeanInterArrivalTime = expectedMeanInterArrivalTime;
     }
 
-    public boolean servicePatient() {
+    public boolean isServiceAvailable() {
+        if (availableServers > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void servicePatient() {
         System.out.println("Servers Available: "+this.availableServers);
         if (availableServers > 0) {
             availableServers--;
             patientsServed++;
-            return true;
-        } else {
-            return false;
         }
     }
 
