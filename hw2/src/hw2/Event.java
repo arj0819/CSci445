@@ -5,19 +5,23 @@ public class Event implements Comparable<Event> {
     private double timeArrived = 0.0;
     private double timeDeparted = 0.0;
     
+    private String location = "";
+
     private double serviceTime = 0.0;
     private double interArrivalTime = 0.0;
     private double waitTime = 0.0;
 
-    public Event(double timeDeparted) {
+    public Event(double timeDeparted, String location) {
         this.timeDeparted = timeDeparted;
+        this.location = location;
     }
 
-    public Event(double timeArrived, double interArrivalTime, double serviceTime, double waitTime) {
+    public Event(double timeArrived, double interArrivalTime, double serviceTime, double waitTime, String location) {
         this.timeArrived = timeArrived;
         this.interArrivalTime = interArrivalTime;
         this.waitTime = waitTime;
         this.timeDeparted = timeArrived + waitTime;
+        this.location = location;
     }
 
 
@@ -47,6 +51,10 @@ public class Event implements Comparable<Event> {
         } else {
             return timeDeparted;
         }
+    }
+
+    public String getLocation() {
+        return location;
     }
 
 

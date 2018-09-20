@@ -6,8 +6,8 @@ public class Arrival extends Event {
     private int arrivalID = 0;
     private boolean transferRequired = false;
     
-    public Arrival(double timeArrived, double interArrivalTime, double serviceTime, double waitTime, boolean transferRequired) {
-        super(timeArrived, interArrivalTime, serviceTime, waitTime);
+    public Arrival(double timeArrived, double interArrivalTime, double serviceTime, double waitTime, boolean transferRequired, String location) {
+        super(timeArrived, interArrivalTime, serviceTime, waitTime, location);
         this.transferRequired = transferRequired;
         this.arrivalID = ++totalArrivals;
         System.out.println("ARRIVAL "+this.arrivalID+" CONSTRUCTED");

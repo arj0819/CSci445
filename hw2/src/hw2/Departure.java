@@ -7,8 +7,8 @@ public class Departure extends Event {
 
     private String departedTo = "";
 
-    public Departure(double timeDeparted) {
-        super(timeDeparted);
+    public Departure(double timeDeparted, String location) {
+        super(timeDeparted, location);
         this.departureID = ++totalDepartures;
         System.out.println("DEPARTURE "+this.departureID+" CONSTRUCTED");
     }
