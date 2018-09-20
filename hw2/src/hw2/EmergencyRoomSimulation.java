@@ -21,6 +21,7 @@ public class EmergencyRoomSimulation {
     private static Queue<Event> events = new PriorityQueue<Event>();
     private static List<Event> arrivals = new ArrayList<Event>();
     private static List<Event> departures = new ArrayList<Event>();
+    private static List<Timestamp> timeline = new ArrayList<Timestamp>();
 
     private static Random rand = new Random();
 
@@ -138,6 +139,7 @@ public class EmergencyRoomSimulation {
 
                 currentEvent = events.remove();
                 currentTime = currentEvent.getTimeOccurred();
+                timeline.add(new Timestamp(currentEvent));
 
                 //System.out.println("       Current Time: "+currentTime+"\n\n");
 
@@ -148,6 +150,7 @@ public class EmergencyRoomSimulation {
                 //System.out.println("Current Time: "+currentTime+"\n\n");
                 currentEvent = events.remove();
                 currentTime = currentEvent.getTimeOccurred();
+                timeline.add(new Timestamp(currentEvent));
                 
             }
             if (currentTime >= totalSimTime) {
@@ -174,6 +177,10 @@ public class EmergencyRoomSimulation {
         System.out.println("      Number of Waits Occurred: "+ Event.getNumOfWaits());
         System.out.println("             Average Wait Time: "+ Event.getAverageWaitTime());
 
+
+        for (Timestamp ts : timeline) {
+            System.out.println(ts);
+        }
     }
 
     public static double scheduleInterArrivalTime(CareArea triage) {
