@@ -41,6 +41,7 @@ public class CareArea {
     }
 
     public boolean servicePatient() {
+        System.out.println("Servers Available: "+this.availableServers);
         if (availableServers > 0) {
             availableServers--;
             patientsServed++;
