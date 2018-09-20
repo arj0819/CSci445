@@ -10,6 +10,7 @@ public class Departure extends Event {
     public Departure(double timeDeparted) {
         super(timeDeparted);
         this.departureID = ++totalDepartures;
+        System.out.println("DEPARTURE "+this.departureID+" CONSTRUCTED");
     }
 
     public static int getTotalDepartures() {
