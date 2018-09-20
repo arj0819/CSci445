@@ -98,10 +98,9 @@ public class EmergencyRoomSimulation {
 
         int iterations=0;
 
-        while (iterations < 10) {
+        while (currentTime <= totalSimTime) {
 
             if (currentEvent instanceof Arrival || currentTime == 0.0) {
-                arrivals.add(currentEvent); //move to after instantiation
 
                 for (int i = 0; i < departures.size(); i++) {
                     if (i == departures.size() - 1) {
@@ -112,7 +111,7 @@ public class EmergencyRoomSimulation {
                 nextInterArrivalTime = scheduleInterArrivalTime(emergencyDept.get(CareArea.TRIAGE));
                 nextServiceTime = scheduleServiceTime(emergencyDept.get(CareArea.TRIAGE));
                 nextArrivalTime = currentTime + nextInterArrivalTime;
-                nextWaitTime = emergencyDept.get(CareArea.TRIAGE).servicePatient() ?
+                nextWaitTime = emergencyDept.get(CareArea.TRIAGE).servicePatient() || prevDepartureTime <= nextArrivalTime ?
                             0.0 : prevDepartureTime - nextArrivalTime;
                 nextDepartureTime = nextArrivalTime + nextServiceTime + nextWaitTime;
                 
@@ -122,36 +121,50 @@ public class EmergencyRoomSimulation {
                 Event nextArrival = new Arrival(nextArrivalTime, nextInterArrivalTime, nextServiceTime, nextWaitTime, false);
                 Event nextDeparture = new Departure(nextDepartureTime);
 
-                System.out.println("Current Time: "+currentTime);
-                System.out.println("Next Int-Arr Time: "+nextInterArrivalTime);
-                System.out.println("Next Arrival Time: "+nextArrivalTime);
-                System.out.println("Next Service Time: "+nextServiceTime);
+                System.out.println("       Current Time: "+currentTime);
+                System.out.println("  Next Int-Arr Time: "+nextInterArrivalTime);
+                System.out.println("  Next Arrival Time: "+nextArrivalTime);
+                System.out.println("  Next Service Time: "+nextServiceTime);
                 System.out.println("Prev Departure Time: "+prevDepartureTime);
+                System.out.println("     Next Wait Time: "+nextWaitTime);
                 System.out.println("Next Departure Time: "+nextDepartureTime);
-                System.out.println("Next Wait Time: "+nextWaitTime);
 
                 events.add(nextArrival);
                 events.add(nextDeparture);
 
+                arrivals.add(nextArrival);
+                departures.add(nextDeparture);
+
                 currentEvent = events.remove();
                 currentTime = currentEvent.getTimeOccurred();
 
-                System.out.println("Current Time: "+currentTime+"\n\n");
+                //System.out.println("       Current Time: "+currentTime+"\n\n");
 
                 actualAvgIntArrTime+=nextInterArrivalTime;
                 actualAvgSrvcTime+=nextServiceTime;
             } else {
                 emergencyDept.get(CareArea.TRIAGE).dischargePatient();
-                departures.add(currentEvent);
-                System.out.println("Current Time: "+currentTime+"\n\n");
+                //System.out.println("Current Time: "+currentTime+"\n\n");
                 currentEvent = events.remove();
                 currentTime = currentEvent.getTimeOccurred();
                 
             }
+            if (currentTime >= totalSimTime) {
+                System.out.println("\n");
+                break;
+            }
+            if (currentEvent instanceof Arrival) {
+                System.out.println("\nARRIVAL "+((Arrival)currentEvent).getID()+" Occurred");
+                System.out.println("Current Time: "+currentTime+"\n");
+            } else {
+                System.out.println("\nDEPARTURE "+((Departure)currentEvent).getID()+" Occurred");
+                System.out.println("Current Time: "+currentTime+"\n");
+            }
             //break;
-            iterations++;
+            //iterations++;
         }
 
+        System.out.println("Simulation ended at:     "+currentTime);
         System.out.println("Actual Avg Int-Arr Time: "+ actualAvgIntArrTime/Arrival.getTotalArrivals());
         System.out.println("Actual Avg service Time: "+ actualAvgSrvcTime/Departure.getTotalDepartures());
 
