@@ -11,6 +11,9 @@ public class Event implements Comparable<Event> {
     private double interArrivalTime = 0.0;
     private double waitTime = 0.0;
 
+    private static int numberOfWaits = 0;
+    private static double totalWaitTime = 0.0;
+
     public Event(double timeDeparted, String location) {
         this.timeDeparted = timeDeparted;
         this.location = location;
@@ -22,6 +25,10 @@ public class Event implements Comparable<Event> {
         this.waitTime = waitTime;
         this.timeDeparted = timeArrived + waitTime;
         this.location = location;
+        if (waitTime > 0.0) {
+            numberOfWaits++;
+            totalWaitTime += waitTime;
+        }
     }
 
 
@@ -55,6 +62,18 @@ public class Event implements Comparable<Event> {
 
     public String getLocation() {
         return location;
+    }
+
+    public static int getNumOfWaits() {
+        return numberOfWaits;
+    }
+
+    public static double getAverageWaitTime() {
+        if (numberOfWaits != 0) {
+            return totalWaitTime/numberOfWaits;
+        } else {
+            return numberOfWaits;
+        }
     }
 
 
