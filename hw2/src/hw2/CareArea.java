@@ -16,6 +16,7 @@ public class CareArea {
     private int availableServers = 0;
     private int patientsServed = 0;
 
+    //array of doubles to keep track of each server's busy time
     private double probabilityOfTransfer = 0.0;
     private double expectedMeanServiceTime = 0.0;
     private double expectedMeanInterArrivalTime = 0.0;
