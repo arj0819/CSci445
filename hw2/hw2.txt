@@ -122,6 +122,8 @@ Driver
 For Part II:
 
 Look for the average number of patients in all queues over time.
+All patients must be processed through the Triage queue.
+"Server Utilization" is the % of time each server was busy during the simulation.
 
 
 INFORMATION FROM BLACKBOARD ANNOUNCEMENTS
