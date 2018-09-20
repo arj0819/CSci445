@@ -101,6 +101,7 @@ public class EmergencyRoomSimulation {
         while (currentTime <= totalSimTime) {
 
             if (currentEvent instanceof Arrival || currentTime == 0.0) {
+                emergencyDept.get(CareArea.TRIAGE).servicePatient();
 
                 for (int i = 0; i < departures.size(); i++) {
                     if (i == departures.size() - 1) {
@@ -111,7 +112,7 @@ public class EmergencyRoomSimulation {
                 nextInterArrivalTime = scheduleInterArrivalTime(emergencyDept.get(CareArea.TRIAGE));
                 nextServiceTime = scheduleServiceTime(emergencyDept.get(CareArea.TRIAGE));
                 nextArrivalTime = currentTime + nextInterArrivalTime;
-                nextWaitTime = emergencyDept.get(CareArea.TRIAGE).servicePatient() || prevDepartureTime <= nextArrivalTime ?
+                nextWaitTime = prevDepartureTime <= nextArrivalTime || emergencyDept.get(CareArea.TRIAGE).isServiceAvailable() ?
                             0.0 : prevDepartureTime - nextArrivalTime;
                 nextDepartureTime = nextArrivalTime + nextServiceTime + nextWaitTime;
                 
@@ -169,6 +170,9 @@ public class EmergencyRoomSimulation {
         System.out.println("       Actual Avg service Time: "+ actualAvgSrvcTime/Departure.getTotalDepartures());
         System.out.println("             Arrivals Occurred: "+ arrivals.size());
         System.out.println("           Departures Occurred: "+ departures.size());
+        System.out.println("Patients Still In Triage Queue: "+ 0);
+        System.out.println("      Number of Waits Occurred: "+ Event.getNumOfWaits());
+        System.out.println("             Average Wait Time: "+ Event.getAverageWaitTime());
         System.out.println("Patients Still In Triage Queue: "+ 0);
 
     }
