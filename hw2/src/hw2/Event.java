@@ -25,6 +25,7 @@ public class Event implements Comparable<Event> {
     public Event(double timeArrived, double interArrivalTime, double serviceTime, double waitTime, String location) {
         this.timeArrived = timeArrived;
         this.interArrivalTime = interArrivalTime;
+        this.serviceTime = serviceTime;
         this.waitTime = waitTime;
         this.timeDeparted = timeArrived + waitTime;
         this.location = location;
