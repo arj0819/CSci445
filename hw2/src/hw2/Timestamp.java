@@ -138,11 +138,7 @@ public class Timestamp {
             "  Triage Arrivals Thus Far: "+currentTriageArrivals+"\n"+
             "  Trauma Arrivals Thus Far: "+currentTraumaArrivals+"\n"+
             "   Acute Arrivals Thus Far: "+currentAcuteArrivals+"\n"+
-            "  Prompt Arrivals Thus Far: "+currentPromptArrivals+"\n"+
-            "  Patients in Triage Queue: "+triageQueuePatientsRemaining()+"\n"+
-            "  Patients in Trauma Queue: "+traumaQueuePatientsRemaining()+"\n"+
-            "  Patients in  Acute Queue: "+acuteQueuePatientsRemaining()+"\n"+
-            "  Patients in Prompt Queue: "+promptQueuePatientsRemaining()+"\n";
+            "  Prompt Arrivals Thus Far: "+currentPromptArrivals+"\n";
         } else {
             str=str+
             "             Departed From: "+location+"\n"+
@@ -152,6 +148,11 @@ public class Timestamp {
             " Acute Departures Thus Far: "+currentAcuteDepartures+"\n"+
             "Prompt Departures Thus Far: "+currentPromptDepartures+"\n";
         }
+        str=str+
+            "  Patients in Triage Queue: "+triageQueuePatientsRemaining()+"\n"+
+            "  Patients in Trauma Queue: "+traumaQueuePatientsRemaining()+"\n"+
+            "  Patients in  Acute Queue: "+acuteQueuePatientsRemaining()+"\n"+
+            "  Patients in Prompt Queue: "+promptQueuePatientsRemaining()+"\n";
         return str;
     }
 
