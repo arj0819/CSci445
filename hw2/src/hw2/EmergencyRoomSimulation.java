@@ -20,7 +20,7 @@ public class EmergencyRoomSimulation {
     private static Hashtable<String,Double> transferProbabilities = new Hashtable<String,Double>();
     private static Queue<Event> events = new PriorityQueue<Event>();
     private static List<Event> arrivals = new ArrayList<Event>();
-    private static List<Event> departures = new ArrayList<Event>();
+    private static List<Event> triageDepartures = new ArrayList<Event>();
     private static List<Timestamp> timeline = new ArrayList<Timestamp>();
 
     private static Random rand = new Random();
@@ -104,9 +104,9 @@ public class EmergencyRoomSimulation {
             if (currentEvent instanceof Arrival || currentTime == 0.0) {
                 emergencyDept.get(CareArea.TRIAGE).servicePatient();
 
-                for (int i = 0; i < departures.size(); i++) {
-                    if (i == departures.size() - 1) {
-                        prevDepartureTime = departures.get(i).getTimeDeparted();
+                for (int i = 0; i < triageDepartures.size(); i++) {
+                    if (i == triageDepartures.size() - 1) {
+                        prevDepartureTime = triageDepartures.get(i).getTimeDeparted();
                     }
                 }
                 
@@ -135,11 +135,11 @@ public class EmergencyRoomSimulation {
                 events.add(nextDeparture);
 
                 arrivals.add(nextArrival);
-                departures.add(nextDeparture);
+                triageDepartures.add(nextDeparture);
 
                 currentEvent = events.remove();
                 currentTime = currentEvent.getTimeOccurred();
-                timeline.add(new Timestamp(currentEvent));
+                timeline.add(new Timestamp(currentEvent,emergencyDept));
 
                 //System.out.println("       Current Time: "+currentTime+"\n\n");
 
@@ -150,7 +150,7 @@ public class EmergencyRoomSimulation {
                 //System.out.println("Current Time: "+currentTime+"\n\n");
                 currentEvent = events.remove();
                 currentTime = currentEvent.getTimeOccurred();
-                timeline.add(new Timestamp(currentEvent));
+                timeline.add(new Timestamp(currentEvent,emergencyDept));
                 
             }
             if (currentTime >= totalSimTime) {
@@ -172,7 +172,7 @@ public class EmergencyRoomSimulation {
         System.out.println("       Actual Avg Int-Arr Time: "+ actualAvgIntArrTime/Arrival.getTotalArrivals());
         System.out.println("       Actual Avg service Time: "+ actualAvgSrvcTime/Departure.getTotalDepartures());
         System.out.println("             Arrivals Occurred: "+ arrivals.size());
-        System.out.println("           Departures Occurred: "+ departures.size());
+        System.out.println("           Departures Occurred: "+ triageDepartures.size());
         System.out.println("Patients Still In Triage Queue: "+ 0);
         System.out.println("      Number of Waits Occurred: "+ Event.getNumOfWaits());
         System.out.println("             Average Wait Time: "+ Event.getAverageWaitTime());
