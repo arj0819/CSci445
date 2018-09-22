@@ -29,7 +29,7 @@ public class EmergencyRoomSimulation {
 
         // Set up the Care Areas!
         try {
-            File simInput = new File("src/hw2/simInput.txt");
+            File simInput = new File("src/hw2/ed.txt");
             BufferedReader rdr = new BufferedReader(new FileReader(simInput));
 
             String currentLine = rdr.readLine();
