@@ -14,3 +14,5 @@ Everything above the hashtag must be in this exact format:
 [num of servers <int>] [trauma care service mean <double>] [trauma care probability <double>]
 [num of servers <int>] [acute care service mean <double>] [acute care probability <double>]
 [num of servers <int>] [prompt care service mean <double>] [prompt care probability <double>]
+
+Please make sure that probabilities add up to a total of 1.
