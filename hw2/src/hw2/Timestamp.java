@@ -26,6 +26,9 @@ public class Timestamp {
     private int currentAcuteDepartures = 0;
     private int currentPromptDepartures = 0;
 
+    private static int totalDischargesFromTriage = 0;
+    private int currentDischargesFromTriage = 0;
+
     private static double totalTriageServers = 0.0;
     private static double totalTraumaServers = 0.0;
     private static double totalAcuteServers = 0.0;
@@ -40,6 +43,15 @@ public class Timestamp {
     private static double totalPatientsInTraumaQueue = 0.0;
     private static double totalPatientsInAcuteQueue = 0.0;
     private static double totalPatientsInPromptQueue = 0.0;
+
+    private double currentTriageWaitTime = 0.0;
+    private double currentTraumaWaitTime = 0.0;
+    private double currentAcuteWaitTime = 0.0;
+    private double currentPromptWaitTime = 0.0;
+    private static double totalTriageWaitTime = 0.0;
+    private static double totalTraumaWaitTime = 0.0;
+    private static double totalAcuteWaitTime = 0.0;
+    private static double totalPromptWaitTime = 0.0;
 
     private static int totalTimestamps = 0;
     private int timestampID = 0;
@@ -70,6 +82,11 @@ public class Timestamp {
         currentTraumaDepartures = totalTraumaDepartures;
         currentAcuteDepartures  = totalAcuteDepartures;
         currentPromptDepartures = totalPromptDepartures;
+        currentDischargesFromTriage = totalDischargesFromTriage;
+        currentTriageWaitTime = totalTriageWaitTime;
+        currentTraumaWaitTime = totalTraumaWaitTime;
+        currentAcuteWaitTime = totalAcuteWaitTime;
+        currentPromptWaitTime = totalPromptWaitTime;
 
         if (eventToStamp instanceof Arrival) {
             this.eventType = Event.ARRIVAL;
@@ -83,12 +100,20 @@ public class Timestamp {
 
             if (location.equals(CareArea.TRIAGE)) {
                 currentTriageArrivals = ++totalTriageArrivals;
+                currentTriageWaitTime = waitTime;
+                totalTriageWaitTime += currentTriageWaitTime;
             } else if (location.equals(CareArea.TRAUMA)) {
                 currentTraumaArrivals = ++totalTraumaArrivals;
+                currentTraumaWaitTime = waitTime;
+                totalTraumaWaitTime += currentTraumaWaitTime;
             } else if (location.equals(CareArea.ACUTE)) {
                 currentAcuteArrivals = ++totalAcuteArrivals;
+                currentAcuteWaitTime = waitTime;
+                totalAcuteWaitTime += currentAcuteWaitTime;
             } else {
                 currentPromptArrivals = ++totalPromptArrivals;
+                currentPromptWaitTime = waitTime;
+                totalPromptWaitTime += currentPromptWaitTime;
             }
 
         } else {
@@ -101,6 +126,9 @@ public class Timestamp {
 
             if (location.equals(CareArea.TRIAGE)) {
                 currentTriageDepartures = ++totalTriageDepartures;
+                if (destination.equals(Departure.OUTSIDE_WORLD)) {
+                    currentDischargesFromTriage = ++totalDischargesFromTriage;
+                }
             } else if (location.equals(CareArea.TRAUMA)) {
                 currentTraumaDepartures = ++totalTraumaDepartures;
             } else if (location.equals(CareArea.ACUTE)) {
@@ -170,6 +198,10 @@ public class Timestamp {
                currentAcuteDepartures+
                currentPromptDepartures;
     }
+    private int triageDeparturesSoFar() {
+        return currentTriageDepartures-
+               currentDischargesFromTriage;
+    }
     private static int totalArrivals() {
         return totalTriageArrivals+
                totalTraumaArrivals+
@@ -206,6 +238,22 @@ public class Timestamp {
     }
     public static double avgServersAvailableInPrompt() {
         return totalPromptServers/(totalArrivals()+totalDepartures());
+    }
+    public static double avgTriageWaitTime() {
+        double totalDblTriageArrivals = totalTriageArrivals;
+        return totalTriageWaitTime/totalDblTriageArrivals;
+    }
+    public static double avgTraumaWaitTime() {
+        double totalDblTraumaArrivals = totalTraumaArrivals;
+        return totalTraumaWaitTime/totalDblTraumaArrivals;
+    }
+    public static double avgAcuteWaitTime() {
+        double totalDblAcuteArrivals = totalAcuteArrivals;
+        return totalAcuteWaitTime/totalDblAcuteArrivals;
+    }
+    public static double avgPromptWaitTime() {
+        double totalDblPromptArrivals = totalPromptArrivals;
+        return totalPromptWaitTime/totalDblPromptArrivals;
     }
 
     @Override
@@ -248,6 +296,7 @@ public class Timestamp {
             "           Arrivals in Acute: %6d %12s\n"+
             "          Arrivals in Prompt: %6d %12s\n"+
             "     Total Arrivals Thus Far: %6d %12s\n"+
+            "      Discharges From Triage: %6d %12s\n"+
             "      Departures From Triage: %6d %12s\n"+
             "      Departures From Trauma: %6d %12s\n"+
             "       Departures From Acute: %6d %12s\n"+
@@ -268,7 +317,8 @@ public class Timestamp {
                 currentAcuteArrivals,Timestamp.PATIENT_UNIT,
                 currentPromptArrivals,Timestamp.PATIENT_UNIT,
                 totalArrivalsSoFar(),Timestamp.PATIENT_UNIT,
-                currentTriageDepartures,Timestamp.PATIENT_UNIT,
+                currentDischargesFromTriage,Timestamp.PATIENT_UNIT,
+                triageDeparturesSoFar(),Timestamp.PATIENT_UNIT,
                 currentTraumaDepartures,Timestamp.PATIENT_UNIT,
                 currentAcuteDepartures,Timestamp.PATIENT_UNIT,
                 currentPromptDepartures,Timestamp.PATIENT_UNIT,
