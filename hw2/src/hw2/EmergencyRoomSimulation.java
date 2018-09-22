@@ -108,6 +108,7 @@ public class EmergencyRoomSimulation {
                     }
                 }
                 
+                //Set up the event sequence by calculating all the necessary times 
                 nextInterArrivalTime = scheduleInterArrivalTime(emergencyDept.get(CareArea.TRIAGE));
                 nextServiceTime = scheduleServiceTime(emergencyDept.get(CareArea.TRIAGE));
                 nextArrivalTime = currentTime + nextInterArrivalTime;
@@ -115,20 +116,19 @@ public class EmergencyRoomSimulation {
                             0.0 : prevDepartureTime - nextArrivalTime;
                 nextDepartureTime = nextArrivalTime + nextServiceTime + nextWaitTime;
                 
-                //events should be given a CareArea name as occurrance location
-                //so we can tell where each event should take place in
                 Event nextArrival = null;
                 Event nextDeparture = null;
+                String destination = schedulePatientDepartureArea(transferProbabilities);
 
                 //generate the initial event sequence
                 if (currentTime == 0.0) {
                     nextArrival = new Arrival(nextArrivalTime, nextInterArrivalTime, nextServiceTime, nextWaitTime, false, CareArea.TRIAGE);
-                    nextDeparture = new Departure(((Arrival)nextArrival).getPatientID(),nextDepartureTime, CareArea.TRIAGE);
+                    nextDeparture = new Departure(((Arrival)nextArrival).getPatientID(),nextDepartureTime, CareArea.TRIAGE, destination);
                 }
-                //generate the next event sequence if the current event is a Triage Arrival
                 else if (currentEvent.getLocation().equals(CareArea.TRIAGE)) {
+                    //generate the next event sequence if the current event is a Triage Arrival
                     nextArrival = new Arrival(nextArrivalTime, nextInterArrivalTime, nextServiceTime, nextWaitTime, false, CareArea.TRIAGE);
-                    nextDeparture = new Departure(((Arrival)nextArrival).getPatientID(),nextDepartureTime, CareArea.TRIAGE);
+                    nextDeparture = new Departure(((Arrival)nextArrival).getPatientID(),nextDepartureTime, CareArea.TRIAGE, destination);
                 }
 
                 System.out.println("       Current Time: "+currentTime);
@@ -138,6 +138,7 @@ public class EmergencyRoomSimulation {
                 System.out.println("Prev Departure Time: "+prevDepartureTime);
                 System.out.println("     Next Wait Time: "+nextWaitTime);
                 System.out.println("Next Departure Time: "+nextDepartureTime);
+                System.out.println("Next Departure Area: "+destination);
 
                 events.add(nextArrival);
                 events.add(nextDeparture);
@@ -196,7 +197,7 @@ public class EmergencyRoomSimulation {
         return Math.log(1-rand.nextDouble())/(-1/area.getExpMeanServiceTime());
     }
 
-    public static String schedulePatientServiceArea(Hashtable<String,Double> transferProbabilities) {
+    public static String schedulePatientDepartureArea(Hashtable<String,Double> transferProbabilities) {
         double transferValue = rand.nextDouble();
 
         double probLeaveTriage = transferProbabilities.get(CareArea.TRIAGE);
@@ -205,7 +206,7 @@ public class EmergencyRoomSimulation {
         double probTransPrompt = transferProbabilities.get(CareArea.PROMPT);
 
         if (transferValue < probLeaveTriage) {
-            return CareArea.TRIAGE;
+            return Departure.OUTSIDE_WORLD;
         } else if (transferValue < probLeaveTriage + probTransTrauma) {
             return CareArea.TRAUMA;
         } else if (transferValue < probLeaveTriage + probTransTrauma + probTransAcute) {
