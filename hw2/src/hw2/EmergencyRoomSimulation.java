@@ -168,19 +168,16 @@ public class EmergencyRoomSimulation {
             //iterations++;
         }
 
-        System.out.println("           Simulation ended at: "+currentTime);
-        System.out.println("       Actual Avg Int-Arr Time: "+ actualAvgIntArrTime/Arrival.getTotalArrivals());
-        System.out.println("       Actual Avg service Time: "+ actualAvgSrvcTime/Departure.getTotalDepartures());
-        System.out.println("             Arrivals Occurred: "+ arrivals.size());
-        System.out.println("           Departures Occurred: "+ triageDepartures.size());
-        System.out.println("Patients Still In Triage Queue: "+ 0);
-        System.out.println("      Number of Waits Occurred: "+ Event.getNumOfWaits());
-        System.out.println("             Average Wait Time: "+ Event.getAverageWaitTime());
-
-
         for (Timestamp ts : timeline) {
             System.out.println(ts);
         }
+
+        System.out.printf("      Simulation ended at: %10.3f\n",currentTime);
+        System.out.printf("  Actual Avg Int-Arr Time: %10.3f\n",actualAvgIntArrTime/Arrival.getTotalArrivals());
+        System.out.printf("  Actual Avg service Time: %10.3f\n",actualAvgSrvcTime/Departure.getTotalDepartures());
+        System.out.printf(" Number of Waits Occurred: %6d\n",Event.getNumOfWaits());
+        System.out.printf("        Average Wait Time: %10.3f\n",Event.getAverageWaitTime());
+
     }
 
     public static double scheduleInterArrivalTime(CareArea triage) {
