@@ -57,6 +57,10 @@ public class CareArea {
         }
     }
 
+    public int getAvailableServers() {
+        return availableServers;
+    }
+
     public void dischargePatient() {
         if(availableServers < numOfServers) {
             availableServers++;
