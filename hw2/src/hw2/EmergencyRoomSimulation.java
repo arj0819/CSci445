@@ -223,15 +223,19 @@ public class EmergencyRoomSimulation {
             System.out.println(ts);
         }
 
-        System.out.printf("        Simulation ended at: %10.3f %s\n",currentTime,Timestamp.TIME_UNIT);
-        System.out.printf("    Actual Avg Int-Arr Time: %10.3f %s\n",actualAvgIntArrTime/Arrival.getTotalArrivals(),Timestamp.TIME_UNIT);
-        System.out.printf("     Triage Queue Count Avg: %10.3f %s\n",Timestamp.avgPatientsInTriageQueue(),Timestamp.PATIENT_UNIT);
-        System.out.printf("     Trauma Queue Count Avg: %10.3f %s\n",Timestamp.avgPatientsInTraumaQueue(),Timestamp.PATIENT_UNIT);
-        System.out.printf("      Acute Queue Count Avg: %10.3f %s\n",Timestamp.avgPatientsInAcuteQueue(),Timestamp.PATIENT_UNIT);
-        System.out.printf("     Prompt Queue Count Avg: %10.3f %s\n",Timestamp.avgPatientsInPromptQueue(),Timestamp.PATIENT_UNIT);
-        System.out.printf("    Actual Avg service Time: %10.3f %s\n",actualAvgSrvcTime/Departure.getTotalDepartures(),Timestamp.TIME_UNIT);
-        System.out.printf("   Number of Waits Occurred: %6d %12s\n",Event.getNumOfWaits(),Timestamp.PATIENT_UNIT);
-        System.out.printf("          Average Wait Time: %10.3f %s\n",Event.getAverageWaitTime(),Timestamp.TIME_UNIT);
+        System.out.printf("         Simulation ended at: %10.3f %s\n",currentTime,Timestamp.TIME_UNIT);
+        System.out.printf("     Actual Avg Int-Arr Time: %10.3f %s\n",actualAvgIntArrTime/Arrival.getTotalArrivals(),Timestamp.TIME_UNIT);
+        System.out.printf("      Triage Queue Count Avg: %10.3f %s\n",Timestamp.avgPatientsInTriageQueue(),Timestamp.PATIENT_UNIT);
+        System.out.printf("      Trauma Queue Count Avg: %10.3f %s\n",Timestamp.avgPatientsInTraumaQueue(),Timestamp.PATIENT_UNIT);
+        System.out.printf("       Acute Queue Count Avg: %10.3f %s\n",Timestamp.avgPatientsInAcuteQueue(),Timestamp.PATIENT_UNIT);
+        System.out.printf("      Prompt Queue Count Avg: %10.3f %s\n",Timestamp.avgPatientsInPromptQueue(),Timestamp.PATIENT_UNIT);
+        System.out.printf("Triage Servers Available Avg: %10.3f %s\n",Timestamp.avgServersAvailableInTriage(),Timestamp.SERVER_UNIT);
+        System.out.printf("Trauma Servers Available Avg: %10.3f %s\n",Timestamp.avgServersAvailableInTrauma(),Timestamp.SERVER_UNIT);
+        System.out.printf(" Acute Servers Available Avg: %10.3f %s\n",Timestamp.avgServersAvailableInAcute(),Timestamp.SERVER_UNIT);
+        System.out.printf("Prompt Servers Available Avg: %10.3f %s\n",Timestamp.avgServersAvailableInPrompt(),Timestamp.SERVER_UNIT);
+        System.out.printf("     Actual Avg service Time: %10.3f %s\n",actualAvgSrvcTime/Departure.getTotalDepartures(),Timestamp.TIME_UNIT);
+        System.out.printf("    Number of Waits Occurred: %6d %12s\n",Event.getNumOfWaits(),Timestamp.PATIENT_UNIT);
+        System.out.printf("           Average Wait Time: %10.3f %s\n",Event.getAverageWaitTime(),Timestamp.TIME_UNIT);
     }
 
     public static double scheduleInterArrivalTime(CareArea triage) {
