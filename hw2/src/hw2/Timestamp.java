@@ -42,6 +42,16 @@ public class Timestamp {
 
 
     public Timestamp(Event eventToStamp, Hashtable<String,CareArea> emergencyDept) {
+        
+        currentTriageArrivals = totalTriageArrivals;
+        currentTraumaArrivals = totalTraumaArrivals;
+        currentAcuteArrivals  = totalAcuteArrivals;
+        currentPromptArrivals = totalPromptArrivals;
+        currentTriageDepartures = totalTriageDepartures;
+        currentTraumaDepartures = totalTraumaDepartures;
+        currentAcuteDepartures  = totalAcuteDepartures;
+        currentPromptDepartures = totalPromptDepartures;
+        
         if (eventToStamp instanceof Arrival) {
             this.eventType = Event.ARRIVAL;
             this.eventID = ((Arrival) eventToStamp).getID();
@@ -51,10 +61,6 @@ public class Timestamp {
             this.serviceTime = eventToStamp.getServiceTime();
             this.interArrivalTime = eventToStamp.getInterArrivalTime();
             this.waitTime = eventToStamp.getWaitTime();
-            currentTriageDepartures = totalTriageDepartures;
-            currentTraumaDepartures = totalTraumaDepartures;
-            currentAcuteDepartures  = totalAcuteDepartures;
-            currentPromptDepartures = totalPromptDepartures;
 
             if (location.equals(CareArea.TRIAGE)) {
                 currentTriageArrivals = ++totalTriageArrivals;
@@ -73,10 +79,6 @@ public class Timestamp {
             this.timeOccurred = eventToStamp.getTimeOccurred();
             this.location = eventToStamp.getLocation();
             this.destination = ((Departure) eventToStamp).getDestination();
-            currentTriageArrivals = totalTriageArrivals;
-            currentTraumaArrivals = totalTraumaArrivals;
-            currentAcuteArrivals  = totalAcuteArrivals;
-            currentPromptArrivals = totalPromptArrivals;
 
             if (location.equals(CareArea.TRIAGE)) {
                 currentTriageDepartures = ++totalTriageDepartures;
@@ -163,7 +165,7 @@ public class Timestamp {
             str=str+
             "            Departed From: %s"+"\n"+
             "              Destination: %s"+"\n"+
-            "            Time Occurred: %.3f"+"\n";
+            "            Time Occurred: %10.3f"+"\n";
             str = String.format (
                 str,
                 location, 
