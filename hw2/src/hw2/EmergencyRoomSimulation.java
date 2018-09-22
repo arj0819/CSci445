@@ -97,8 +97,6 @@ public class EmergencyRoomSimulation {
 
         Event currentEvent = null;
 
-        int iterations=0;
-
         while (currentTime <= totalSimTime) {
 
             if (currentEvent instanceof Arrival || currentTime == 0.0) {
@@ -119,9 +117,19 @@ public class EmergencyRoomSimulation {
                 
                 //events should be given a CareArea name as occurrance location
                 //so we can tell where each event should take place in
-                
-                Event nextArrival = new Arrival(nextArrivalTime, nextInterArrivalTime, nextServiceTime, nextWaitTime, false, CareArea.TRIAGE);
-                Event nextDeparture = new Departure(nextDepartureTime, CareArea.TRIAGE);
+                Event nextArrival = null;
+                Event nextDeparture = null;
+
+                //generate the initial event sequence
+                if (currentTime == 0.0) {
+                    nextArrival = new Arrival(nextArrivalTime, nextInterArrivalTime, nextServiceTime, nextWaitTime, false, CareArea.TRIAGE);
+                    nextDeparture = new Departure(((Arrival)nextArrival).getPatientID(),nextDepartureTime, CareArea.TRIAGE);
+                }
+                //generate the next event sequence if the current event is a Triage Arrival
+                else if (currentEvent.getLocation().equals(CareArea.TRIAGE)) {
+                    nextArrival = new Arrival(nextArrivalTime, nextInterArrivalTime, nextServiceTime, nextWaitTime, false, CareArea.TRIAGE);
+                    nextDeparture = new Departure(((Arrival)nextArrival).getPatientID(),nextDepartureTime, CareArea.TRIAGE);
+                }
 
                 System.out.println("       Current Time: "+currentTime);
                 System.out.println("  Next Int-Arr Time: "+nextInterArrivalTime);
