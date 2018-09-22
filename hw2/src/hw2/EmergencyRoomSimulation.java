@@ -151,6 +151,11 @@ public class EmergencyRoomSimulation {
 
                 currentEvent = events.remove();
                 currentTime = currentEvent.getTimeOccurred();
+
+                if (currentTime >= totalSimTime) {
+                    System.out.println("\n");
+                    break;
+                }
                 timeline.add(new Timestamp(currentEvent,emergencyDept));
 
 
@@ -203,12 +208,13 @@ public class EmergencyRoomSimulation {
 
                 currentEvent = events.remove();
                 currentTime = currentEvent.getTimeOccurred();
+
+                if (currentTime >= totalSimTime) {
+                    System.out.println("\n");
+                    break;
+                }
                 timeline.add(new Timestamp(currentEvent,emergencyDept));
                 
-            }
-            if (currentTime >= totalSimTime) {
-                System.out.println("\n");
-                break;
             }
             if (currentEvent instanceof Arrival) {
                 System.out.println("\nARRIVAL "+((Arrival)currentEvent).getID()+" occurred in "+currentEvent.getLocation());
@@ -229,6 +235,10 @@ public class EmergencyRoomSimulation {
         System.out.printf("      Trauma Queue Count Avg: %10.3f %s\n",Timestamp.avgPatientsInTraumaQueue(),Timestamp.PATIENT_UNIT);
         System.out.printf("       Acute Queue Count Avg: %10.3f %s\n",Timestamp.avgPatientsInAcuteQueue(),Timestamp.PATIENT_UNIT);
         System.out.printf("      Prompt Queue Count Avg: %10.3f %s\n",Timestamp.avgPatientsInPromptQueue(),Timestamp.PATIENT_UNIT);
+        System.out.printf("    Average Triage Wait Time: %10.3f %s\n",Timestamp.avgTriageWaitTime(),Timestamp.TIME_UNIT);
+        System.out.printf("    Average Trauma Wait Time: %10.3f %s\n",Timestamp.avgTraumaWaitTime(),Timestamp.TIME_UNIT);
+        System.out.printf("     Average Acute Wait Time: %10.3f %s\n",Timestamp.avgAcuteWaitTime(),Timestamp.TIME_UNIT);
+        System.out.printf("    Average Prompt Wait Time: %10.3f %s\n",Timestamp.avgPromptWaitTime(),Timestamp.TIME_UNIT);
         System.out.printf("Triage Servers Available Avg: %10.3f %s\n",Timestamp.avgServersAvailableInTriage(),Timestamp.SERVER_UNIT);
         System.out.printf("Trauma Servers Available Avg: %10.3f %s\n",Timestamp.avgServersAvailableInTrauma(),Timestamp.SERVER_UNIT);
         System.out.printf(" Acute Servers Available Avg: %10.3f %s\n",Timestamp.avgServersAvailableInAcute(),Timestamp.SERVER_UNIT);
