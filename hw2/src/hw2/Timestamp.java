@@ -121,6 +121,18 @@ public class Timestamp {
             return 0;
         }
     }
+    private int totalArrivalsSoFar() {
+        return currentTriageArrivals+
+               currentTraumaArrivals+
+               currentAcuteArrivals+
+               currentPromptArrivals;
+    }
+    private int totalDeparturesSoFar() {
+        return currentTriageDepartures+
+               currentTraumaDepartures+
+               currentAcuteDepartures+
+               currentPromptDepartures;
+    }
 
     @Override
     public String toString() {
@@ -130,30 +142,63 @@ public class Timestamp {
         );
         if (eventType.equals(Event.ARRIVAL)) {
             str=str+
-            "                Arrived At: "+location+"\n"+
-            "             Time Occurred: "+timeOccurred+"\n"+
-            "              Service Time: "+serviceTime+"\n"+
-            "        Inter-Arrival Time: "+interArrivalTime+"\n"+
-            "                 Wait Time: "+waitTime+"\n";
+            "               Arrived At: %s"    +"\n"+
+            "            Time Occurred: %10.3f"+"\n"+
+            "       Inter-Arrival Time: %10.3f"+"\n"+
+            "             Service Time: %10.3f"+"\n"+
+            "                Wait Time: %10.3f"+"\n";
+            str = String.format (
+                str,
+                location,
+                timeOccurred,
+                interArrivalTime,
+                serviceTime,
+                waitTime
+            );
         } else {
             str=str+
-            "             Time Occurred: "+timeOccurred+"\n"+
-            "             Departed From: "+location+"\n"+
-            "               Destination: "+destination+"\n";
+            "            Departed From: %s"+"\n"+
+            "            Time Occurred: %.3f"+"\n"+
+            "              Destination: %s"+"\n";
+            str = String.format (
+                str,
+                location, 
+                timeOccurred, 
+                destination
+            );
         }
             str=str+
-            "  Triage Arrivals Thus Far: "+currentTriageArrivals+"\n"+
-            "  Trauma Arrivals Thus Far: "+currentTraumaArrivals+"\n"+
-            "   Acute Arrivals Thus Far: "+currentAcuteArrivals+"\n"+
-            "  Prompt Arrivals Thus Far: "+currentPromptArrivals+"\n"+
-            "Triage Departures Thus Far: "+currentTriageDepartures+"\n"+
-            "Trauma Departures Thus Far: "+currentTraumaDepartures+"\n"+
-            " Acute Departures Thus Far: "+currentAcuteDepartures+"\n"+
-            "Prompt Departures Thus Far: "+currentPromptDepartures+"\n"+
-            "  Patients in Triage Queue: "+triageQueuePatientsRemaining()+"\n"+
-            "  Patients in Trauma Queue: "+traumaQueuePatientsRemaining()+"\n"+
-            "  Patients in  Acute Queue: "+acuteQueuePatientsRemaining()+"\n"+
-            "  Patients in Prompt Queue: "+promptQueuePatientsRemaining()+"\n";
+            "       Arrivals in Triage: %6d"+"\n"+
+            "       Arrivals in Trauma: %6d"+"\n"+
+            "        Arrivals in Acute: %6d"+"\n"+
+            "       Arrivals in Prompt: %6d"+"\n"+
+            "  Total Arrivals Thus Far: %6d"+"\n"+
+            "   Departures From Triage: %6d"+"\n"+
+            "   Departures From Trauma: %6d"+"\n"+
+            "    Departures From Acute: %6d"+"\n"+
+            "   Departures From Prompt: %6d"+"\n"+
+            "Total Departures Thus Far: %6d"+"\n"+
+            " Patients in Triage Queue: %6d"+"\n"+
+            " Patients in Trauma Queue: %6d"+"\n"+
+            " Patients in  Acute Queue: %6d"+"\n"+
+            " Patients in Prompt Queue: %6d"+"\n";
+            str = String.format(
+                str,
+                currentTriageArrivals,
+                currentTraumaArrivals,
+                currentAcuteArrivals,
+                currentPromptArrivals,
+                totalArrivalsSoFar(),
+                currentTriageDepartures,
+                currentTraumaDepartures,
+                currentAcuteDepartures,
+                currentPromptDepartures,
+                totalDeparturesSoFar(),
+                triageQueuePatientsRemaining(),
+                traumaQueuePatientsRemaining(),
+                acuteQueuePatientsRemaining(),
+                promptQueuePatientsRemaining()
+            );
         return str;
     }
 
