@@ -162,13 +162,13 @@ public class Timestamp {
         } else {
             str=str+
             "            Departed From: %s"+"\n"+
-            "            Time Occurred: %.3f"+"\n"+
-            "              Destination: %s"+"\n";
+            "              Destination: %s"+"\n"+
+            "            Time Occurred: %.3f"+"\n";
             str = String.format (
                 str,
                 location, 
-                timeOccurred, 
-                destination
+                destination,
+                timeOccurred 
             );
         }
             str=str+
