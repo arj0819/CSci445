@@ -26,20 +26,20 @@ public class Timestamp {
     private int currentAcuteDepartures = 0;
     private int currentPromptDepartures = 0;
 
-    private static int totalTriageServers = 0;
-    private static int totalTraumaServers = 0;
-    private static int totalAcuteServers = 0;
-    private static int totalPromptServers = 0;
+    private static double totalTriageServers = 0.0;
+    private static double totalTraumaServers = 0.0;
+    private static double totalAcuteServers = 0.0;
+    private static double totalPromptServers = 0.0;
 
     private int availableTriageServers = 0;
     private int availableTraumaServers = 0;
     private int availableAcuteServers = 0;
     private int availablePromptServers = 0;
 
-    private static double avgPatientsInTriageQueue = 0.0;
-    private static double avgPatientsInTraumaQueue = 0.0;
-    private static double avgPatientsInAcuteQueue = 0.0;
-    private static double avgPatientsInPromptQueue = 0.0;
+    private static double totalPatientsInTriageQueue = 0.0;
+    private static double totalPatientsInTraumaQueue = 0.0;
+    private static double totalPatientsInAcuteQueue = 0.0;
+    private static double totalPatientsInPromptQueue = 0.0;
 
     private static int totalTimestamps = 0;
     private int timestampID = 0;
@@ -125,7 +125,7 @@ public class Timestamp {
     private int triageQueuePatientsRemaining() {
         int result = (currentTriageArrivals-1) - currentTriageDepartures;
         if (result >= 0) {
-            avgPatientsInTriageQueue += result;
+            totalPatientsInTriageQueue += result;
             return result;
         } else {
             return 0;
@@ -134,7 +134,7 @@ public class Timestamp {
     private int traumaQueuePatientsRemaining() {
         int result = (currentTraumaArrivals-1) - currentTraumaDepartures;
         if (result >= 0) {
-            avgPatientsInTraumaQueue += result;
+            totalPatientsInTraumaQueue += result;
             return result;
         } else {
             return 0;
@@ -143,7 +143,7 @@ public class Timestamp {
     private int acuteQueuePatientsRemaining() {
         int result = (currentAcuteArrivals-1) - currentAcuteDepartures;
         if (result >= 0) {
-            avgPatientsInAcuteQueue += result;
+            totalPatientsInAcuteQueue += result;
             return result;
         } else {
             return 0;
@@ -152,7 +152,7 @@ public class Timestamp {
     private int promptQueuePatientsRemaining() {
         int result = (currentPromptArrivals-1) - currentPromptDepartures;
         if (result >= 0) {
-            avgPatientsInPromptQueue += result;
+            totalPatientsInPromptQueue += result;
             return result;
         } else {
             return 0;
@@ -184,16 +184,28 @@ public class Timestamp {
     }
 
     public static double avgPatientsInTriageQueue() {
-        return avgPatientsInTriageQueue/totalArrivals();
+        return totalPatientsInTriageQueue/totalArrivals();
     }
     public static double avgPatientsInTraumaQueue() {
-        return avgPatientsInTraumaQueue/totalArrivals();
+        return totalPatientsInTraumaQueue/totalArrivals();
     }
     public static double avgPatientsInAcuteQueue() {
-        return avgPatientsInAcuteQueue/totalArrivals();
+        return totalPatientsInAcuteQueue/totalArrivals();
     }
     public static double avgPatientsInPromptQueue() {
-        return avgPatientsInPromptQueue/totalArrivals();
+        return totalPatientsInPromptQueue/totalArrivals();
+    }
+    public static double avgServersAvailableInTriage() {
+        return totalTriageServers/(totalArrivals()+totalDepartures());
+    }
+    public static double avgServersAvailableInTrauma() {
+        return totalTraumaServers/(totalArrivals()+totalDepartures());
+    }
+    public static double avgServersAvailableInAcute() {
+        return totalAcuteServers/(totalArrivals()+totalDepartures());
+    }
+    public static double avgServersAvailableInPrompt() {
+        return totalPromptServers/(totalArrivals()+totalDepartures());
     }
 
     @Override
@@ -205,11 +217,11 @@ public class Timestamp {
         );
         if (eventType.equals(Event.ARRIVAL)) {
             str=str+
-            "                 Arrived At: %s\n"+
-            "              Time Occurred: %10.3f %s\n"+
-            "         Inter-Arrival Time: %10.3f %s\n"+
-            "               Service Time: %10.3f %s\n"+
-            "                  Wait Time: %10.3f %s\n";
+            "                  Arrived At: %s\n"+
+            "               Time Occurred: %10.3f %s\n"+
+            "          Inter-Arrival Time: %10.3f %s\n"+
+            "                Service Time: %10.3f %s\n"+
+            "                   Wait Time: %10.3f %s\n";
             str = String.format (
                 str,
                 location,
@@ -220,9 +232,9 @@ public class Timestamp {
             );
         } else {
             str=str+
-            "              Departed From: %s\n"+
-            "                Destination: %s\n"+
-            "              Time Occurred: %10.3f %s\n";
+            "               Departed From: %s\n"+
+            "                 Destination: %s\n"+
+            "               Time Occurred: %10.3f %s\n";
             str = String.format (
                 str,
                 location, 
@@ -231,24 +243,24 @@ public class Timestamp {
             );
         }
             str=str+
-            "         Arrivals in Triage: %6d %12s\n"+
-            "         Arrivals in Trauma: %6d %12s\n"+
-            "          Arrivals in Acute: %6d %12s\n"+
-            "         Arrivals in Prompt: %6d %12s\n"+
-            "    Total Arrivals Thus Far: %6d %12s\n"+
-            "     Departures From Triage: %6d %12s\n"+
-            "     Departures From Trauma: %6d %12s\n"+
-            "      Departures From Acute: %6d %12s\n"+
-            "     Departures From Prompt: %6d %12s\n"+
-            "  Total Departures Thus Far: %6d %12s\n"+
-            "Available Servers in Triage: %6d %15s\n"+
-            "Available Servers in Trauma: %6d %15s\n"+
-            " Available Servers in Acute: %6d %15s\n"+
-            "Available Servers in Prompt: %6d %15s\n"+
-            "   Patients in Triage Queue: %6d %12s\n"+
-            "   Patients in Trauma Queue: %6d %12s\n"+
-            "   Patients in  Acute Queue: %6d %12s\n"+
-            "   Patients in Prompt Queue: %6d %12s\n";
+            "          Arrivals in Triage: %6d %12s\n"+
+            "          Arrivals in Trauma: %6d %12s\n"+
+            "           Arrivals in Acute: %6d %12s\n"+
+            "          Arrivals in Prompt: %6d %12s\n"+
+            "     Total Arrivals Thus Far: %6d %12s\n"+
+            "      Departures From Triage: %6d %12s\n"+
+            "      Departures From Trauma: %6d %12s\n"+
+            "       Departures From Acute: %6d %12s\n"+
+            "      Departures From Prompt: %6d %12s\n"+
+            "   Total Departures Thus Far: %6d %12s\n"+
+            " Available Servers in Triage: %6d %15s\n"+
+            " Available Servers in Trauma: %6d %15s\n"+
+            "  Available Servers in Acute: %6d %15s\n"+
+            " Available Servers in Prompt: %6d %15s\n"+
+            "    Patients in Triage Queue: %6d %12s\n"+
+            "    Patients in Trauma Queue: %6d %12s\n"+
+            "    Patients in  Acute Queue: %6d %12s\n"+
+            "    Patients in Prompt Queue: %6d %12s\n";
             str = String.format(
                 str,
                 currentTriageArrivals,Timestamp.PATIENT_UNIT,
