@@ -4,6 +4,9 @@ import java.util.Hashtable;
 
 public class Timestamp {
 
+    public static final String TIME_UNIT = "(minutes)";
+    public static final String PATIENT_UNIT = "(patients)";
+
     private static int totalTriageArrivals = 0;
     private static int totalTraumaArrivals = 0;
     private static int totalAcuteArrivals = 0;
@@ -21,6 +24,11 @@ public class Timestamp {
     private int currentTraumaDepartures = 0;
     private int currentAcuteDepartures = 0;
     private int currentPromptDepartures = 0;
+
+    private static double avgPatientsInTriageQueue = 0.0;
+    private static double avgPatientsInTraumaQueue = 0.0;
+    private static double avgPatientsInAcuteQueue = 0.0;
+    private static double avgPatientsInPromptQueue = 0.0;
 
     private static int totalTimestamps = 0;
     private int timestampID = 0;
@@ -51,7 +59,7 @@ public class Timestamp {
         currentTraumaDepartures = totalTraumaDepartures;
         currentAcuteDepartures  = totalAcuteDepartures;
         currentPromptDepartures = totalPromptDepartures;
-        
+
         if (eventToStamp instanceof Arrival) {
             this.eventType = Event.ARRIVAL;
             this.eventID = ((Arrival) eventToStamp).getID();
@@ -97,6 +105,7 @@ public class Timestamp {
     private int triageQueuePatientsRemaining() {
         int result = (currentTriageArrivals-1) - currentTriageDepartures;
         if (result >= 0) {
+            avgPatientsInTriageQueue += result;
             return result;
         } else {
             return 0;
@@ -105,6 +114,7 @@ public class Timestamp {
     private int traumaQueuePatientsRemaining() {
         int result = (currentTraumaArrivals-1) - currentTraumaDepartures;
         if (result >= 0) {
+            avgPatientsInTraumaQueue += result;
             return result;
         } else {
             return 0;
@@ -113,6 +123,7 @@ public class Timestamp {
     private int acuteQueuePatientsRemaining() {
         int result = (currentAcuteArrivals-1) - currentAcuteDepartures;
         if (result >= 0) {
+            avgPatientsInAcuteQueue += result;
             return result;
         } else {
             return 0;
@@ -121,6 +132,7 @@ public class Timestamp {
     private int promptQueuePatientsRemaining() {
         int result = (currentPromptArrivals-1) - currentPromptDepartures;
         if (result >= 0) {
+            avgPatientsInPromptQueue += result;
             return result;
         } else {
             return 0;
@@ -138,6 +150,31 @@ public class Timestamp {
                currentAcuteDepartures+
                currentPromptDepartures;
     }
+    private static int totalArrivals() {
+        return totalTriageArrivals+
+               totalTraumaArrivals+
+               totalAcuteArrivals+
+               totalPromptArrivals;
+    }
+    private static int totalDepartures() {
+        return totalTriageDepartures+
+               totalTraumaDepartures+
+               totalAcuteDepartures+
+               totalPromptDepartures;
+    }
+
+    public static double avgPatientsInTriageQueue() {
+        return avgPatientsInTriageQueue/totalArrivals();
+    }
+    public static double avgPatientsInTraumaQueue() {
+        return avgPatientsInTraumaQueue/totalArrivals();
+    }
+    public static double avgPatientsInAcuteQueue() {
+        return avgPatientsInAcuteQueue/totalArrivals();
+    }
+    public static double avgPatientsInPromptQueue() {
+        return avgPatientsInPromptQueue/totalArrivals();
+    }
 
     @Override
     public String toString() {
@@ -148,62 +185,62 @@ public class Timestamp {
         );
         if (eventType.equals(Event.ARRIVAL)) {
             str=str+
-            "               Arrived At: %s"    +"\n"+
-            "            Time Occurred: %10.3f"+"\n"+
-            "       Inter-Arrival Time: %10.3f"+"\n"+
-            "             Service Time: %10.3f"+"\n"+
-            "                Wait Time: %10.3f"+"\n";
+            "               Arrived At: %s\n"+
+            "            Time Occurred: %10.3f %s\n"+
+            "       Inter-Arrival Time: %10.3f %s\n"+
+            "             Service Time: %10.3f %s\n"+
+            "                Wait Time: %10.3f %s\n";
             str = String.format (
                 str,
                 location,
-                timeOccurred,
-                interArrivalTime,
-                serviceTime,
-                waitTime
+                timeOccurred,Timestamp.TIME_UNIT,
+                interArrivalTime,Timestamp.TIME_UNIT,
+                serviceTime,Timestamp.TIME_UNIT,
+                waitTime,Timestamp.TIME_UNIT
             );
         } else {
             str=str+
-            "            Departed From: %s"+"\n"+
-            "              Destination: %s"+"\n"+
-            "            Time Occurred: %10.3f"+"\n";
+            "            Departed From: %s\n"+
+            "              Destination: %s\n"+
+            "            Time Occurred: %10.3f %s\n";
             str = String.format (
                 str,
                 location, 
                 destination,
-                timeOccurred 
+                timeOccurred,Timestamp.TIME_UNIT
             );
         }
             str=str+
-            "       Arrivals in Triage: %6d"+"\n"+
-            "       Arrivals in Trauma: %6d"+"\n"+
-            "        Arrivals in Acute: %6d"+"\n"+
-            "       Arrivals in Prompt: %6d"+"\n"+
-            "  Total Arrivals Thus Far: %6d"+"\n"+
-            "   Departures From Triage: %6d"+"\n"+
-            "   Departures From Trauma: %6d"+"\n"+
-            "    Departures From Acute: %6d"+"\n"+
-            "   Departures From Prompt: %6d"+"\n"+
-            "Total Departures Thus Far: %6d"+"\n"+
-            " Patients in Triage Queue: %6d"+"\n"+
-            " Patients in Trauma Queue: %6d"+"\n"+
-            " Patients in  Acute Queue: %6d"+"\n"+
-            " Patients in Prompt Queue: %6d"+"\n";
+            "       Arrivals in Triage: %6d %14s\n"+
+            "       Arrivals in Trauma: %6d %14s\n"+
+            "        Arrivals in Acute: %6d %14s\n"+
+            "       Arrivals in Prompt: %6d %14s\n"+
+            "  Total Arrivals Thus Far: %6d %14s\n"+
+            "   Departures From Triage: %6d %14s\n"+
+            "   Departures From Trauma: %6d %14s\n"+
+            "    Departures From Acute: %6d %14s\n"+
+            "   Departures From Prompt: %6d %14s\n"+
+            "Total Departures Thus Far: %6d %14s\n"+
+            " Patients in Triage Queue: %6d %14s\n"+
+            " Patients in Trauma Queue: %6d %14s\n"+
+            " Patients in  Acute Queue: %6d %14s\n"+
+            " Patients in Prompt Queue: %6d %14s\n";
             str = String.format(
                 str,
-                currentTriageArrivals,
-                currentTraumaArrivals,
-                currentAcuteArrivals,
-                currentPromptArrivals,
-                totalArrivalsSoFar(),
-                currentTriageDepartures,
-                currentTraumaDepartures,
-                currentAcuteDepartures,
-                currentPromptDepartures,
-                totalDeparturesSoFar(),
-                triageQueuePatientsRemaining(),
-                traumaQueuePatientsRemaining(),
-                acuteQueuePatientsRemaining(),
-                promptQueuePatientsRemaining()
+                currentTriageArrivals,Timestamp.PATIENT_UNIT,
+                currentTraumaArrivals,Timestamp.PATIENT_UNIT,
+                currentAcuteArrivals,Timestamp.PATIENT_UNIT,
+                currentPromptArrivals,Timestamp.PATIENT_UNIT,
+                totalArrivalsSoFar(),Timestamp.PATIENT_UNIT,
+                currentTriageDepartures,Timestamp.PATIENT_UNIT,
+                currentTraumaDepartures,Timestamp.PATIENT_UNIT,
+                currentAcuteDepartures,Timestamp.PATIENT_UNIT,
+                currentPromptDepartures,Timestamp.PATIENT_UNIT,
+                totalDeparturesSoFar(),Timestamp.PATIENT_UNIT,
+                triageQueuePatientsRemaining(),Timestamp.PATIENT_UNIT,
+                traumaQueuePatientsRemaining(),Timestamp.PATIENT_UNIT,
+                acuteQueuePatientsRemaining(),Timestamp.PATIENT_UNIT,
+                promptQueuePatientsRemaining(),Timestamp.PATIENT_UNIT
             );
         return str;
     }
