@@ -126,29 +126,30 @@ public class Timestamp {
     public String toString() {
         String str = String.format(
             "Timestamp " + timestampID + "\n"+
-            "                     Event: "+eventType+" "+eventID+"\n"+
-            "             Time Occurred: "+timeOccurred+"\n"
+            "                     Event: "+eventType+" "+eventID+"\n"
         );
         if (eventType.equals(Event.ARRIVAL)) {
             str=str+
             "                Arrived At: "+location+"\n"+
+            "             Time Occurred: "+timeOccurred+"\n"+
             "              Service Time: "+serviceTime+"\n"+
             "        Inter-Arrival Time: "+interArrivalTime+"\n"+
-            "                 Wait Time: "+waitTime+"\n"+
+            "                 Wait Time: "+waitTime+"\n";
+        } else {
+            str=str+
+            "             Time Occurred: "+timeOccurred+"\n"+
+            "             Departed From: "+location+"\n"+
+            "               Destination: "+destination+"\n";
+        }
+            str=str+
             "  Triage Arrivals Thus Far: "+currentTriageArrivals+"\n"+
             "  Trauma Arrivals Thus Far: "+currentTraumaArrivals+"\n"+
             "   Acute Arrivals Thus Far: "+currentAcuteArrivals+"\n"+
-            "  Prompt Arrivals Thus Far: "+currentPromptArrivals+"\n";
-        } else {
-            str=str+
-            "             Departed From: "+location+"\n"+
-            "               Destination: "+destination+"\n"+
+            "  Prompt Arrivals Thus Far: "+currentPromptArrivals+"\n"+
             "Triage Departures Thus Far: "+currentTriageDepartures+"\n"+
             "Trauma Departures Thus Far: "+currentTraumaDepartures+"\n"+
             " Acute Departures Thus Far: "+currentAcuteDepartures+"\n"+
-            "Prompt Departures Thus Far: "+currentPromptDepartures+"\n";
-        }
-        str=str+
+            "Prompt Departures Thus Far: "+currentPromptDepartures+"\n"+
             "  Patients in Triage Queue: "+triageQueuePatientsRemaining()+"\n"+
             "  Patients in Trauma Queue: "+traumaQueuePatientsRemaining()+"\n"+
             "  Patients in  Acute Queue: "+acuteQueuePatientsRemaining()+"\n"+
