@@ -2,6 +2,8 @@ package hw2;
 
 public class Departure extends Event {
 
+    public static final String OUTSIDE_WORLD = "Outside World";
+
     private static int totalDepartures = 0;
     private int departureID = 0;
 
@@ -9,10 +11,11 @@ public class Departure extends Event {
 
     private String destination = "";
 
-    public Departure(int patientID, double timeDeparted, String location) {
+    public Departure(int patientID, double timeDeparted, String location, String destination) {
         super(timeDeparted, location);
         this.departureID = ++totalDepartures;
         this.patientID = patientID;
+        this.destination = destination;
         System.out.println("DEPARTURE "+this.departureID+" CONSTRUCTED");
     }
 
