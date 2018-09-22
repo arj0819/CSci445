@@ -25,7 +25,8 @@ public class Timestamp {
     private static int totalTimestamps = 0;
     private int timestampID = 0;
     private String eventType = "";
-    private int eventID;
+    private int eventID = 0;
+    private int patientID = 0;
 
     private double timeOccurred = 0.0;
     
@@ -44,6 +45,7 @@ public class Timestamp {
         if (eventToStamp instanceof Arrival) {
             this.eventType = Event.ARRIVAL;
             this.eventID = ((Arrival) eventToStamp).getID();
+            this.patientID = ((Arrival) eventToStamp).getPatientID();
             this.timeOccurred = eventToStamp.getTimeOccurred();
             this.location = eventToStamp.getLocation();
             this.serviceTime = eventToStamp.getServiceTime();
@@ -67,6 +69,7 @@ public class Timestamp {
         } else {
             this.eventType = Event.DEPARTURE;
             this.eventID = ((Departure) eventToStamp).getID();
+            this.patientID = ((Departure) eventToStamp).getPatientID();
             this.timeOccurred = eventToStamp.getTimeOccurred();
             this.location = eventToStamp.getLocation();
             this.destination = ((Departure) eventToStamp).getDestination();
@@ -138,7 +141,8 @@ public class Timestamp {
     public String toString() {
         String str = String.format(
             "Timestamp " + timestampID + "\n"+
-            "                     Event: "+eventType+" "+eventID+"\n"
+            "                    Event: "+eventType+" "+eventID+"\n"+
+            "                PatientID: "+patientID+"\n"
         );
         if (eventType.equals(Event.ARRIVAL)) {
             str=str+
