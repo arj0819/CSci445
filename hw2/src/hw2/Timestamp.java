@@ -4,8 +4,9 @@ import java.util.Hashtable;
 
 public class Timestamp {
 
-    public static final String TIME_UNIT = "(minutes)";
-    public static final String PATIENT_UNIT = "(patients)";
+    public static final String TIME_UNIT = "minutes";
+    public static final String PATIENT_UNIT = "patients";
+    public static final String SERVER_UNIT = "specialists";
 
     private static int totalTriageArrivals = 0;
     private static int totalTraumaArrivals = 0;
@@ -24,6 +25,16 @@ public class Timestamp {
     private int currentTraumaDepartures = 0;
     private int currentAcuteDepartures = 0;
     private int currentPromptDepartures = 0;
+
+    private static int totalTriageServers = 0;
+    private static int totalTraumaServers = 0;
+    private static int totalAcuteServers = 0;
+    private static int totalPromptServers = 0;
+
+    private int availableTriageServers = 0;
+    private int availableTraumaServers = 0;
+    private int availableAcuteServers = 0;
+    private int availablePromptServers = 0;
 
     private static double avgPatientsInTriageQueue = 0.0;
     private static double avgPatientsInTraumaQueue = 0.0;
@@ -100,6 +111,15 @@ public class Timestamp {
                 
         }
         this.timestampID = ++totalTimestamps;
+
+        this.availableTriageServers = emergencyDept.get(CareArea.TRIAGE).getAvailableServers();
+        this.availableTraumaServers = emergencyDept.get(CareArea.TRAUMA).getAvailableServers();
+        this.availableAcuteServers = emergencyDept.get(CareArea.ACUTE).getAvailableServers();
+        this.availablePromptServers = emergencyDept.get(CareArea.PROMPT).getAvailableServers();
+        totalTriageServers += availableTriageServers;
+        totalTraumaServers += availableTraumaServers;
+        totalAcuteServers += availableAcuteServers;
+        totalPromptServers += availablePromptServers;
     }
 
     private int triageQueuePatientsRemaining() {
@@ -185,11 +205,11 @@ public class Timestamp {
         );
         if (eventType.equals(Event.ARRIVAL)) {
             str=str+
-            "               Arrived At: %s\n"+
-            "            Time Occurred: %10.3f %s\n"+
-            "       Inter-Arrival Time: %10.3f %s\n"+
-            "             Service Time: %10.3f %s\n"+
-            "                Wait Time: %10.3f %s\n";
+            "                 Arrived At: %s\n"+
+            "              Time Occurred: %10.3f %s\n"+
+            "         Inter-Arrival Time: %10.3f %s\n"+
+            "               Service Time: %10.3f %s\n"+
+            "                  Wait Time: %10.3f %s\n";
             str = String.format (
                 str,
                 location,
@@ -200,9 +220,9 @@ public class Timestamp {
             );
         } else {
             str=str+
-            "            Departed From: %s\n"+
-            "              Destination: %s\n"+
-            "            Time Occurred: %10.3f %s\n";
+            "              Departed From: %s\n"+
+            "                Destination: %s\n"+
+            "              Time Occurred: %10.3f %s\n";
             str = String.format (
                 str,
                 location, 
@@ -211,20 +231,24 @@ public class Timestamp {
             );
         }
             str=str+
-            "       Arrivals in Triage: %6d %14s\n"+
-            "       Arrivals in Trauma: %6d %14s\n"+
-            "        Arrivals in Acute: %6d %14s\n"+
-            "       Arrivals in Prompt: %6d %14s\n"+
-            "  Total Arrivals Thus Far: %6d %14s\n"+
-            "   Departures From Triage: %6d %14s\n"+
-            "   Departures From Trauma: %6d %14s\n"+
-            "    Departures From Acute: %6d %14s\n"+
-            "   Departures From Prompt: %6d %14s\n"+
-            "Total Departures Thus Far: %6d %14s\n"+
-            " Patients in Triage Queue: %6d %14s\n"+
-            " Patients in Trauma Queue: %6d %14s\n"+
-            " Patients in  Acute Queue: %6d %14s\n"+
-            " Patients in Prompt Queue: %6d %14s\n";
+            "         Arrivals in Triage: %6d %12s\n"+
+            "         Arrivals in Trauma: %6d %12s\n"+
+            "          Arrivals in Acute: %6d %12s\n"+
+            "         Arrivals in Prompt: %6d %12s\n"+
+            "    Total Arrivals Thus Far: %6d %12s\n"+
+            "     Departures From Triage: %6d %12s\n"+
+            "     Departures From Trauma: %6d %12s\n"+
+            "      Departures From Acute: %6d %12s\n"+
+            "     Departures From Prompt: %6d %12s\n"+
+            "  Total Departures Thus Far: %6d %12s\n"+
+            "Available Servers in Triage: %6d %15s\n"+
+            "Available Servers in Trauma: %6d %15s\n"+
+            " Available Servers in Acute: %6d %15s\n"+
+            "Available Servers in Prompt: %6d %15s\n"+
+            "   Patients in Triage Queue: %6d %12s\n"+
+            "   Patients in Trauma Queue: %6d %12s\n"+
+            "   Patients in  Acute Queue: %6d %12s\n"+
+            "   Patients in Prompt Queue: %6d %12s\n";
             str = String.format(
                 str,
                 currentTriageArrivals,Timestamp.PATIENT_UNIT,
@@ -237,6 +261,10 @@ public class Timestamp {
                 currentAcuteDepartures,Timestamp.PATIENT_UNIT,
                 currentPromptDepartures,Timestamp.PATIENT_UNIT,
                 totalDeparturesSoFar(),Timestamp.PATIENT_UNIT,
+                availableTriageServers,Timestamp.SERVER_UNIT,
+                availableTraumaServers,Timestamp.SERVER_UNIT,
+                availableAcuteServers,Timestamp.SERVER_UNIT,
+                availablePromptServers,Timestamp.SERVER_UNIT,
                 triageQueuePatientsRemaining(),Timestamp.PATIENT_UNIT,
                 traumaQueuePatientsRemaining(),Timestamp.PATIENT_UNIT,
                 acuteQueuePatientsRemaining(),Timestamp.PATIENT_UNIT,
