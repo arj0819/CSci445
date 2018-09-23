@@ -16,7 +16,7 @@ public class Arrival extends Event {
         this.transferRequired = transferRequired;
         this.arrivalID = ++totalArrivals;
         this.patientID = ++totalPatients;
-        System.out.println("ARRIVAL "+this.arrivalID+" CONSTRUCTED");
+        // System.out.println("ARRIVAL "+this.arrivalID+" CONSTRUCTED");
     }
 
     public Arrival(int patientID, double timeArrived, double interArrivalTime, double serviceTime, double waitTime, boolean transferRequired, String location) {
