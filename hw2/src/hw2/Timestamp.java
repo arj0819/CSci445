@@ -77,10 +77,6 @@ public class Timestamp {
     private double interArrivalTime = 0.0;
     private double waitTime = 0.0;
 
-    //private static int numberOfWaits = 0;
-    //private static double totalWaitTime = 0.0;
-
-
     public Timestamp(Event eventToStamp, Hashtable<String,CareArea> emergencyDept) {
         
         currentTriageArrivals = totalTriageArrivals;
@@ -316,6 +312,7 @@ public class Timestamp {
             return 0.0;
         }
     }
+
 
     @Override
     public String toString() {
