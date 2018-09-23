@@ -84,9 +84,9 @@ public class EmergencyRoomSimulation {
         }
 
         // Iterate through the Care Areas to test if things worked!
-        for (String area : emergencyDept.keySet()) {
-            System.out.println(emergencyDept.get(area));
-        }
+        // for (String area : emergencyDept.keySet()) {
+        //     System.out.println(emergencyDept.get(area));
+        // }
 
         // Schedule and run through all of the Events!
         double nextInterArrivalTime = 0.0;
@@ -104,6 +104,9 @@ public class EmergencyRoomSimulation {
 
             if (currentEvent instanceof Arrival || currentTime == 0.0) {
                 try {
+                    Server nextServer = emergencyDept.get(((Arrival)currentEvent).getLocation()).getNextAvailableServer();
+                    emergencyDept.get(((Arrival)currentEvent).getLocation()).establishService(nextServer,((Arrival)currentEvent).getServiceTime());
+                    // System.out.println("Server " + nextServer.getID()+" is serving Patient "+((Arrival)currentEvent).getPatientID()+" in "+nextServer.getServiceArea()+" for "+nextServer.getCurrentServiceTime()+" and has a total of "+nextServer.getTotalServiceTime()+" minutes of service.");
                     emergencyDept.get(((Arrival)currentEvent).getLocation()).servicePatient();
                 } catch (Exception e) {}
 
@@ -138,14 +141,14 @@ public class EmergencyRoomSimulation {
                     nextDeparture = new Departure(((Arrival)nextArrival).getPatientID(),nextDepartureTime, startLocation, destination);
 
 
-                    System.out.println("       Current Time: "+currentTime);
-                    System.out.println("  Next Int-Arr Time: "+nextInterArrivalTime);
-                    System.out.println("  Next Arrival Time: "+nextArrivalTime);
-                    System.out.println("  Next Service Time: "+nextServiceTime);
-                    System.out.println("Prev Departure Time: "+prevDepartureTime);
-                    System.out.println("     Next Wait Time: "+nextWaitTime);
-                    System.out.println("Next Departure Time: "+nextDepartureTime);
-                    System.out.println("Next Departure Area: "+destination);
+                    // System.out.println("       Current Time: "+currentTime);
+                    // System.out.println("  Next Int-Arr Time: "+nextInterArrivalTime);
+                    // System.out.println("  Next Arrival Time: "+nextArrivalTime);
+                    // System.out.println("  Next Service Time: "+nextServiceTime);
+                    // System.out.println("Prev Departure Time: "+prevDepartureTime);
+                    // System.out.println("     Next Wait Time: "+nextWaitTime);
+                    // System.out.println("Next Departure Time: "+nextDepartureTime);
+                    // System.out.println("Next Departure Area: "+destination);
 
 
 
@@ -219,14 +222,14 @@ public class EmergencyRoomSimulation {
                     nextArrival = new Arrival(((Departure)currentEvent).getPatientID(),nextArrivalTime, nextInterArrivalTime, nextServiceTime, nextWaitTime, false, destination);
                     nextDeparture = new Departure(((Arrival)nextArrival).getPatientID(),nextDepartureTime, destination, Departure.OUTSIDE_WORLD);
 
-                    System.out.println("       Current Time: "+currentTime);
-                    System.out.println("  Next Int-Arr Time: "+nextInterArrivalTime);
-                    System.out.println("  Next Arrival Time: "+nextArrivalTime);
-                    System.out.println("  Next Service Time: "+nextServiceTime);
-                    System.out.println("Prev Departure Time: "+prevDepartureTime);
-                    System.out.println("     Next Wait Time: "+nextWaitTime);
-                    System.out.println("Next Departure Time: "+nextDepartureTime);
-                    System.out.println("Next Departure Area: "+destination);
+                    // System.out.println("       Current Time: "+currentTime);
+                    // System.out.println("  Next Int-Arr Time: "+nextInterArrivalTime);
+                    // System.out.println("  Next Arrival Time: "+nextArrivalTime);
+                    // System.out.println("  Next Service Time: "+nextServiceTime);
+                    // System.out.println("Prev Departure Time: "+prevDepartureTime);
+                    // System.out.println("     Next Wait Time: "+nextWaitTime);
+                    // System.out.println("Next Departure Time: "+nextDepartureTime);
+                    // System.out.println("Next Departure Area: "+destination);
                     
 
 
@@ -255,19 +258,23 @@ public class EmergencyRoomSimulation {
                 timeline.add(new Timestamp(currentEvent,emergencyDept));
                 
             }
-            if (currentEvent instanceof Arrival) {
-                System.out.println("\nARRIVAL "+((Arrival)currentEvent).getID()+" occurred in "+currentEvent.getLocation());
-                System.out.println("Current Time: "+currentTime+"\n");
-            } else {
-                System.out.println("\nDEPARTURE "+((Departure)currentEvent).getID()+" occurred in "+currentEvent.getLocation());
-                System.out.println("Current Time: "+currentTime+"\n");
-            }
+            // if (currentEvent instanceof Arrival) {
+            //     System.out.println("\nARRIVAL "+((Arrival)curren (Timestamp ts : timeline) {
+        //     System.out.println(ts);
+        // }tEvent).getID()+" occurred in "+currentEvent.getLocation());
+            //     System.out.println("Current Time: "+currentTime+"\n");
+            // } else {
+            //     System.out.println("\nDEPARTURE "+((Departure)currentEvent).getID()+" occurred in "+currentEvent.getLocation());
+            //     System.out.println("Current Time: "+currentTime+"\n");
+            // }
         }
 
-        for (Timestamp ts : timeline) {
-            System.out.println(ts);
-        }
+        // for (Timestamp ts : timeline) {
+        //     System.out.println(ts);
+        // }
 
+        System.out.println("FINAL TIMESTAMP\n\n"+timeline.get(timeline.size()-1));
+        System.out.println("FINAL STATISTICS\n");
 
         System.out.printf("         Simulation ended at: %10.3f %s\n",currentTime,Timestamp.TIME_UNIT);
         System.out.printf("      Inter-Arrival Time Avg: %10.3f %s\n",actualAvgIntArrTime/Arrival.getTotalArrivals(),Timestamp.TIME_UNIT);
@@ -275,6 +282,7 @@ public class EmergencyRoomSimulation {
         System.out.printf("      Trauma Queue Count Avg: %10.3f %s\n",Timestamp.avgPatientsInTraumaQueue(),Timestamp.PATIENT_UNIT);
         System.out.printf("       Acute Queue Count Avg: %10.3f %s\n",Timestamp.avgPatientsInAcuteQueue(),Timestamp.PATIENT_UNIT);
         System.out.printf("      Prompt Queue Count Avg: %10.3f %s\n",Timestamp.avgPatientsInPromptQueue(),Timestamp.PATIENT_UNIT);
+        System.out.printf("    Number of Waits Occurred: %6d %12s\n",Event.getNumOfWaits(),Timestamp.PATIENT_UNIT);
         System.out.printf("        Triage Wait Time Avg: %10.3f %s\n",Timestamp.avgTriageWaitTime(),Timestamp.TIME_UNIT);
         System.out.printf("        Trauma Wait Time Avg: %10.3f %s\n",Timestamp.avgTraumaWaitTime(),Timestamp.TIME_UNIT);
         System.out.printf("         Acute Wait Time Avg: %10.3f %s\n",Timestamp.avgAcuteWaitTime(),Timestamp.TIME_UNIT);
@@ -287,7 +295,7 @@ public class EmergencyRoomSimulation {
         System.out.printf("     Trauma Service Time Avg: %10.3f %s\n",Timestamp.avgTraumaServiceTime(),Timestamp.TIME_UNIT);
         System.out.printf("      Acute Service Time Avg: %10.3f %s\n",Timestamp.avgAcuteServiceTime(),Timestamp.TIME_UNIT);
         System.out.printf("     Prompt Service Time Avg: %10.3f %s\n",Timestamp.avgPromptServiceTime(),Timestamp.TIME_UNIT);
-        System.out.printf("    Number of Waits Occurred: %6d %12s\n",Event.getNumOfWaits(),Timestamp.PATIENT_UNIT);
+        // System.out.print(CareArea.avgServerUtilization(currentTime));
     }
 
     public static double scheduleInterArrivalTime(CareArea triage) {
