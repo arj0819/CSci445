@@ -21,6 +21,9 @@ public class EmergencyRoomSimulation {
     private static Queue<Event> events = new PriorityQueue<Event>();
     private static List<Event> arrivals = new ArrayList<Event>();
     private static List<Event> triageDepartures = new ArrayList<Event>();
+    private static List<Event> traumaDepartures = new ArrayList<Event>();
+    private static List<Event> acuteDepartures = new ArrayList<Event>();
+    private static List<Event> promptDepartures = new ArrayList<Event>();
     private static List<Timestamp> timeline = new ArrayList<Timestamp>();
 
     private static Random rand = new Random();
@@ -104,30 +107,35 @@ public class EmergencyRoomSimulation {
                     emergencyDept.get(((Arrival)currentEvent).getLocation()).servicePatient();
                 } catch (Exception e) {}
 
-                for (int i = 0; i < triageDepartures.size(); i++) {
-                    if (i == triageDepartures.size() - 1) {
-                        prevDepartureTime = triageDepartures.get(i).getTimeDeparted();
-                    }
-                }
+                // for (int i = 0; i < triageDepartures.size(); i++) {
+                //     if (i == triageDepartures.size() - 1) {
+                //         prevDepartureTime = triageDepartures.get(i).getTimeDeparted();
+                //     }
+                // }
                 
                 
                 Event nextArrival = null;
                 Event nextDeparture = null;
+                String startLocation = CareArea.TRIAGE;
                 String destination = schedulePatientDepartureArea(transferProbabilities);
 
                 //generate the initial event sequence or the next event sequence if the current event is a Triage Arrival
-                if (currentTime == 0.0 || currentEvent.getLocation().equals(CareArea.TRIAGE)) {
+                if (currentTime == 0.0 || currentEvent.getLocation().equals(startLocation)) {
+
+                    try {
+                        prevDepartureTime = triageDepartures.get(triageDepartures.size() - 1).getTimeDeparted();
+                    } catch (Exception e) {}
 
                     //Set up the event sequence by calculating all the necessary times 
-                    nextInterArrivalTime = scheduleInterArrivalTime(emergencyDept.get(CareArea.TRIAGE));
-                    nextServiceTime = scheduleServiceTime(emergencyDept.get(CareArea.TRIAGE));
+                    nextInterArrivalTime = scheduleInterArrivalTime(emergencyDept.get(startLocation));
+                    nextServiceTime = scheduleServiceTime(emergencyDept.get(startLocation));
                     nextArrivalTime = currentTime + nextInterArrivalTime;
-                    nextWaitTime = prevDepartureTime <= nextArrivalTime || emergencyDept.get(CareArea.TRIAGE).isServiceAvailable() ?
+                    nextWaitTime = prevDepartureTime <= nextArrivalTime || emergencyDept.get(startLocation).isServiceAvailable() ?
                                 0.0 : prevDepartureTime - nextArrivalTime;
                     nextDepartureTime = nextArrivalTime + nextServiceTime + nextWaitTime;
 
-                    nextArrival = new Arrival(nextArrivalTime, nextInterArrivalTime, nextServiceTime, nextWaitTime, false, CareArea.TRIAGE);
-                    nextDeparture = new Departure(((Arrival)nextArrival).getPatientID(),nextDepartureTime, CareArea.TRIAGE, destination);
+                    nextArrival = new Arrival(nextArrivalTime, nextInterArrivalTime, nextServiceTime, nextWaitTime, false, startLocation);
+                    nextDeparture = new Departure(((Arrival)nextArrival).getPatientID(),nextDepartureTime, startLocation, destination);
 
 
                     System.out.println("       Current Time: "+currentTime);
@@ -146,6 +154,7 @@ public class EmergencyRoomSimulation {
 
                     arrivals.add(nextArrival);
                     triageDepartures.add(nextDeparture);
+
                 }
 
 
@@ -167,14 +176,37 @@ public class EmergencyRoomSimulation {
 
                 if (!((Departure) currentEvent).getDestination().equals(Departure.OUTSIDE_WORLD)) {
 
-                    for (int i = 0; i < triageDepartures.size(); i++) {
-                        if (i == triageDepartures.size() - 1) {
-                            prevDepartureTime = triageDepartures.get(i).getTimeDeparted();
-                        }
-                    }
+                    // for (int i = 0; i < triageDepartures.size(); i++) {
+                    //     if (i == triageDepartures.size() - 1) {
+                    //         prevDepartureTime = triageDepartures.get(i).getTimeDeparted();
+                    //     }
+                    // }
     
     
                     String destination = ((Departure) currentEvent).getDestination();
+
+                
+                    if (destination.equals(CareArea.TRAUMA)) {
+                        try {
+                            prevDepartureTime = traumaDepartures.get(traumaDepartures.size() - 1).getTimeDeparted();
+                        } catch (Exception e) {
+                            prevDepartureTime = 0.0;
+                        }
+                    } else if (destination.equals(CareArea.ACUTE)) {
+                        try {
+                            prevDepartureTime = acuteDepartures.get(acuteDepartures.size() - 1).getTimeDeparted();
+                        } catch (Exception e) {
+                            prevDepartureTime = 0.0;
+                        }
+                    } else {
+                        try {
+                            prevDepartureTime = promptDepartures.get(promptDepartures.size() - 1).getTimeDeparted();
+                        } catch (Exception e) {
+                            prevDepartureTime = 0.0;
+                        }
+                    }
+
+
                     nextServiceTime = scheduleServiceTime(emergencyDept.get(destination));
                     nextArrivalTime = currentTime + nextInterArrivalTime;
                     nextWaitTime = prevDepartureTime <= nextArrivalTime || emergencyDept.get(destination).isServiceAvailable() ?
@@ -203,7 +235,14 @@ public class EmergencyRoomSimulation {
                     events.add(nextDeparture);
     
                     arrivals.add(nextArrival);
-                    triageDepartures.add(nextDeparture);
+
+                    if (destination.equals(CareArea.TRAUMA)) {
+                        traumaDepartures.add(nextDeparture);
+                    } else if (destination.equals(CareArea.ACUTE)) {
+                        acuteDepartures.add(nextDeparture);
+                    } else {
+                        promptDepartures.add(nextDeparture);
+                    }
                 }
 
                 currentEvent = events.remove();
@@ -228,6 +267,7 @@ public class EmergencyRoomSimulation {
         for (Timestamp ts : timeline) {
             System.out.println(ts);
         }
+
 
         System.out.printf("         Simulation ended at: %10.3f %s\n",currentTime,Timestamp.TIME_UNIT);
         System.out.printf("     Actual Avg Int-Arr Time: %10.3f %s\n",actualAvgIntArrTime/Arrival.getTotalArrivals(),Timestamp.TIME_UNIT);
