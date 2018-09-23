@@ -67,6 +67,7 @@ public class Timestamp {
     private String eventType = "";
     private int eventID = 0;
     private int patientID = 0;
+    private int serverID = 0;
 
     private double timeOccurred = 0.0;
     
@@ -77,7 +78,7 @@ public class Timestamp {
     private double interArrivalTime = 0.0;
     private double waitTime = 0.0;
 
-    public Timestamp(Event eventToStamp, Hashtable<String,CareArea> emergencyDept) {
+    public Timestamp(Event eventToStamp, Hashtable<String,CareArea> emergencyDept, Server serverOfArrivalEvent) {
         
         currentTriageArrivals = totalTriageArrivals;
         currentTraumaArrivals = totalTraumaArrivals;
@@ -106,6 +107,11 @@ public class Timestamp {
             this.serviceTime = eventToStamp.getServiceTime();
             this.interArrivalTime = eventToStamp.getInterArrivalTime();
             this.waitTime = eventToStamp.getWaitTime();
+            try {
+                this.serverID = serverOfArrivalEvent.getID();
+            } catch (Exception e) {
+                this.serverID = 0;
+            }
 
             if (location.equals(CareArea.TRIAGE)) {
                 currentTriageArrivals = ++totalTriageArrivals;
@@ -324,6 +330,7 @@ public class Timestamp {
         if (eventType.equals(Event.ARRIVAL)) {
             str=str+
             "                  Arrived At: %s\n"+
+            "                   Served by: Server %d\n"+
             "               Time Occurred: %10.3f %s\n"+
             "          Inter-Arrival Time: %10.3f %s\n"+
             "                Service Time: %10.3f %s\n"+
@@ -331,6 +338,7 @@ public class Timestamp {
             str = String.format (
                 str,
                 location,
+                serverID,
                 timeOccurred,Timestamp.TIME_UNIT,
                 interArrivalTime,Timestamp.TIME_UNIT,
                 serviceTime,Timestamp.TIME_UNIT,
