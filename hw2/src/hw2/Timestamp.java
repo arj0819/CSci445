@@ -240,20 +240,32 @@ public class Timestamp {
         return totalPromptServers/(totalArrivals()+totalDepartures());
     }
     public static double avgTriageWaitTime() {
-        double totalDblTriageArrivals = totalTriageArrivals;
-        return totalTriageWaitTime/totalDblTriageArrivals;
+        if (totalTriageArrivals != 0) {
+            return totalTriageWaitTime/totalTriageArrivals;
+        } else {
+            return 0.0;
+        }
     }
     public static double avgTraumaWaitTime() {
-        double totalDblTraumaArrivals = totalTraumaArrivals;
-        return totalTraumaWaitTime/totalDblTraumaArrivals;
+        if (totalTraumaArrivals != 0) {
+            return totalTraumaWaitTime/totalTraumaArrivals;
+        } else {
+            return 0.0;
+        }
     }
     public static double avgAcuteWaitTime() {
-        double totalDblAcuteArrivals = totalAcuteArrivals;
-        return totalAcuteWaitTime/totalDblAcuteArrivals;
+        if (totalAcuteArrivals != 0) {
+            return totalAcuteWaitTime/totalAcuteArrivals;
+        } else {
+            return 0.0;
+        }
     }
     public static double avgPromptWaitTime() {
-        double totalDblPromptArrivals = totalPromptArrivals;
-        return totalPromptWaitTime/totalDblPromptArrivals;
+        if (totalPromptArrivals != 0) {
+            return totalPromptWaitTime/totalPromptArrivals;
+        } else {
+            return 0.0;
+        }
     }
 
     @Override
