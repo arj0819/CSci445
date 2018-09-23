@@ -53,6 +53,15 @@ public class Timestamp {
     private static double totalAcuteWaitTime = 0.0;
     private static double totalPromptWaitTime = 0.0;
 
+    private double currentTriageServiceTime = 0.0;
+    private double currentTraumaServiceTime = 0.0;
+    private double currentAcuteServiceTime = 0.0;
+    private double currentPromptServiceTime = 0.0;
+    private static double totalTriageServiceTime = 0.0;
+    private static double totalTraumaServiceTime = 0.0;
+    private static double totalAcuteServiceTime = 0.0;
+    private static double totalPromptServiceTime = 0.0;
+
     private static int totalTimestamps = 0;
     private int timestampID = 0;
     private String eventType = "";
@@ -87,6 +96,10 @@ public class Timestamp {
         currentTraumaWaitTime = totalTraumaWaitTime;
         currentAcuteWaitTime = totalAcuteWaitTime;
         currentPromptWaitTime = totalPromptWaitTime;
+        currentTriageServiceTime = totalTriageServiceTime;
+        currentTraumaServiceTime = totalTraumaServiceTime;
+        currentAcuteServiceTime = totalAcuteServiceTime;
+        currentPromptServiceTime = totalPromptServiceTime;
 
         if (eventToStamp instanceof Arrival) {
             this.eventType = Event.ARRIVAL;
@@ -102,18 +115,26 @@ public class Timestamp {
                 currentTriageArrivals = ++totalTriageArrivals;
                 currentTriageWaitTime = waitTime;
                 totalTriageWaitTime += currentTriageWaitTime;
+                currentTriageServiceTime = serviceTime;
+                totalTriageServiceTime += currentTriageServiceTime;
             } else if (location.equals(CareArea.TRAUMA)) {
                 currentTraumaArrivals = ++totalTraumaArrivals;
                 currentTraumaWaitTime = waitTime;
                 totalTraumaWaitTime += currentTraumaWaitTime;
+                currentTraumaServiceTime = serviceTime;
+                totalTraumaServiceTime += currentTraumaServiceTime;
             } else if (location.equals(CareArea.ACUTE)) {
                 currentAcuteArrivals = ++totalAcuteArrivals;
                 currentAcuteWaitTime = waitTime;
                 totalAcuteWaitTime += currentAcuteWaitTime;
+                currentAcuteServiceTime = serviceTime;
+                totalAcuteServiceTime += currentAcuteServiceTime;
             } else {
                 currentPromptArrivals = ++totalPromptArrivals;
                 currentPromptWaitTime = waitTime;
                 totalPromptWaitTime += currentPromptWaitTime;
+                currentPromptServiceTime = serviceTime;
+                totalPromptServiceTime += currentPromptServiceTime;
             }
 
         } else {
@@ -267,13 +288,41 @@ public class Timestamp {
             return 0.0;
         }
     }
+    public static double avgTriageServiceTime() {
+        if (totalTriageArrivals != 0) {
+            return totalTriageServiceTime/totalTriageArrivals;
+        } else {
+            return 0.0;
+        }
+    }
+    public static double avgTraumaServiceTime() {
+        if (totalTraumaArrivals != 0) {
+            return totalTraumaServiceTime/totalTraumaArrivals;
+        } else {
+            return 0.0;
+        }
+    }
+    public static double avgAcuteServiceTime() {
+        if (totalAcuteArrivals != 0) {
+            return totalAcuteServiceTime/totalAcuteArrivals;
+        } else {
+            return 0.0;
+        }
+    }
+    public static double avgPromptServiceTime() {
+        if (totalPromptArrivals != 0) {
+            return totalPromptServiceTime/totalPromptArrivals;
+        } else {
+            return 0.0;
+        }
+    }
 
     @Override
     public String toString() {
         String str = String.format(
             "Timestamp " + timestampID + "\n"+
-            "                    Event: "+eventType+" "+eventID+"\n"+
-            "                PatientID: "+patientID+"\n"
+            "                       Event: "+eventType+" "+eventID+"\n"+
+            "                   PatientID: "+patientID+"\n"
         );
         if (eventType.equals(Event.ARRIVAL)) {
             str=str+
