@@ -103,8 +103,9 @@ public class EmergencyRoomSimulation {
         while (currentTime <= totalSimTime) {
 
             if (currentEvent instanceof Arrival || currentTime == 0.0) {
+                Server nextServer = null;
                 try {
-                    Server nextServer = emergencyDept.get(((Arrival)currentEvent).getLocation()).getNextAvailableServer();
+                    nextServer = emergencyDept.get(((Arrival)currentEvent).getLocation()).getNextAvailableServer();
                     emergencyDept.get(((Arrival)currentEvent).getLocation()).establishService(nextServer,((Arrival)currentEvent).getServiceTime());
                     // System.out.println("Server " + nextServer.getID()+" is serving Patient "+((Arrival)currentEvent).getPatientID()+" in "+nextServer.getServiceArea()+" for "+nextServer.getCurrentServiceTime()+" and has a total of "+nextServer.getTotalServiceTime()+" minutes of service.");
                     emergencyDept.get(((Arrival)currentEvent).getLocation()).servicePatient();
@@ -168,7 +169,7 @@ public class EmergencyRoomSimulation {
                     System.out.println("\n");
                     break;
                 }
-                timeline.add(new Timestamp(currentEvent,emergencyDept));
+                timeline.add(new Timestamp(currentEvent,emergencyDept,nextServer));
 
 
                 actualAvgIntArrTime+=nextInterArrivalTime;
@@ -255,7 +256,7 @@ public class EmergencyRoomSimulation {
                     System.out.println("\n");
                     break;
                 }
-                timeline.add(new Timestamp(currentEvent,emergencyDept));
+                timeline.add(new Timestamp(currentEvent,emergencyDept,null));
                 
             }
             // if (currentEvent instanceof Arrival) {
