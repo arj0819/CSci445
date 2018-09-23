@@ -16,7 +16,7 @@ public class Departure extends Event {
         this.departureID = ++totalDepartures;
         this.patientID = patientID;
         this.destination = destination;
-        System.out.println("DEPARTURE "+this.departureID+" CONSTRUCTED");
+        // System.out.println("DEPARTURE "+this.departureID+" CONSTRUCTED");
     }
 
     public static int getTotalDepartures() {
