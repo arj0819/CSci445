@@ -104,12 +104,12 @@ public class EmergencyRoomSimulation {
 
             if (currentEvent instanceof Arrival || currentTime == 0.0) {
                 Server nextServer = null;
-                try {
+                if (currentTime != 0.0) {
                     nextServer = emergencyDept.get(((Arrival)currentEvent).getLocation()).getNextAvailableServer();
                     emergencyDept.get(((Arrival)currentEvent).getLocation()).establishService(nextServer,((Arrival)currentEvent).getServiceTime());
                     // System.out.println("Server " + nextServer.getID()+" is serving Patient "+((Arrival)currentEvent).getPatientID()+" in "+nextServer.getServiceArea()+" for "+nextServer.getCurrentServiceTime()+" and has a total of "+nextServer.getTotalServiceTime()+" minutes of service.");
                     emergencyDept.get(((Arrival)currentEvent).getLocation()).servicePatient();
-                } catch (Exception e) {}
+                }
 
                 // for (int i = 0; i < triageDepartures.size(); i++) {
                 //     if (i == triageDepartures.size() - 1) {
