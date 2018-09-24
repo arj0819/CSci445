@@ -1,6 +1,8 @@
 package hw2;
 
 import java.util.Hashtable;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Timestamp {
 
@@ -69,6 +71,9 @@ public class Timestamp {
     private int patientID = 0;
     private int serverID = 0;
 
+    private Hashtable<Integer,Double> currentServiceTimes = new Hashtable<Integer,Double>();
+    private static Hashtable<Integer,Double> totalServiceTimes = new Hashtable<Integer,Double>();
+
     private double timeOccurred = 0.0;
     
     private String location = "";
@@ -98,6 +103,10 @@ public class Timestamp {
         currentAcuteServiceTime = totalAcuteServiceTime;
         currentPromptServiceTime = totalPromptServiceTime;
 
+        for(int i = 1; i <= currentServiceTimes.size(); i++) {
+            currentServiceTimes.replace(i,totalServiceTimes.get(i));
+        }
+
         if (eventToStamp instanceof Arrival) {
             this.eventType = Event.ARRIVAL;
             this.eventID = ((Arrival) eventToStamp).getID();
@@ -112,6 +121,8 @@ public class Timestamp {
             } catch (Exception e) {
                 this.serverID = 0;
             }
+            updateCurrentServiceTime(serverID);
+            updateTotalServiceTime(serverID);
 
             if (location.equals(CareArea.TRIAGE)) {
                 currentTriageArrivals = ++totalTriageArrivals;
@@ -318,6 +329,35 @@ public class Timestamp {
             return 0.0;
         }
     }
+    private void updateCurrentServiceTime(int serverID) {
+        if (currentServiceTimes.get(serverID) != null) {
+            currentServiceTimes.replace(serverID,serviceTime);
+        } else {
+            if (serverID != 0) {
+                currentServiceTimes.put(serverID,serviceTime);
+            }
+        }
+        // if (serverID != 0)
+        // System.out.println("Server "+serverID+" is serving for "+currentServiceTimes.get(serverID));
+    }
+    private void updateTotalServiceTime(int serverID) {
+        if (totalServiceTimes.get(serverID) != null) {
+            totalServiceTimes.replace(serverID,totalServiceTimes.get(serverID)+serviceTime);
+        } else {
+            totalServiceTimes.put(serverID,serviceTime);
+        }
+        // if (serverID != 0)
+        // System.out.println("Server "+serverID+" has served for "+totalServiceTimes.get(serverID));
+    }
+    // public Hashtable<Integer,Double> calcServerUtilizations() {
+    //     Hashtable<Integer,Double> serverUtilizations = new Hashtable<Integer,Double>();
+
+    //     for (int i = 0; i < totalServiceTimes.size(); i++) {
+
+    //     }
+
+    //     return serverUtilizations;
+    // }
 
 
     @Override
@@ -331,6 +371,7 @@ public class Timestamp {
             str=str+
             "                  Arrived At: %s\n"+
             "                   Served by: Server %d\n"+
+            "  Time Served by this Server: %10.3f %s\n"+
             "               Time Occurred: %10.3f %s\n"+
             "          Inter-Arrival Time: %10.3f %s\n"+
             "                Service Time: %10.3f %s\n"+
@@ -339,6 +380,7 @@ public class Timestamp {
                 str,
                 location,
                 serverID,
+                totalServiceTimes.get(serverID),Timestamp.TIME_UNIT,
                 timeOccurred,Timestamp.TIME_UNIT,
                 interArrivalTime,Timestamp.TIME_UNIT,
                 serviceTime,Timestamp.TIME_UNIT,
