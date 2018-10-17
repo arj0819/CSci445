@@ -1,0 +1,35 @@
+CSci 445 Fall, 2018
+Programming Assignment #3
+Due: Thursday, Oct 11, 2018 OR Tuesday, Oct 16, 2018
+Points: 50
+
+Use the simlib library to implement the inventory management simulation described in Section 
+1.5 of the textbook. I recommend that you modify the author’s implementation of the inventory 
+management simulation to use simlib as described below. Further, I recommend you modify 
+the author’s implementation in the order below. 
+1. The event list must be stored in a simlib list. 
+    • Use event_schedule() and expon() or uniform() function to schedule demand and order 
+      arrival events.
+    • Use the random_integer() function to determine the demand size.
+2. The inventory level must be stored in and retrieved from a simlib list.
+3.Compute performance metrics for average ordering cost, average holding cost, and 
+  average shortage cost using two methods: the author’s implementation and using simlib (ex 
+  sampst() and timest()) functions. For each inventory policy, print the performance metrics 
+  calculated by both methods (see sample output file on Blackboard). 
+
+See Content/Assignments/Program #3 on Blackboard for a sample input file (inv.in) and 
+matching output file (inv.out).
+
+Write a report (1-2 pages) that explains any differences in results between the author’s 
+implementation and the simlib implementation for the three performance metrics. 
+
+You must implement your assignment with C or C++.
+Submit your source code files and any required build script using the directory structure below. 
+
+hw3/
+    hw3report.pdf
+    src/
+        [source file(s)] 
+        inv.in
+        
+Upload your submission to Blackboard as a zipped file: lastname-firstname.hw3.zip. 

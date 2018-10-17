@@ -1,0 +1,12 @@
+initial inventory level
+number of simulated months
+number of policies
+number of value demands - how many types of value demands there are
+mean inter-demand time
+setup cost
+incremental cost
+holding cost
+shortage cost
+minimum delivery lag
+maximum delivery lag
+probability distribution demand - list out each value demand
