@@ -1,6 +1,14 @@
 public class Tweet {
     
+    private static int totalTweets = 0;
     private int tweetID;
-    private double credibilityRating;
+
+    public Tweet() {
+
+    }
+
+    private void setID() {
+        this.tweetID = ++totalTweets;
+    }
 
 }

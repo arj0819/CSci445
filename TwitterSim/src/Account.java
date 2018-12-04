@@ -80,7 +80,7 @@ public class Account {
     }
 
     public void generateTweet() {
-        tweets.add(new Tweet());
+        tweets.add(new Tweet(isBot()));
     }
 
 
