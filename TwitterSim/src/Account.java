@@ -8,7 +8,7 @@ public class Account {
 
     private static Random rand = new Random();
 
-    private static int totalAccounts = 0;
+    public static int totalAccounts = 0;
     private int accountID;
     private int followerCount = 0;
     private int tweetCount = 0;
@@ -48,16 +48,21 @@ public class Account {
             //It's a bot, so it's avg tweet quality is between 0.0 and 0.7.
             //Ideally, this should be based on some distribution.
             this.avgTweetQuality = rand.nextDouble() * 0.7;
+
+            //Bot accounts get a lower random base popularity multiplier to simulate
+            //bots that may or may not be already known in the environment. 
+            //Ideally, this should be based on some distribution.
+            setPopularityMult(rand.nextInt(5)+1);
         } else {
             //It's a human, so it's avg tweet quality is between 0.3 and 1.0.
             //Ideally, this should be based on some distribution.
             this.avgTweetQuality = (rand.nextDouble() * 0.7) + 0.3;
 
-            //Human accounts get a random base popularity multiplier to simulate
+            //Human accounts get a higher random base popularity multiplier to simulate
             //celebrities or well known entities that are more likely to have a 
             //higher initial popularity.
             //Ideally, this should be based on some distribution.
-            setPopularityMult(rand.nextInt(3)+1);
+            setPopularityMult(rand.nextInt(20)+1);
         }
     }
 
@@ -81,6 +86,14 @@ public class Account {
 
     public void generateTweet() {
         tweets.add(new Tweet());
+    }
+
+    public int getFollowerCount() {
+        return this.followerCount;
+    }
+
+    public int getTweetCount() {
+        return this.tweetCount;
     }
 
 
