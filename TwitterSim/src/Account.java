@@ -39,7 +39,7 @@ public class Account {
         this.isBot = isBot;
     }
 
-    private boolean isBot() {
+    public boolean isBot() {
         return isBot;
     }
 
@@ -80,7 +80,7 @@ public class Account {
     }
 
     public void generateTweet() {
-        tweets.add(new Tweet(isBot()));
+        tweets.add(new Tweet());
     }
 
 

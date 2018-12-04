@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class Main {
  
-    private List<Account> allAccounts = new ArrayList<Account>();
+    private static List<Account> allAccounts = new ArrayList<Account>();
 
     public static void main(String[] args) {
         for (int i = 0; i < 10; i++) {
