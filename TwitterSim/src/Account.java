@@ -16,15 +16,18 @@ public class Account {
     private double tweetProbabilty;
     private double avgTweetQuality;
     private double populatiryMultiplier;
+    private long totalImpressions = 0;
+    private double influenceScore = 0;
 
     private List<Tweet> tweets = new ArrayList<Tweet>();
 
-
-    public Account(double avgTweetQuality, double tweetProbability, double popularityMultiplier) {
+    public Account(double avgTweetQuality, double tweetProbability, double popularityMultiplier, int baseHumanFollowerCount, int baseBotFollowerCount) {
         setID();
         setAvgTweetQuality(avgTweetQuality);
         setTweetProbability(tweetProbability);
         setPopularityMult(popularityMultiplier);
+        setInitHumanFollowers(baseHumanFollowerCount);
+        setInitBotFollowers(baseBotFollowerCount);
     }
 
     private void setID() {
@@ -80,6 +83,34 @@ public class Account {
         return this.tweets;
     }
 
+    public Tweet getMostRecentTweet() {
+        return tweets.get(tweets.size()-1);
+    }
+
+    public void setInitHumanFollowers(int baseHumanFollowerCount) {
+        this.humanFollowerCount = (int) (baseHumanFollowerCount * this.populatiryMultiplier);
+    }
+
+    public void setInitBotFollowers(int baseBotFollowerCount) {
+        this.botFollowerCount = baseBotFollowerCount;
+    }
+
+    public void setInfluenceScore(double influenceScore) {
+        this.influenceScore = influenceScore;
+    }
+
+    public double getInfluenceScore() {
+        return this.influenceScore;
+    }
+
+    public void incrementTotalImpressions(int tweetImpressions) {
+        this.totalImpressions += (long)tweetImpressions;
+    }
+
+    public long getTotalImpressions() {
+        return this.totalImpressions;
+    }
+
     @Override
     public String toString() {
         String tweetList = "";
@@ -88,13 +119,15 @@ public class Account {
             tweetList += tweets.get(i);
         }
         return String.format("Account " + getID() + "\n"+
+                             "  Influence Score --------> " + getInfluenceScore() + "\n"+
                              "  Human Follower Count ---> " + getHumanFollowerCount() + "\n"+
                              "  Bot Follower Count -----> " + getBotFollowerCount() + "\n"+
                              "  Tweet Count ------------> " + getTweetCount() + "\n"+
                              "  Avg Tweet Quality ------> " + getAvgTweetQuality() + "\n"+
                              "  Tweet Probability ------> " + getTweetProbability() + "\n"+
-                             "  Popularity Multiplier --> " + getPopularityMult() + "\n"+
-                             "  Tweet List\n"+tweetList);
+                             "  Popularity Multiplier --> " + getPopularityMult() + "\n"
+                             //+"  Tweet List\n"+tweetList
+                             );
     }
 
 }
