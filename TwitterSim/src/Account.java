@@ -10,21 +10,21 @@ public class Account {
 
     public static int totalAccounts = 0;
     private int accountID;
-    private int followerCount = 0;
+    private int botFollowerCount = 0;
+    private int humanFollowerCount = 0;
     private int tweetCount = 0;
-    private int populatiryMultiplier = 1;
+    private double tweetProbabilty;
+    private double avgTweetQuality;
+    private double populatiryMultiplier;
 
     private List<Tweet> tweets = new ArrayList<Tweet>();
-    private List<Account> followers = new ArrayList<Account>();
 
-    private boolean isBot;
 
-    private double avgTweetQuality;
-
-    public Account(boolean isBot) {
+    public Account(double avgTweetQuality, double tweetProbability, double popularityMultiplier) {
         setID();
-        setAccountType(isBot);
-        generateAvgTweetQuality();
+        setAvgTweetQuality(avgTweetQuality);
+        setTweetProbability(tweetProbability);
+        setPopularityMult(popularityMultiplier);
     }
 
     private void setID() {
@@ -35,67 +35,66 @@ public class Account {
         return this.accountID;
     }
 
-    private void setAccountType(boolean isBot) {
-        this.isBot = isBot;
-    }
-
-    public boolean isBot() {
-        return isBot;
-    }
-
-    private void generateAvgTweetQuality() {
-        if(this.isBot()) {
-            //It's a bot, so it's avg tweet quality is between 0.0 and 0.7.
-            //Ideally, this should be based on some distribution.
-            this.avgTweetQuality = rand.nextDouble() * 0.7;
-
-            //Bot accounts get a lower random base popularity multiplier to simulate
-            //bots that may or may not be already known in the environment. 
-            //Ideally, this should be based on some distribution.
-            setPopularityMult(rand.nextInt(5)+1);
-        } else {
-            //It's a human, so it's avg tweet quality is between 0.3 and 1.0.
-            //Ideally, this should be based on some distribution.
-            this.avgTweetQuality = (rand.nextDouble() * 0.7) + 0.3;
-
-            //Human accounts get a higher random base popularity multiplier to simulate
-            //celebrities or well known entities that are more likely to have a 
-            //higher initial popularity.
-            //Ideally, this should be based on some distribution.
-            setPopularityMult(rand.nextInt(20)+1);
-        }
+    private void setAvgTweetQuality(double avgTweetQuality) {
+        this.avgTweetQuality = avgTweetQuality;
     }
 
     public double getAvgTweetQuality() {
         return this.avgTweetQuality;
     }
 
-    public void setPopularityMult(int popularityMultiplier) {
+    private void setTweetProbability(double tweetProbabilty) {
+        this.tweetProbabilty = tweetProbabilty;
+    }
+
+    public double getTweetProbability() {
+        return this.tweetProbabilty;
+    }
+
+    public void setPopularityMult(double popularityMultiplier) {
         this.populatiryMultiplier = popularityMultiplier;
     }
 
-    public int getPopularityMult() {
+    public double getPopularityMult() {
         return this.populatiryMultiplier;
     }
 
-    public void follow(Account followee) {
-        if (!followers.contains(followee)) {
-            followers.add(followee);
-        }
+    public void generateTweet(double tweetQuality, int tweetedByID) {
+        this.tweets.add(new Tweet(tweetQuality, tweetedByID));
+        this.tweetCount++;
     }
 
-    public void generateTweet() {
-        tweets.add(new Tweet());
+    public int getBotFollowerCount() {
+        return this.botFollowerCount;
     }
 
-    public int getFollowerCount() {
-        return this.followerCount;
+    public int getHumanFollowerCount() {
+        return this.humanFollowerCount;
     }
 
     public int getTweetCount() {
         return this.tweetCount;
     }
 
+    public List<Tweet> getTweets() {
+        return this.tweets;
+    }
 
+    @Override
+    public String toString() {
+        String tweetList = "";
+
+        for (int i = 0; i < tweets.size(); i++) {
+            tweetList += tweets.get(i);
+        }
+        return String.format("Account " + getID() + "\n"+
+                             "  Human Follower Count ---> " + getHumanFollowerCount() + "\n"+
+                             "  Bot Follower Count -----> " + getBotFollowerCount() + "\n"+
+                             "  Tweet Count ------------> " + getTweetCount() + "\n"+
+                             "  Avg Tweet Quality ------> " + getAvgTweetQuality() + "\n"+
+                             "  Tweet Probability ------> " + getTweetProbability() + "\n"+
+                             "  Popularity Multiplier --> " + getPopularityMult() + "\n"+
+                             "  Tweet List\n"+tweetList);
+    }
 
 }
