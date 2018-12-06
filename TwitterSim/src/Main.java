@@ -2,13 +2,16 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Collections;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 
 public class Main {
  
     private static List<Account> allAccounts = new ArrayList<Account>();
     private static Random rand = new Random();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         //Create initial accounts - # of initial Accounts should be an initial parameter
 	    double newFollowerProbability = .005;
 	    double retweetProbability = .01;
@@ -138,9 +141,14 @@ public class Main {
     }
 
 
-    public static void calculateInfluenceScores() {
+    public static void calculateInfluenceScores() throws FileNotFoundException {
         long overallTotalImpressions = 0;
         int overallTotalEngagements = 0;
+
+        PrintWriter pw = new PrintWriter(new File("output.csv"));
+        StringBuilder fileText = new StringBuilder();
+        fileText.append("Account,Influence Score\n");
+
         for (int i = 0; i < allAccounts.size(); i++) {
             Account currentAccount = allAccounts.get(i); 
             long accountTotalImpressions = currentAccount.getTotalImpressions();
@@ -152,9 +160,15 @@ public class Main {
             Account currentAccount = allAccounts.get(i); 
             long accountTotalImpressions = currentAccount.getTotalImpressions();
             int accountTotalEngagements = currentAccount.getTotalEngagements();
-            double influenceScore = ((double)accountTotalImpressions/overallTotalImpressions)*100;
-            influenceScore = ((double)accountTotalEngagements/overallTotalEngagements)*100;
+            double influenceScore = ((double)accountTotalEngagements/overallTotalEngagements)*100;
             currentAccount.setInfluenceScore(influenceScore);
+
+            fileText.append(currentAccount.getID()+","+String.format("%.3f",currentAccount.getInfluenceScore())+"\n");
         }
+
+        pw.write(fileText.toString());
+        pw.close();
     }
+
+
 }

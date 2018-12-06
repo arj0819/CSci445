@@ -147,7 +147,7 @@ public class Account {
                              "  Avg Tweet Quality ------> " + getAvgTweetQuality() + "\n"+
                              "  Avg Engagement Rate ----> " + getAvgEngagementRate() + "\n"+
                              "  Tweet Probability ------> " + getTweetProbability() + "\n"+
-                             "  Popularity Multiplier --> " + getPopularityMult() + "\n"
+                             "  Popularity Multiplier --> " + (1+getPopularityMult()) + "\n"
                              //+"  Tweet List\n"+tweetList
                              );
     }
