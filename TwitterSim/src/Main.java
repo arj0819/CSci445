@@ -167,8 +167,16 @@ public class Main {
             double influenceScore = ((double)accountTotalEngagements/overallTotalEngagements)*100;
             currentAccount.setInfluenceScore(influenceScore);
 
-            fileText.append(currentAccount.getID()+","+
-                            String.format("%.3f",currentAccount.getInfluenceScore())+
+            fileText.append(currentAccount.getID()+
+                            String.format(",%.3f",currentAccount.getInfluenceScore())+
+                            String.format(",%d",currentAccount.getTotalImpressions())+
+                            String.format(",%d",currentAccount.getTotalEngagements())+
+                            String.format(",%d",currentAccount.getHumanFollowerCount())+
+                            String.format(",%d",currentAccount.getBotFollowerCount())+
+                            String.format(",%d",currentAccount.getTweetCount())+
+                            String.format(",%.3f",currentAccount.getAvgTweetQuality())+
+                            String.format(",%.3f",currentAccount.getAvgEngagementRate())+
+                            String.format(",%.3f",currentAccount.getTweetProbability())+
                             String.format(",%.3f,",currentAccount.getPopularityMult()+1)+
                             currentAccount.getBotFollowerCount()+"\n");
             
