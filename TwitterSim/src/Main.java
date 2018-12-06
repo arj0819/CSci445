@@ -1,6 +1,7 @@
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Collections;
 
 public class Main {
  
@@ -9,40 +10,57 @@ public class Main {
 
     public static void main(String[] args) {
         //Create initial accounts - # of initial Accounts should be an initial parameter
+	    double newFollowerProbability = .005;
+	    double retweetProbability = .01;
         for (int i = 0; i < 10; i++) {
             allAccounts.add(new Account(
-                                    NormalRNG(0.25,0.5), //avgTweetQuality
-                                    NormalRNG(0.25,0.5), //tweetProbability
-                                    exponRNG(2.0),       //popularityMultiplier
-                                    200,                 //baseHumanFollowerCount
-                                    0                    //baseBotFollowerCount
+                                    0.1,                  //NormalRNG(0.25,0.5),  //avgTweetQuality
+                                    0.05,                 //exponRNG(0.05),       //avgEngagementRate
+                                    NormalRNG(0,1),                               //tweetProbability
+                                    0.01,                 //exponRNG(2.0),        //popularityMultiplier
+                                    (int)NormalRNG(0,100),                        //baseHumanFollowerCount
+                                    i*100                                         //baseBotFollowerCount
                             ));
         }
         //Print all initial account stats
-        // System.out.println("INITIAL STATISTICS\n\n"+
-        //                    "Total Accounts --> " + Account.totalAccounts +"\n"+
-        //                    "Total Tweets ----> " + Tweet.totalTweets + "\n");
+        System.out.println("INITIAL STATISTICS\n\n"+
+                           "Total Accounts --> " + Account.totalAccounts +"\n"+
+                           "Total Tweets ----> " + Tweet.totalTweets + "\n");
 
-        // for (int i = 0; i < allAccounts.size(); i++) {
-        //     System.out.println(allAccounts.get(i));
-        // }
+        for (int i = 0; i < allAccounts.size(); i++) {
+            System.out.println(allAccounts.get(i));
+        }
 
-        while (Tweet.totalTweets <= 200) {
+        while (Tweet.totalTweets < 10000) {
             for (int i = 0; i < allAccounts.size(); i++) {
                 double tweetProbThreshold = rand.nextDouble();
+
                 Account currentAccount = allAccounts.get(i);
                 double currentTweetProbability = currentAccount.getTweetProbability();
-                double currentAvgTweetQuality = exponRNG(currentAccount.getAvgTweetQuality());
+                double currentTweetQuality = NormalRNG(0,currentAccount.getAvgTweetQuality()); //std of tweet quality should be parameter
+                double currentTweetEngagementRate = currentAccount.getAvgEngagementRate();
                 int currentHumanFollowers = currentAccount.getHumanFollowerCount();
                 double currentProbabilityMult = currentAccount.getPopularityMult();
     
                 if (currentTweetProbability >= tweetProbThreshold) {
-                    currentAccount.generateTweet(currentAvgTweetQuality, currentAccount.getID());
+                    currentAccount.generateTweet(currentTweetQuality, currentAccount.getID());
                     Tweet currentTweet = currentAccount.getMostRecentTweet();
 
-                    int totalTweetImpressions = genImpressions(currentHumanFollowers, currentProbabilityMult, currentTweet.getQuality());
+                    int totalTweetImpressions = genImpressions(currentHumanFollowers, currentProbabilityMult, currentTweetQuality);
+                    totalTweetImpressions += currentAccount.getBotFollowerCount();
+    
+                    int retweets = genRetweets(totalTweetImpressions,retweetProbability);
+                    retweets += currentAccount.getBotFollowerCount();
+    
+                    totalTweetImpressions += retweets*exponRNG(1);
+                    int newFollowers = genNewFollowers(totalTweetImpressions-currentHumanFollowers,newFollowerProbability);
+    
+                    currentAccount.setPopularityMult(currentAccount.getPopularityMult()+popUpdate(newFollowers,.01));
+                    currentAccount.incrementFollowers(newFollowers);
+
                     currentTweet.setImpressions(totalTweetImpressions);
                     currentAccount.incrementTotalImpressions(totalTweetImpressions);
+                    currentAccount.incrementTotalEngagements((int)(totalTweetImpressions*currentTweetEngagementRate));
 
                 }
             }
@@ -101,42 +119,41 @@ public class Main {
         return impressions;
     }
 
-    public static int genRetweets(int impressions, double rate){
+    public static int genRetweets(int impressions, double retweetProb){
         int retweets = 0;
-        retweets = binomTest(impressions, rate);
+        retweets = binomTest(impressions, retweetProb);
         return retweets;
     }
 
-    public static int genNewFollowers(int impressions, double rate){
-        int followers = 0;
-        followers = binomTest(impressions, rate);
-        return followers;
+    public static int genNewFollowers(int impressions, double newFollowerProb){
+        int newFollowers = 0;
+        newFollowers = binomTest(impressions, newFollowerProb);
+        return newFollowers;
     }
 
-    // public static double updateInfluence(int newFollows,int currentInfluence){
-    //     for(int i = 0; i < newFollows; i++){
-    //         double inc = 0;
-    //         inc = exponRNG(.01);
-    //     }
-    //     return inc;
-    // }
+    public static double popUpdate(int newFollowers, double popRate){
+        int x = 0;
+        x = binomTest(newFollowers,popRate);
+        return x*.001;
+    }
 
 
-
-    //influence score is just each account's percentage of the total impressions.
-    //This calculation needs more thought and more needs to be considered to 
-    //determine the influence score
     public static void calculateInfluenceScores() {
         long overallTotalImpressions = 0;
+        int overallTotalEngagements = 0;
         for (int i = 0; i < allAccounts.size(); i++) {
             Account currentAccount = allAccounts.get(i); 
             long accountTotalImpressions = currentAccount.getTotalImpressions();
+            int accountTotalEngagements = currentAccount.getTotalEngagements();
             overallTotalImpressions += accountTotalImpressions;
+            overallTotalEngagements += accountTotalEngagements;
         }
         for (int i = 0; i < allAccounts.size(); i++) {
             Account currentAccount = allAccounts.get(i); 
             long accountTotalImpressions = currentAccount.getTotalImpressions();
+            int accountTotalEngagements = currentAccount.getTotalEngagements();
             double influenceScore = ((double)accountTotalImpressions/overallTotalImpressions)*100;
+            influenceScore = ((double)accountTotalEngagements/overallTotalEngagements)*100;
             currentAccount.setInfluenceScore(influenceScore);
         }
     }

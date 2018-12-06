@@ -5,6 +5,7 @@ public class Tweet {
     private int tweetedByID;
     private double quality;
     private int impressions = 0;
+    private int engagements = 0;
 
     public Tweet(double quality, int tweetedByID) {
         setID();
@@ -48,12 +49,21 @@ public class Tweet {
         return this.impressions;
     }
 
+    public void setEngagements(int engagements) {
+        this.engagements = engagements;
+    }
+
+    public int getEngagements() {
+        return this.engagements;
+    }
+
     @Override
     public String toString() {
         return String.format("    Tweet " + getID() + "\n"+
                              "      Tweeted By ---> Account "+getTweetedByID()+"\n"+
                              "      Quality ------> " + getQuality() + "\n"+
-                             "      Impressions --> " + getImpressions() + "\n");
+                             "      Impressions --> " + getImpressions() + "\n"+
+                             "      Engagements --> " + getEngagements() + "\n");
     }
 
 }

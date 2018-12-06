@@ -1,12 +1,8 @@
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.Random;
 
 public class Account {
-
-    private static Random rand = new Random();
 
     public static int totalAccounts = 0;
     private int accountID;
@@ -15,15 +11,18 @@ public class Account {
     private int tweetCount = 0;
     private double tweetProbabilty;
     private double avgTweetQuality;
+    private double avgEngagementRate;
     private double populatiryMultiplier;
     private long totalImpressions = 0;
+    private int totalEngagements = 0;
     private double influenceScore = 0;
 
     private List<Tweet> tweets = new ArrayList<Tweet>();
 
-    public Account(double avgTweetQuality, double tweetProbability, double popularityMultiplier, int baseHumanFollowerCount, int baseBotFollowerCount) {
+    public Account(double avgTweetQuality, double avgEngagementRate, double tweetProbability, double popularityMultiplier, int baseHumanFollowerCount, int baseBotFollowerCount) {
         setID();
         setAvgTweetQuality(avgTweetQuality);
+        setAvgEngagementRate(avgEngagementRate);
         setTweetProbability(tweetProbability);
         setPopularityMult(popularityMultiplier);
         setInitHumanFollowers(baseHumanFollowerCount);
@@ -44,6 +43,14 @@ public class Account {
 
     public double getAvgTweetQuality() {
         return this.avgTweetQuality;
+    }
+
+    private void setAvgEngagementRate(double avgEngagementRate) {
+        this.avgEngagementRate = avgEngagementRate;
+    }
+
+    public double getAvgEngagementRate() {
+        return this.avgEngagementRate;
     }
 
     private void setTweetProbability(double tweetProbabilty) {
@@ -88,7 +95,7 @@ public class Account {
     }
 
     public void setInitHumanFollowers(int baseHumanFollowerCount) {
-        this.humanFollowerCount = (int) (baseHumanFollowerCount * this.populatiryMultiplier);
+        this.humanFollowerCount = baseHumanFollowerCount; //(int) (baseHumanFollowerCount * this.populatiryMultiplier);
     }
 
     public void setInitBotFollowers(int baseBotFollowerCount) {
@@ -107,8 +114,20 @@ public class Account {
         this.totalImpressions += (long)tweetImpressions;
     }
 
+    public void incrementTotalEngagements(int tweetEngagements) {
+        this.totalEngagements += tweetEngagements;
+    }
+
     public long getTotalImpressions() {
         return this.totalImpressions;
+    }
+
+    public int getTotalEngagements() {
+        return this.totalEngagements;
+    }
+
+    public void incrementFollowers(int newFollowers){
+        this.humanFollowerCount += newFollowers;
     }
 
     @Override
@@ -120,10 +139,13 @@ public class Account {
         }
         return String.format("Account " + getID() + "\n"+
                              "  Influence Score --------> " + getInfluenceScore() + "\n"+
+                             "  Total Impressions ------> " + getTotalImpressions() + "\n"+
+                             "  Total Engagements ------> " + getTotalEngagements() + "\n"+
                              "  Human Follower Count ---> " + getHumanFollowerCount() + "\n"+
                              "  Bot Follower Count -----> " + getBotFollowerCount() + "\n"+
                              "  Tweet Count ------------> " + getTweetCount() + "\n"+
                              "  Avg Tweet Quality ------> " + getAvgTweetQuality() + "\n"+
+                             "  Avg Engagement Rate ----> " + getAvgEngagementRate() + "\n"+
                              "  Tweet Probability ------> " + getTweetProbability() + "\n"+
                              "  Popularity Multiplier --> " + getPopularityMult() + "\n"
                              //+"  Tweet List\n"+tweetList

@@ -1,0 +1,265 @@
+Buildfile: /home/aaron/Desktop/Fall2018/CSci445/TwitterSim/build.xml
+
+clean:
+   [delete] Deleting directory /home/aaron/Desktop/Fall2018/CSci445/TwitterSim/build
+
+init:
+    [mkdir] Created dir: /home/aaron/Desktop/Fall2018/CSci445/TwitterSim/build
+
+compile:
+    [javac] Compiling 3 source files to /home/aaron/Desktop/Fall2018/CSci445/TwitterSim/build
+
+run:
+     [java] INITIAL STATISTICS
+     [java] 
+     [java] Total Accounts --> 10
+     [java] Total Tweets ----> 0
+     [java] 
+     [java] Account 1
+     [java]   Influence Score --------> 0.0
+     [java]   Total Impressions ------> 0
+     [java]   Total Engagements ------> 0
+     [java]   Human Follower Count ---> 100
+     [java]   Bot Follower Count -----> 0
+     [java]   Tweet Count ------------> 0
+     [java]   Avg Tweet Quality ------> 0.1
+     [java]   Avg Engagement Rate ----> 0.05
+     [java]   Tweet Probability ------> 1.0
+     [java]   Popularity Multiplier --> 0.01
+     [java] 
+     [java] Account 2
+     [java]   Influence Score --------> 0.0
+     [java]   Total Impressions ------> 0
+     [java]   Total Engagements ------> 0
+     [java]   Human Follower Count ---> 100
+     [java]   Bot Follower Count -----> 100
+     [java]   Tweet Count ------------> 0
+     [java]   Avg Tweet Quality ------> 0.1
+     [java]   Avg Engagement Rate ----> 0.05
+     [java]   Tweet Probability ------> 1.0
+     [java]   Popularity Multiplier --> 0.01
+     [java] 
+     [java] Account 3
+     [java]   Influence Score --------> 0.0
+     [java]   Total Impressions ------> 0
+     [java]   Total Engagements ------> 0
+     [java]   Human Follower Count ---> 100
+     [java]   Bot Follower Count -----> 200
+     [java]   Tweet Count ------------> 0
+     [java]   Avg Tweet Quality ------> 0.1
+     [java]   Avg Engagement Rate ----> 0.05
+     [java]   Tweet Probability ------> 1.0
+     [java]   Popularity Multiplier --> 0.01
+     [java] 
+     [java] Account 4
+     [java]   Influence Score --------> 0.0
+     [java]   Total Impressions ------> 0
+     [java]   Total Engagements ------> 0
+     [java]   Human Follower Count ---> 100
+     [java]   Bot Follower Count -----> 300
+     [java]   Tweet Count ------------> 0
+     [java]   Avg Tweet Quality ------> 0.1
+     [java]   Avg Engagement Rate ----> 0.05
+     [java]   Tweet Probability ------> 1.0
+     [java]   Popularity Multiplier --> 0.01
+     [java] 
+     [java] Account 5
+     [java]   Influence Score --------> 0.0
+     [java]   Total Impressions ------> 0
+     [java]   Total Engagements ------> 0
+     [java]   Human Follower Count ---> 100
+     [java]   Bot Follower Count -----> 400
+     [java]   Tweet Count ------------> 0
+     [java]   Avg Tweet Quality ------> 0.1
+     [java]   Avg Engagement Rate ----> 0.05
+     [java]   Tweet Probability ------> 1.0
+     [java]   Popularity Multiplier --> 0.01
+     [java] 
+     [java] Account 6
+     [java]   Influence Score --------> 0.0
+     [java]   Total Impressions ------> 0
+     [java]   Total Engagements ------> 0
+     [java]   Human Follower Count ---> 100
+     [java]   Bot Follower Count -----> 500
+     [java]   Tweet Count ------------> 0
+     [java]   Avg Tweet Quality ------> 0.1
+     [java]   Avg Engagement Rate ----> 0.05
+     [java]   Tweet Probability ------> 1.0
+     [java]   Popularity Multiplier --> 0.01
+     [java] 
+     [java] Account 7
+     [java]   Influence Score --------> 0.0
+     [java]   Total Impressions ------> 0
+     [java]   Total Engagements ------> 0
+     [java]   Human Follower Count ---> 100
+     [java]   Bot Follower Count -----> 600
+     [java]   Tweet Count ------------> 0
+     [java]   Avg Tweet Quality ------> 0.1
+     [java]   Avg Engagement Rate ----> 0.05
+     [java]   Tweet Probability ------> 1.0
+     [java]   Popularity Multiplier --> 0.01
+     [java] 
+     [java] Account 8
+     [java]   Influence Score --------> 0.0
+     [java]   Total Impressions ------> 0
+     [java]   Total Engagements ------> 0
+     [java]   Human Follower Count ---> 100
+     [java]   Bot Follower Count -----> 700
+     [java]   Tweet Count ------------> 0
+     [java]   Avg Tweet Quality ------> 0.1
+     [java]   Avg Engagement Rate ----> 0.05
+     [java]   Tweet Probability ------> 1.0
+     [java]   Popularity Multiplier --> 0.01
+     [java] 
+     [java] Account 9
+     [java]   Influence Score --------> 0.0
+     [java]   Total Impressions ------> 0
+     [java]   Total Engagements ------> 0
+     [java]   Human Follower Count ---> 100
+     [java]   Bot Follower Count -----> 800
+     [java]   Tweet Count ------------> 0
+     [java]   Avg Tweet Quality ------> 0.1
+     [java]   Avg Engagement Rate ----> 0.05
+     [java]   Tweet Probability ------> 1.0
+     [java]   Popularity Multiplier --> 0.01
+     [java] 
+     [java] Account 10
+     [java]   Influence Score --------> 0.0
+     [java]   Total Impressions ------> 0
+     [java]   Total Engagements ------> 0
+     [java]   Human Follower Count ---> 100
+     [java]   Bot Follower Count -----> 900
+     [java]   Tweet Count ------------> 0
+     [java]   Avg Tweet Quality ------> 0.1
+     [java]   Avg Engagement Rate ----> 0.05
+     [java]   Tweet Probability ------> 1.0
+     [java]   Popularity Multiplier --> 0.01
+     [java] 
+     [java] FINAL STATISTICS
+     [java] 
+     [java] Total Accounts --> 10
+     [java] Total Tweets ----> 10000
+     [java] 
+     [java] Account 1
+     [java]   Influence Score --------> 0.6264546315887043
+     [java]   Total Impressions ------> 429688
+     [java]   Total Engagements ------> 21019
+     [java]   Human Follower Count ---> 960
+     [java]   Bot Follower Count -----> 0
+     [java]   Tweet Count ------------> 1000
+     [java]   Avg Tweet Quality ------> 0.1
+     [java]   Avg Engagement Rate ----> 0.05
+     [java]   Tweet Probability ------> 1.0
+     [java]   Popularity Multiplier --> 0.019000000000000006
+     [java] 
+     [java] Account 2
+     [java]   Influence Score --------> 2.5023910425243447
+     [java]   Total Impressions ------> 1688966
+     [java]   Total Engagements ------> 83961
+     [java]   Human Follower Count ---> 3861
+     [java]   Bot Follower Count -----> 100
+     [java]   Tweet Count ------------> 1000
+     [java]   Avg Tweet Quality ------> 0.1
+     [java]   Avg Engagement Rate ----> 0.05
+     [java]   Tweet Probability ------> 1.0
+     [java]   Popularity Multiplier --> 0.05000000000000003
+     [java] 
+     [java] Account 3
+     [java]   Influence Score --------> 4.331832890194446
+     [java]   Total Impressions ------> 2916625
+     [java]   Total Engagements ------> 145343
+     [java]   Human Follower Count ---> 6639
+     [java]   Bot Follower Count -----> 200
+     [java]   Tweet Count ------------> 1000
+     [java]   Avg Tweet Quality ------> 0.1
+     [java]   Avg Engagement Rate ----> 0.05
+     [java]   Tweet Probability ------> 1.0
+     [java]   Popularity Multiplier --> 0.08200000000000006
+     [java] 
+     [java] Account 4
+     [java]   Influence Score --------> 7.416359708169125
+     [java]   Total Impressions ------> 4986335
+     [java]   Total Engagements ------> 248836
+     [java]   Human Follower Count ---> 11076
+     [java]   Bot Follower Count -----> 300
+     [java]   Tweet Count ------------> 1000
+     [java]   Avg Tweet Quality ------> 0.1
+     [java]   Avg Engagement Rate ----> 0.05
+     [java]   Tweet Probability ------> 1.0
+     [java]   Popularity Multiplier --> 0.1300000000000001
+     [java] 
+     [java] Account 5
+     [java]   Influence Score --------> 6.408917895667988
+     [java]   Total Impressions ------> 4309910
+     [java]   Total Engagements ------> 215034
+     [java]   Human Follower Count ---> 9499
+     [java]   Bot Follower Count -----> 400
+     [java]   Tweet Count ------------> 1000
+     [java]   Avg Tweet Quality ------> 0.1
+     [java]   Avg Engagement Rate ----> 0.05
+     [java]   Tweet Probability ------> 1.0
+     [java]   Popularity Multiplier --> 0.12000000000000008
+     [java] 
+     [java] Account 6
+     [java]   Influence Score --------> 10.986993145926466
+     [java]   Total Impressions ------> 7382226
+     [java]   Total Engagements ------> 368639
+     [java]   Human Follower Count ---> 16544
+     [java]   Bot Follower Count -----> 500
+     [java]   Tweet Count ------------> 1000
+     [java]   Avg Tweet Quality ------> 0.1
+     [java]   Avg Engagement Rate ----> 0.05
+     [java]   Tweet Probability ------> 1.0
+     [java]   Popularity Multiplier --> 0.17300000000000013
+     [java] 
+     [java] Account 7
+     [java]   Influence Score --------> 14.315735637874113
+     [java]   Total Impressions ------> 9616023
+     [java]   Total Engagements ------> 480326
+     [java]   Human Follower Count ---> 22616
+     [java]   Bot Follower Count -----> 600
+     [java]   Tweet Count ------------> 1000
+     [java]   Avg Tweet Quality ------> 0.1
+     [java]   Avg Engagement Rate ----> 0.05
+     [java]   Tweet Probability ------> 1.0
+     [java]   Popularity Multiplier --> 0.23200000000000018
+     [java] 
+     [java] Account 8
+     [java]   Influence Score --------> 16.207706712294918
+     [java]   Total Impressions ------> 10885746
+     [java]   Total Engagements ------> 543806
+     [java]   Human Follower Count ---> 24870
+     [java]   Bot Follower Count -----> 700
+     [java]   Tweet Count ------------> 1000
+     [java]   Avg Tweet Quality ------> 0.1
+     [java]   Avg Engagement Rate ----> 0.05
+     [java]   Tweet Probability ------> 1.0
+     [java]   Popularity Multiplier --> 0.23200000000000018
+     [java] 
+     [java] Account 9
+     [java]   Influence Score --------> 19.068344325621695
+     [java]   Total Impressions ------> 12805018
+     [java]   Total Engagements ------> 639787
+     [java]   Human Follower Count ---> 31661
+     [java]   Bot Follower Count -----> 800
+     [java]   Tweet Count ------------> 1000
+     [java]   Avg Tweet Quality ------> 0.1
+     [java]   Avg Engagement Rate ----> 0.05
+     [java]   Tweet Probability ------> 1.0
+     [java]   Popularity Multiplier --> 0.33500000000000024
+     [java] 
+     [java] Account 10
+     [java]   Influence Score --------> 18.1352640101382
+     [java]   Total Impressions ------> 12179086
+     [java]   Total Engagements ------> 608480
+     [java]   Human Follower Count ---> 28430
+     [java]   Bot Follower Count -----> 900
+     [java]   Tweet Count ------------> 1000
+     [java]   Avg Tweet Quality ------> 0.1
+     [java]   Avg Engagement Rate ----> 0.05
+     [java]   Tweet Probability ------> 1.0
+     [java]   Popularity Multiplier --> 0.2950000000000002
+     [java] 
+
+BUILD SUCCESSFUL
+Total time: 2 seconds
