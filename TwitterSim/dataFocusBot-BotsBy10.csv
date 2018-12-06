@@ -1,4 +1,4 @@
-Account,Influence Score,Total Impressions,Total Engagements,Human Followers,Bot Followers,Tweets,Avg Tweet Quality,Avg Engagement Rate,Tweet Probability,Popularity Multiplier
+Account,Influence Score,Total Impressions,Total Engagements,Human Followers,Bot Followers,Tweets,Avg Tweet Quality,Avg Engagement Rate,Tweet Probability,Popularity Multiplier,DoNotUse
 1,5.535,488531,23961,1132,0,1000,0.100,0.050,1.000,1.022,0
 2,6.902,607117,29878,1355,10,1000,0.100,0.050,1.000,1.021,10
 3,7.810,685910,33806,1568,20,1000,0.100,0.050,1.000,1.024,20

@@ -177,8 +177,7 @@ public class Main {
                             String.format(",%.3f",currentAccount.getAvgTweetQuality())+
                             String.format(",%.3f",currentAccount.getAvgEngagementRate())+
                             String.format(",%.3f",currentAccount.getTweetProbability())+
-                            String.format(",%.3f,",currentAccount.getPopularityMult()+1)+
-                            currentAccount.getBotFollowerCount()+"\n");
+                            String.format(",%.3f,",currentAccount.getPopularityMult()+1)+"\n");
             
         }
 
