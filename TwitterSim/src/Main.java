@@ -21,12 +21,12 @@ public class Main {
 	    double retweetProbability = .01;
         for (int i = 0; i < 10; i++) {
             allAccounts.add(new Account(
-                                    0.1,                  //NormalRNG(0.25,0.5),  //avgTweetQuality
-                                    0.05,                 //exponRNG(0.05),       //avgEngagementRate
-                                    NormalRNG(0,1),                               //tweetProbability
-                                    0.01,                 //exponRNG(2.0),        //popularityMultiplier
-                                    (int)NormalRNG(0,100),                        //baseHumanFollowerCount
-                                    i*100                                         //baseBotFollowerCount
+                                    NormalRNG(0.1,0.5),                  //NormalRNG(0.25,0.5),  //avgTweetQuality
+                                    exponRNG(0.05),                      //exponRNG(0.05),       //avgEngagementRate
+                                    NormalRNG(0.1,0.5),                                          //tweetProbability
+                                    0.01,                 //exponRNG(2.0),                       //popularityMultiplier
+                                    (int)NormalRNG(10,100),                                      //baseHumanFollowerCount
+                                    rand.nextInt(1001)                                            //baseBotFollowerCount
                             ));
         }
         //Print all initial account stats
@@ -38,7 +38,7 @@ public class Main {
         //     System.out.println(allAccounts.get(i));
         // }
 
-        while (Tweet.totalTweets < 10000) {
+        while (Tweet.totalTweets < 5000) {
             for (int i = 0; i < allAccounts.size(); i++) {
                 double tweetProbThreshold = rand.nextDouble();
 
@@ -59,7 +59,7 @@ public class Main {
                     int retweets = genRetweets(totalTweetImpressions,retweetProbability);
                     retweets += currentAccount.getBotFollowerCount();
     
-                    totalTweetImpressions += retweets*exponRNG(1);
+                    totalTweetImpressions += retweets;
                     int newFollowers = genNewFollowers(totalTweetImpressions-currentHumanFollowers,newFollowerProbability);
     
                     currentAccount.setPopularityMult(currentAccount.getPopularityMult()+popUpdate(newFollowers,.01));
@@ -75,14 +75,14 @@ public class Main {
         calculateInfluenceScores();
 
         //Print all final account stats
-        // System.out.println("FINAL STATISTICS\n\n"+
-        //                    "Total Accounts --> " + Account.totalAccounts +"\n"+
-        //                    "Total Tweets ----> " + Tweet.totalTweets + "\n");
+        System.out.println("FINAL STATISTICS\n\n"+
+                           "Total Accounts --> " + Account.totalAccounts +"\n"+
+                           "Total Tweets ----> " + Tweet.totalTweets + "\n");
 
-        // for (int i = 0; i < allAccounts.size(); i++) {
-        //     Account currentAccount = allAccounts.get(i);
-        //     System.out.println(currentAccount);
-        // }
+        for (int i = 0; i < allAccounts.size(); i++) {
+            Account currentAccount = allAccounts.get(i);
+            System.out.println(currentAccount);
+        }
     }
 
 
