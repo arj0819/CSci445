@@ -3,15 +3,19 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Collections;
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.StandardOpenOption;
 
 public class Main {
  
     private static List<Account> allAccounts = new ArrayList<Account>();
     private static Random rand = new Random();
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws FileNotFoundException, IOException {
         //Create initial accounts - # of initial Accounts should be an initial parameter
 	    double newFollowerProbability = .005;
 	    double retweetProbability = .01;
@@ -26,13 +30,13 @@ public class Main {
                             ));
         }
         //Print all initial account stats
-        System.out.println("INITIAL STATISTICS\n\n"+
-                           "Total Accounts --> " + Account.totalAccounts +"\n"+
-                           "Total Tweets ----> " + Tweet.totalTweets + "\n");
+        // System.out.println("INITIAL STATISTICS\n\n"+
+        //                    "Total Accounts --> " + Account.totalAccounts +"\n"+
+        //                    "Total Tweets ----> " + Tweet.totalTweets + "\n");
 
-        for (int i = 0; i < allAccounts.size(); i++) {
-            System.out.println(allAccounts.get(i));
-        }
+        // for (int i = 0; i < allAccounts.size(); i++) {
+        //     System.out.println(allAccounts.get(i));
+        // }
 
         while (Tweet.totalTweets < 10000) {
             for (int i = 0; i < allAccounts.size(); i++) {
@@ -71,14 +75,14 @@ public class Main {
         calculateInfluenceScores();
 
         //Print all final account stats
-        System.out.println("FINAL STATISTICS\n\n"+
-                           "Total Accounts --> " + Account.totalAccounts +"\n"+
-                           "Total Tweets ----> " + Tweet.totalTweets + "\n");
+        // System.out.println("FINAL STATISTICS\n\n"+
+        //                    "Total Accounts --> " + Account.totalAccounts +"\n"+
+        //                    "Total Tweets ----> " + Tweet.totalTweets + "\n");
 
-        for (int i = 0; i < allAccounts.size(); i++) {
-            Account currentAccount = allAccounts.get(i);
-            System.out.println(currentAccount);
-        }
+        // for (int i = 0; i < allAccounts.size(); i++) {
+        //     Account currentAccount = allAccounts.get(i);
+        //     System.out.println(currentAccount);
+        // }
     }
 
 
@@ -141,13 +145,13 @@ public class Main {
     }
 
 
-    public static void calculateInfluenceScores() throws FileNotFoundException {
+    public static void calculateInfluenceScores() throws FileNotFoundException, IOException {
         long overallTotalImpressions = 0;
         int overallTotalEngagements = 0;
 
-        PrintWriter pw = new PrintWriter(new File("output.csv"));
+        //PrintWriter pw = new PrintWriter(new File("output.csv"));
         StringBuilder fileText = new StringBuilder();
-        fileText.append("Account,Influence Score\n");
+        //fileText.append("Account,Influence Score\n");
 
         for (int i = 0; i < allAccounts.size(); i++) {
             Account currentAccount = allAccounts.get(i); 
@@ -163,11 +167,16 @@ public class Main {
             double influenceScore = ((double)accountTotalEngagements/overallTotalEngagements)*100;
             currentAccount.setInfluenceScore(influenceScore);
 
-            fileText.append(currentAccount.getID()+","+String.format("%.3f",currentAccount.getInfluenceScore())+"\n");
+            fileText.append(currentAccount.getID()+","+
+                            String.format("%.3f",currentAccount.getInfluenceScore())+
+                            String.format(",%.3f,",currentAccount.getPopularityMult()+1)+
+                            currentAccount.getBotFollowerCount()+"\n");
+            
         }
 
-        pw.write(fileText.toString());
-        pw.close();
+        Files.write(Paths.get("output.csv"), fileText.toString().getBytes(), StandardOpenOption.APPEND);
+        // pw.write(fileText.toString());
+        // pw.close();
     }
 
 
